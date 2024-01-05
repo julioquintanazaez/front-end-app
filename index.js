@@ -15,9 +15,9 @@ axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
-	<React.StrictMode>
+	
         <BrowserRouter>
-            <App />
+            <App />			
         </BrowserRouter>
-    </React.StrictMode>
+    
 	);

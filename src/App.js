@@ -1,13 +1,10 @@
-//https://www.robinwieruch.de/react-router-private-routes/
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import React, { useState, useEffect, useContext } from 'react';
-import { BrowserRouter, Routes, Route, Link, NavLink, useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Routes, Route, Link, NavLink, useNavigate } from 'react-router-dom';
 import { ContextProvider, Context } from './context/Context';
 import { ProtectedRoute } from './context/ProtectedRoute';
 
-import axios from 'axios';
-
+/*
 import Login from './auth/Login.js';
 import ResetPassword from './auth/ResetPassword.js';
 import MainDashboard from './pages/Dashboard.js';
@@ -20,6 +17,7 @@ import Materials from './pages/Materials.js';
 import NoPage from './pages/NoPage.js';
 import Admin from './pages/Admin.js';
 import Manager from './pages/Manager.js';
+*/
 
 const App = () => {
 	
@@ -36,22 +34,8 @@ const App = () => {
 	*/
 	return (
 		<>		
-			<ContextProvider>				
-				<Routes>
-					<Route index element={<Login />} />
-					<Route path="/" element={<Login />} />					
-					<Route path="/dashboard" element={<MainDashboard />} />						
-					<Route path="/manager" element={<Manager />} />
-					<Route path="/projects" element={<Projects />} />
-					<Route path="/labors" element={<Labors />} />
-					<Route path="/tasks" element={<Tasks />} />					
-					<Route path="/equipments" element={<Equipments />} />
-					<Route path="/materials" element={<Materials />} />				
-					<Route path="/admin" element={<Admin />} />					
-					<Route path="/about" element={<About />} />
-					<Route path="*" element={<p>There's nothing here: 404!</p>} />
-				</Routes>				
-			</ContextProvider>		
+			<h1> Hello world .....</h1>
+			
 		</>
 	);
 }
