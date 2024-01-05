@@ -4,8 +4,12 @@ import { Context } from './../context/Context';
 
 const Navigation = () => {
 	
-	const { onLogout } = useContext(Context);
+	const { handleLogout } = useContext(Context);
 	const { token } = useContext(Context);
+	
+	const logoutUser = () => {
+		
+	}
 	
 	return (
 		
@@ -13,15 +17,16 @@ const Navigation = () => {
 			<nav>		
 				<NavLink to="/"> Home </NavLink>
 				<NavLink to="/dashboard"> Dashboard </NavLink>
-				<NavLink to="/manager"> Manager </NavLink>
-				<NavLink to="/projects"> Projects </NavLink>
-				<NavLink to="/labors"> Labors </NavLink>
-				<NavLink to="/tasks"> Tasks </NavLink>
-				<NavLink to="/equipments"> Equipments </NavLink>
-				<NavLink to="/materials"> Materials </NavLink>				
+				<NavLink to="/manager"> Manager </NavLink>								
 				<NavLink to="/admin"> Admin </NavLink>	
 				<NavLink to="/about"> About </NavLink>	
-			</nav>									
+			</nav>
+			<button 
+				type="button" 
+				className="btn btn-sm btn-secondary" 							
+				onClick={(e) => logoutUser()}> 
+					LogOut
+			</button>
 		</div>					
 				
 	);
