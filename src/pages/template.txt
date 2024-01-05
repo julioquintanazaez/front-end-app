@@ -1,0 +1,26 @@
+import React, {useState, useEffect} from 'react';
+import { Outlet, Link } from "react-router-dom";
+
+const Layout = () => {
+	
+  return (
+    <>
+	
+		<nav style={{ textAlign: "center", marginTop: "20px" }}>			
+			<Link to="/dashboard" style={{ padding: "10px" }}>
+				Dashboard
+			</Link>
+			<Link to="/about" style={{ padding: "10px" }}>
+				About
+			</Link>
+		</nav>
+		
+
+		<Outlet />
+    </>
+	
+  );
+  
+}
+
+export default Layout;

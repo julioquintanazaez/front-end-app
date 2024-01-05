@@ -1,0 +1,20 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
+import React, {useState, useEffect} from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from "react-router-dom";
+import axios from 'axios';
+import App from './src/App.js';
+
+axios.defaults.baseURL =  "https://app-project-jczo.onrender.com" || "http://localhost:8000"; //"https://app-project-jczo.onrender.com" ||
+
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+root.render(
+		<BrowserRouter>
+					
+				<App />		
+			
+		</BrowserRouter>
+	);
