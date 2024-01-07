@@ -9,7 +9,7 @@ import axios from 'axios';
 
 //axios.defaults.baseURL =  "http://localhost:8000"; 
 axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
-basenameURL = "https://my-app-4bad.onrender.com";
+//const basenameURL = "https://my-app-4bad.onrender.com";
 
 const App1 = () => {	
 	
