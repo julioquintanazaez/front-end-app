@@ -9,7 +9,7 @@ import axios from 'axios';
 
 //axios.defaults.baseURL =  "http://localhost:8000"; 
 axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
-basenameURL = "https://app-project-jczo.onrender.com";
+basenameURL = "https://my-app-4bad.onrender.com";
 
 const App1 = () => {	
 	
@@ -24,7 +24,7 @@ const App1 = () => {
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
-		<BrowserRouter basename=basenameURL >					
+		<BrowserRouter basename="/dist" >					
 			<App />				
 		</BrowserRouter>
     
