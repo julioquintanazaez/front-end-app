@@ -21,7 +21,7 @@ function Login () {
 		
 		await axios({
 			method: 'post',
-			url: '/token/',                         //
+			url: '/token/',                         
 			data: form_data
 		}).then(response => {
 			if (response.status === 200) {
@@ -84,7 +84,7 @@ function Login () {
 							Sign In
 						</h3>
 						<div className="form-group mt-3">
-							<label>Email address</label>
+							<label>User name</label>
 							<input
 							  type="text"
 							  value={username}

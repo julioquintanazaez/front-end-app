@@ -8,7 +8,7 @@ import axios from 'axios';
 import App from './src/App.js';
 
 //axios.defaults.baseURL =  "http://localhost:8000"; 
-axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
+axios.defaults.baseURL =  "https://app-project-jczo.onrender.com"; 
 
 
 const container = document.getElementById("root");
