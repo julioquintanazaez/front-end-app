@@ -21,7 +21,7 @@ function Login () {
 		
 		await axios({
 			method: 'post',
-			url: 'https://app-project-jczo.onrender.com/token/',                         
+			url: '/token/',                         
 			data: form_data
 		}).then(response => {
 			if (response.status === 200) {
