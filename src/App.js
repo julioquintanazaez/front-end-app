@@ -4,7 +4,7 @@ import { Routes, Route, Link, NavLink, useNavigate } from 'react-router-dom';
 import { ContextProvider, Context } from './context/Context';
 import { ProtectedRoute } from './context/ProtectedRoute';
 
-/*
+
 import Login from './auth/Login.js';
 import ResetPassword from './auth/ResetPassword.js';
 import MainDashboard from './pages/Dashboard.js';
@@ -17,7 +17,7 @@ import Materials from './pages/Materials.js';
 import NoPage from './pages/NoPage.js';
 import Admin from './pages/Admin.js';
 import Manager from './pages/Manager.js';
-*/
+
 
 const App = () => {
 	
@@ -54,4 +54,4 @@ const App = () => {
 	);
 }
 
-export default App
+export default App;

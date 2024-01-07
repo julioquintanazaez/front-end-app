@@ -1,5 +1,5 @@
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
