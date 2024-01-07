@@ -222,6 +222,14 @@ const Manager = () => {
 			alert("Click in some project");
 		}
 	}
+		
+	const handleSetFirstProject = () => {
+		if (projects.length > 0){
+			setSelectedProject(projects[0]);	
+		}else{		
+			alert("Project list empty");
+		}
+	}
 	
 	console.log({"Project and Labor selected": selectedproject.project_name});
 	
@@ -322,6 +330,10 @@ const Manager = () => {
 												</option>
 											))}
 										</select><br/>
+										<button type="button" className="btn btn-sm btn-info" 							
+												onClick={(e) => handleSetFirstProject()}> 
+													Set First...
+										</button>		
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
 											<InsertLaborModal id={selectedproject.id} />
 											<ViewLaborModal id={selectedproject.id} />											
