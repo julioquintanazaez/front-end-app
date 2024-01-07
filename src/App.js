@@ -34,8 +34,22 @@ const App = () => {
 	*/
 	return (
 		<>		
-			<h1> Hello world .....</h1>
-			
+			<ContextProvider>				
+				<Routes>
+					<Route index element={<Login />} />
+					<Route path="/" element={<Login />} />					
+					<Route path="/dashboard" element={<MainDashboard />} />						
+					<Route path="/manager" element={<Manager />} />
+					<Route path="/projects" element={<Projects />} />
+					<Route path="/labors" element={<Labors />} />
+					<Route path="/tasks" element={<Tasks />} />					
+					<Route path="/equipments" element={<Equipments />} />
+					<Route path="/materials" element={<Materials />} />				
+					<Route path="/admin" element={<Admin />} />					
+					<Route path="/about" element={<About />} />
+					<Route path="*" element={<p>There's nothing here: 404!</p>} />
+				</Routes>				
+			</ContextProvider>				
 		</>
 	);
 }

@@ -8,18 +8,9 @@ import axios from 'axios';
 import App from './src/App.js';
 
 //axios.defaults.baseURL =  "http://localhost:8000"; 
-//axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
-/*
-const App1 = () => {	
-	
-	return (
-		<>		
-			<h1> Hello world from App1 .....</h1>
-			
-		</>
-	);
-}
-*/
+axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
+
+
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
