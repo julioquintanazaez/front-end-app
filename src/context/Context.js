@@ -7,7 +7,8 @@ export const ContextProvider = ({ children }) => {
 	
 	const [token, setToken] = useState("");
 	const [user, setUser] = useState({});
-	const [isLoggedIn, setIsLoggedIn] = useState(false);	
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [mainproject, setMainProject] = useState({});
 	
 	/*
 	const handleLogin = async () => {

@@ -63,16 +63,43 @@ import LaborReport from './../utils/report/LaborReport.js';
 
 const Manager = () => {	
 	
-	const { setToken, setUser, token, user, isLoggedIn, setIsLoggedIn } = useContext(Context);
+	const { setToken, setUser, token, user, isLoggedIn, setIsLoggedIn, mainproject, setMainProject } = useContext(Context);
 	const navigate = useNavigate();
 	
-	const [selectedproject, setSelectedProject] = useState({});
-	const [projectlabors, setProjectLabors] = useState([]); 
+	const [selectedproject, setSelectedProject] = useState({});	
 	const [selectedlabor, setSelectedLabor] = useState({}); 
 	
+	const [projects, setProjects] = useState([]); 
+	const [projectlabors, setProjectLabors] = useState([]); 
 	const [tasks, setTask] = useState([]);
 	const [equipments, setEquipments] = useState([]);
 	const [materials, setMaterials] = useState([]);
+	
+	const fetchProjects = async () => {				
+		await axios({
+			method: 'get',
+			url: '/read_projects/',
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {
+				console.log({"Response projects ":response.data});	
+				setProjects(response.data);
+				console.log({"Load projects successfuly ": projects});
+				//alert("Load projects successfuly");
+			}else {
+				console.log("Load from server Failed, please try again");			
+			}
+		}).catch((error) => {
+			console.log({"An error ocur": error});
+		});								
+	}	
+	
+	useEffect(()=> {
+		fetchProjects();
+    }, []);	
 	
 	const fetchTasks = async (id) => {
 		
@@ -178,7 +205,15 @@ const Manager = () => {
 		} else{		
 			alert("Not project selected");
 		}					
-	}	
+	}		
+	
+	const handleSetMainProject = (project) => {
+		if (project != null){				
+				setSelectedProject(project);					
+		}else{		
+			alert("Not projects selected");
+		}
+	}
 	
 	const fetchOnClickProjectLabors = (selectedproject) => {
 		if (selectedproject.id != null){
@@ -188,7 +223,7 @@ const Manager = () => {
 		}
 	}
 	
-	//console.log({"Project and Labor selected": selectedproject.project_name + "  " + selectedlabor.id + " " + tasks.length});
+	console.log({"Project and Labor selected": selectedproject.project_name});
 	
 	
 	return (
@@ -275,8 +310,18 @@ const Manager = () => {
 							<div class="row gx-5">
 								<div class="col">
 									<div class="p-3 border bg-light">
-										Your projects:
-										<ProjectSelector setSelectedProject={setSelectedProject} /><br/>
+										Your projects:										
+										<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >
+											<option selected>Open to select an option</option>
+											{projects?.map(project => (
+												<option 
+													key={project.id}
+													value={project.id}
+													onClick={(e) => handleSetMainProject(project)}>
+													{project.project_name}
+												</option>
+											))}
+										</select><br/>
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
 											<InsertLaborModal id={selectedproject.id} />
 											<ViewLaborModal id={selectedproject.id} />											
