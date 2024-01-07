@@ -5,11 +5,11 @@ import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, HashRouter } from "react-router-dom";
 import axios from 'axios';
-//import App from './src/App.js';
+import App from './src/App.js';
 
 //axios.defaults.baseURL =  "http://localhost:8000"; 
 //axios.defaults.baseURL =  "https://app-project-jczo.onrender.com";
-
+/*
 const App1 = () => {	
 	
 	return (
@@ -19,12 +19,12 @@ const App1 = () => {
 		</>
 	);
 }
-
+*/
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(
-					
-			<App1 />				
-		
+		< BrowserRouter	>		
+			<App />				
+		</ BrowserRouter	>	
     
 	);
