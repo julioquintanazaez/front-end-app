@@ -13,6 +13,7 @@ import ProjectSelector from './../utils/project/ProjectSelector.js';
 import ProjectDelete from './../utils/project/ProjectDelete.js';
 import InsertProjectModal from './../utils/project/InsertProjectModal.js';
 import UpdateProjectModal from './../utils/project/UpdateProjectModal.js';
+import ProjectRenderTable from './../utils/project/ProjectRenderTable.js';
 
 //Handle Labor 
 import InsertLaborModal from './../utils/labor/InsertLaborModal.js';
@@ -20,6 +21,8 @@ import ViewLaborModal from './../utils/labor/ViewLaborModal.js';
 import UpdateLaborModal from './../utils/labor/UpdateLaborModal.js';
 import LaborDelete from './../utils/labor/LaborDelete.js';
 import LaborActivate from './../utils/labor/LaborActivate.js';
+import LaborRenderTable from './../utils/labor/LaborRenderTable.js';
+
 
 //Handle Task 
 import InsertTaskModal from './../utils/task/InsertTaskModal.js';
@@ -54,6 +57,7 @@ import ReadMateiralsTotals from './../utils/info/ReadMateiralsTotals.js';
 import ReadEquipmentsTotals from './../utils/info/ReadEquipmentsTotals.js';
 
 import ReadItemsTable from './../utils/info/ReadItemsTable.js';
+
 
 //Reports
 import LaborReport from './../utils/report/LaborReport.js';
@@ -170,17 +174,6 @@ const Manager = () => {
 		});			  
 	}
 	
-	const handleOnClickTask = (labor) => {
-		if (labor.id != null){
-			setSelectedLabor(labor)
-			fetchTasks(labor.id);	
-			fetchEquipments(labor.id);
-			fetchMaterials(labor.id);
-		}else{		
-			alert("Click in some labor");
-		}
-	}
-	
 	const fetchLabors = async (id) => {				
 		if (id != null){				
 			await axios({
@@ -205,15 +198,12 @@ const Manager = () => {
 		} else{		
 			alert("Not project selected");
 		}					
-	}		
-	
-	const handleSetMainProject = (project) => {
-		if (project != null){				
-				setSelectedProject(project);					
-		}else{		
-			alert("Not projects selected");
-		}
 	}
+
+	useEffect(()=> {
+		fetchLabors(selectedproject.id);
+    }, [selectedproject]);		
+	
 	
 	const fetchOnClickProjectLabors = (selectedproject) => {
 		if (selectedproject.id != null){
@@ -223,16 +213,17 @@ const Manager = () => {
 		}
 	}
 		
-	const handleSetFirstProject = () => {
-		if (projects.length > 0){
-			setSelectedProject(projects[0]);	
-		}else{		
-			alert("Project list empty");
-		}
-	}
-	
 	console.log({"Project and Labor selected": selectedproject.project_name});
 	
+	const updateTables = () => {
+		fetchTasks(selectedlabor.id);	
+		fetchEquipments(selectedlabor.id);
+		fetchMaterials(selectedlabor.id);		
+	}
+		
+	useEffect(()=> {
+		updateTables();
+    }, [selectedlabor]);	
 	
 	return (
 		
@@ -318,28 +309,26 @@ const Manager = () => {
 							<div class="row gx-5">
 								<div class="col">
 									<div class="p-3 border bg-light">
-										Your projects:										
-										<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >
-											<option selected>Open to select an option</option>
-											{projects?.map(project => (
-												<option 
-													key={project.id}
-													value={project.id}
-													onClick={(e) => handleSetMainProject(project)}>
-													{project.project_name}
-												</option>
-											))}
-										</select><br/>
-										<button type="button" className="btn btn-sm btn-info" 							
-												onClick={(e) => handleSetFirstProject()}> 
-													Set First...
-										</button>		
+										Your projects:	
+										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
 											<InsertLaborModal id={selectedproject.id} />
 											<ViewLaborModal id={selectedproject.id} />											
 										</div>	
 									</div>
 									
+								</div>
+							</div><br/>
+							
+							
+							
+							<div class="row gx-5">
+								<div class="col">
+									<div class="p-3 border bg-light">
+									
+										< ProjectRenderTable values={{projects: projects, setSelectedProject: setSelectedProject}} />
+										
+									</div>									
 								</div>
 							</div><br/>
 							
@@ -369,6 +358,9 @@ const Manager = () => {
 											<LaborDelete id={selectedlabor.id} />
 											<LaborActivate labor={selectedlabor} />
 										</div>	
+										
+										< LaborRenderTable values={{labors: projectlabors, setSelectedLabor: setSelectedLabor}} />
+										
 									</div>											
 								</div>
 							</div><br/>
