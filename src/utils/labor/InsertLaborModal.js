@@ -31,7 +31,7 @@ export default function InsertLaborModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Labor data inserted successfuly ");
-				alert({"Labor Successfuly deleted": type});	
+				alert({"Labor Successfuly inserted": type});	
 				setType("");
 				setDescription("");
 			}else if (response.status === 500) {
@@ -54,7 +54,7 @@ export default function InsertLaborModal( props ) {
 	}
 	
 	const handleSave = () => {
-		if (type != null && desc_labor != null){
+		if (type != null && desc_labor != null && props.id != null){
 			registerLabor();
 		}else{
 			alert("Some missing parameters");
@@ -65,7 +65,7 @@ export default function InsertLaborModal( props ) {
 		if (props.id != null){		
 			setShow(true);  
 		}else{
-			alert("Not project selected yet");
+			alert("Not project selected for labor creation");
 		}
 	}  
 

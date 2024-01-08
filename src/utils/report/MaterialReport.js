@@ -6,15 +6,15 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
 
-export default function LaborReport ( props ) {
+export default function MaterialReport ( props ) {
 	
 	const { token } = useContext(Context);	
 	
-	const generateReportLabor = async (id) => {		 
+	const generateReportMaterial = async (id) => {		 
 		
 		await axios({
 			method: 'get',
-			url: "/pdf_report_for_labor_id/" + id,			
+			url: "/pdf_materials_report_for_labor_id/" + id,			
 			headers: {				
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -24,7 +24,7 @@ export default function LaborReport ( props ) {
 			const url = window.URL.createObjectURL(new Blob([responseType.data]));
 			const link = document.createElement('a');
 			link.href = url;
-			const outputFileName = "Labor-Report-" + `${Date.now()}.pdf`
+			const outputFileName = "Materials-Report-" + `${Date.now()}.pdf`
 			link.setAttribute('Download', outputFileName);
 			document.body.appendChild(link);
 			link.click();
@@ -40,9 +40,9 @@ export default function LaborReport ( props ) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		if (props.id != null){
-			generateReportLabor(props.id);
+			generateReportMaterial(props.id);
 		}else{
-			alert("Not labor selected yet");
+			alert("Not Labor selected for Materials report");
 		}
 	}
 	
@@ -51,7 +51,7 @@ export default function LaborReport ( props ) {
 			<button type="submit" 
 					className="btn btn-sm btn-outline-success"
 					onClick={(e) => handleSubmit(e)} > 
-					Summary (PDF) 
+					Materials (PDF) 
 			</button>
 		</>
 	);

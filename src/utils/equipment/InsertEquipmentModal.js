@@ -32,7 +32,7 @@ export default function InsertEquipmentModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Equipment data inserted successfuly ");
-				alert({"Equipment Successfuly deleted": equipment_name});
+				alert({"Equipment Successfuly inserted": equipment_name});
 				setEquipment_name("");
 				setEquipment_quantity("");
 				setEquipment_unit_price("");

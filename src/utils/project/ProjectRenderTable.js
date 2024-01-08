@@ -20,25 +20,16 @@ export default function ProjectRenderTable ( props ) {
 					<td>{project.is_active ? "Active" : "Not Active"}</td>		
 					<td> 
 						<div className="row justify-content-center">	
-							<div className="col-sm-3">
+							<div className="col-sm-6">
 								<div className="d-grid gap-2">
 									<button 
 										type="button" 
-										className="btn btn-sm btn-outline-info" 							
+										className="btn btn-sm btn-info" 							
 										onClick={(e) => props.values.setSelectedProject(project)} > 
-											Set
+											Set-up as main project
 									</button>
 								</div>
-							</div>
-							<div className="col-sm-3">
-								<div className="d-grid gap-2">
-									<button 
-										type="button" 
-										className="btn btn-sm btn-outline-info" >									
-											View
-									</button>	
-								</div>
-							</div>
+							</div>							
 						</div>						
 					</td>
 				</tr>
@@ -54,7 +45,7 @@ export default function ProjectRenderTable ( props ) {
 							<th scope="col">#</th>							
 							<th scope="col">Name</th>							
 							<th scope="col">Update</th>
-							<th scope="col"></th>
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody className="table-group-divider">						

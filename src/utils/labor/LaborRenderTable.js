@@ -24,7 +24,7 @@ export default function LaborRenderTable ( props ) {
 								<div className="d-grid gap-2">
 									<button 
 										type="button" 
-										className="btn btn-sm btn-outline-info" 							
+										className="btn btn-sm btn-info" 							
 										onClick={(e) => props.values.setSelectedLabor(labor)} > 
 											Set
 									</button>
@@ -46,7 +46,7 @@ export default function LaborRenderTable ( props ) {
 							<th scope="col">Type</th>							
 							<th scope="col">Description</th>
 							<th scope="col">End Date</th>
-							<th scope="col"></th>
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody className="table-group-divider">						

@@ -73,22 +73,24 @@ const LaborEquipmentTable = (props) => {
 					<td>{equiplab.type}</td>
 					<td>{equiplab.name}</td>				
 					<td> 
-						<div className="row">	
-							<div className="col-sm-3">								
-								<button 
-									type="button" 
-									className="btn btn-info btn-sm" 							
-									onClick={(e) => props.setSelectedEquipmentLabor(equiplab)}> 
-										Upd
-								</button><br/>
-							</div>
-							<div className="col-sm-3">
-								<button 
-									type="button" 
-									className="btn btn-danger btn-sm" 							
-									onClick={(e) => deleteEquipmentLabor(equiplab.id)}> 
-										Del
-								</button>
+						<div className="row justify-content-center">
+							<div className="d-grid gap-2">
+								<div className="col-sm-3">								
+									<button 
+										type="button" 
+										className="btn btn-info btn-sm" 							
+										onClick={(e) => props.setSelectedEquipmentLabor(equiplab)}> 
+											Upd
+									</button><br/>
+								</div>
+								<div className="col-sm-3">
+									<button 
+										type="button" 
+										className="btn btn-danger btn-sm" 							
+										onClick={(e) => deleteEquipmentLabor(equiplab.id)}> 
+											Del
+									</button>
+								</div>
 							</div>
 						</div>						
 					</td>

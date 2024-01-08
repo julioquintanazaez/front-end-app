@@ -20,13 +20,7 @@ const Navigation = () => {
 				<NavLink to="/manager"> Manager </NavLink>								
 				<NavLink to="/admin"> Admin </NavLink>	
 				<NavLink to="/about"> About </NavLink>	
-			</nav>
-			<button 
-				type="button" 
-				className="btn btn-sm btn-secondary" 							
-				onClick={(e) => logoutUser()}> 
-					LogOut
-			</button>
+			</nav>			
 		</div>					
 				
 	);

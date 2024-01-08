@@ -27,15 +27,16 @@ export default function TaskRenderTable ( props ) {
 				},
 			}).then(response => {
 				if (response.status === 201) {
-					console.log("Task & Labor Successfuly deleted");
+					console.log("Task successfuly deleted");
+					alert("Material delete successfuly");
 				}else {
-					console.log("Task & Labor delete Failed, please try again");
+					console.log("Task delete failed, please try again");
 				}
 			}).catch((error) => {
-				alert("Please select a material...");	
+				alert("Please select a task...");	
 			});
 		}else{
-			alert("Please select a material...");	
+			alert("Please select a task...");	
 		}
 	}	
 	
@@ -54,15 +55,15 @@ export default function TaskRenderTable ( props ) {
 				},
 			}).then(response => {
 				if (response.status === 201) {
-					console.log("Task & Labor Successfuly changed");		
+					console.log("Task successfuly changed");		
 				}else {
-					console.log("Task & Labor delete Failed, please try again");			
+					console.log("Task activation failed, please try again");			
 				}
 			}).catch((error) => {
 				console.log(error);
 			});
 		}else{
-			alert("Please select a task...");	
+			alert("Please select a task to activate...");	
 		}
 	}	
 
@@ -74,8 +75,7 @@ export default function TaskRenderTable ( props ) {
 					<td>{task.mechanicals}</td>
 					<td>{task.hour}</td>
 					<td>{task.hour_men}</td>							
-					<td>{task.task_price}</td>		
-					<td>{task.type}</td>		
+					<td>{task.task_price}</td>	
 					<div className="col-sm-3">
 						<button 
 							type="button" 
@@ -85,17 +85,19 @@ export default function TaskRenderTable ( props ) {
 						</button><br/>
 					</div>
 					<td> 
-						<div className="row">	
-							<div className="col-sm-4">								
-								<UpdateTaskModal task={task} />								
-							</div>
-							<div className="col-sm-2">
-								<button 
-									type="button" 
-									className="btn btn-sm btn-outline-danger" 							
-									onClick={(e) => deleteTask(task)}> 
-										Delete
-								</button>
+						<div className="row justify-content-center">	
+							<div className="d-grid gap-2">
+								<div className="col-sm-3">								
+									<UpdateTaskModal task={task} />								
+								</div>
+								<div className="col-sm-3">
+									<button 
+										type="button" 
+										className="btn btn-sm btn-outline-danger" 							
+										onClick={(e) => deleteTask(task)}> 
+											Delete
+									</button>
+								</div>
 							</div>
 						</div>						
 					</td>
@@ -115,9 +117,8 @@ export default function TaskRenderTable ( props ) {
 							<th scope="col">Hour</th>
 							<th scope="col">H/men</th>							
 							<th scope="col">Price</th>
-							<th scope="col">Labor</th>	
 							<th scope="col">Active</th>
-							<th scope="col"></th>
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody className="table-group-divider">						

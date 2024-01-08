@@ -5,7 +5,7 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 
 
-export default function InsertProjectModal( props ) {
+export default function InsertProjectModal( ) {
 	
 	const [show, setShow] = useState(false);
 
@@ -33,7 +33,7 @@ export default function InsertProjectModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project data inserted successfuly ");
-				alert({"Project Successfuly deleted": name});	
+				alert({"Project Successfuly inserted": name});	
 				setName("");
 				setDescription("");
 				setManager("");

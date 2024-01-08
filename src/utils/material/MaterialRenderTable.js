@@ -26,6 +26,7 @@ export default function MaterialRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Material Successfuly deleted");
+					alert("Material delete successfuly");
 				}else {
 					console.log("Material delete Failed, please try again");
 				}
@@ -45,20 +46,21 @@ export default function MaterialRenderTable ( props ) {
 					<td>{material.material_type}</td>
 					<td>{material.material_quantity}</td>
 					<td>{material.material_price}</td>
-					<td>{material.material_amount}</td>							
-					<td>{material.type}</td>					
+					<td>{material.material_amount}</td>			
 					<td> 
-						<div className="row">	
-							<div className="col-sm-4">								
-								<UpdateMaterialModal material={material} />								
-							</div>
-							<div className="col-sm-2">
-								<button 
-									type="button" 
-									className="btn btn-sm btn-outline-danger" 							
-									onClick={(e) => deleteMaterial(material.id)}> 
-										Delete
-								</button>
+						<div className="row justify-content-center">	
+							<div className="d-grid gap-2">
+								<div className="col-sm-3">								
+									<UpdateMaterialModal material={material} />								
+								</div>
+								<div className="col-sm-3">
+									<button 
+										type="button" 
+										className="btn btn-sm btn-outline-danger" 							
+										onClick={(e) => deleteMaterial(material.id)}> 
+											Delete
+									</button>
+								</div>
 							</div>
 						</div>						
 					</td>
@@ -77,9 +79,8 @@ export default function MaterialRenderTable ( props ) {
 							<th scope="col">Type</th>							
 							<th scope="col">Quantity</th>
 							<th scope="col">Price</th>
-							<th scope="col">Amount</th>							
-							<th scope="col">Labor</th>
-							<th scope="col"></th>
+							<th scope="col">Amount</th>	
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody className="table-group-divider">						

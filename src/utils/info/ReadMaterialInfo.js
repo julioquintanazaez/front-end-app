@@ -42,7 +42,7 @@ export default function ReadMaterialInfo ( props )  {
 	const renderBadgesData = () => {
 		return materials?.map((material, index) => (
 			<div>
-				{ "Material type:" } <span className="badge bg-info">  {material.material_type} </span>
+				{ material.material_type } : <span className="badge bg-info">  {material.material_type_number} </span>
 				{ "Material #:" } <span className="badge bg-info">  {material.material_number} </span>
 				{ "Material total amount:" } <span className="badge bg-info">  {material.material_amount} </span>
 			</div>

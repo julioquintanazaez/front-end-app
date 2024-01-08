@@ -28,6 +28,7 @@ export default function EquipmentRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Equipment Successfuly deleted");
+					alert("Equipment delete successfuly");
 				}else {
 					console.log("Equipment delete Failed, please try again");
 				}
@@ -46,8 +47,7 @@ export default function EquipmentRenderTable ( props ) {
 					<td>{equipment.equipment_name}</td>
 					<td>{equipment.equipment_quantity}</td>
 					<td>{equipment.equipment_unit_price}</td>
-					<td>{equipment.equipment_amount}</td>							
-					<td>{equipment.type}</td>					
+					<td>{equipment.equipment_amount}</td>		
 					<td> 
 						<div className="row">	
 							<div className="col-sm-4">								
@@ -77,9 +77,8 @@ export default function EquipmentRenderTable ( props ) {
 							<th scope="col">Name</th>							
 							<th scope="col">Quantity</th>
 							<th scope="col">Unit Price</th>
-							<th scope="col">Amount</th>							
-							<th scope="col">Labor</th>
-							<th scope="col"></th>
+							<th scope="col">Amount</th>	
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody className="table-group-divider">						

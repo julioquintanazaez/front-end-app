@@ -36,7 +36,7 @@ export default function InsertMaterialModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Material data inserted successfuly ");
-				alert({"Material Successfuly deleted": material_name});
+				alert({"Material Successfuly inserted": material_name});
 				setMaterial_name("");
 				setMaterial_type("");
 				setMaterial_quantity("");

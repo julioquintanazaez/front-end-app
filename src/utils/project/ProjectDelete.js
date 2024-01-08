@@ -22,6 +22,7 @@ const ProjectDelete = ( props ) => {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Project Successfuly deleted");		
+					alert("Project delete successfuly");
 				}else {
 					console.log("Project delete failed, please try again");			
 				}
@@ -39,14 +40,14 @@ const ProjectDelete = ( props ) => {
 		if (props.id != null){
 			deleteProject();
 		}else{
-			alert("Not project selected yet");
+			alert("Not project selected to delete");
 		}
 	}
 	
 	return (	
 		<>
 			<button type="submit" 
-					className="btn btn-sm btn-outline-danger"
+					className="btn btn-sm btn-danger"
 					onClick={(e) => handleDeleteSubmit(e)} > 
 					Delete 
 			</button>

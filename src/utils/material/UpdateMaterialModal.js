@@ -11,7 +11,7 @@ export default function UpdateMaterialModal( props ) {
 
 	const { token } = useContext(Context);	
 	const [material_quantity, setMaterial_quantity] = useState("");
-	const [material_price, setMaterialt_price] = useState("");
+	const [material_price, setMaterial_price] = useState("");
 	
 	const material = props.material;
 	
@@ -32,7 +32,7 @@ export default function UpdateMaterialModal( props ) {
 			if (response.status === 201) {
 				console.log("Material data updated successfuly ");
 				setMaterial_quantity("");
-				setMaterialt_price("");
+				setMaterial_price("");
 				alert("Material data updated successfuly");	
 			}else {
 				console.log("Update Material failed, please try again");	
@@ -46,7 +46,7 @@ export default function UpdateMaterialModal( props ) {
   
 	const handleClose = () => {
 		setMaterial_quantity("");
-		setMaterialt_price("");
+		setMaterial_price("");
 		setShow(false);
 	}
 	

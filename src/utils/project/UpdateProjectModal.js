@@ -57,10 +57,10 @@ export default function UpdateProjectModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (name != null && description != null && manager != null && email != null){
+		if (name != null && desc_proj != null && manager != null && email != null){
 			updateProject();
 		}else{
-			alert("Some missing parameters");
+			alert("Some missing parameters fro project update");
 		}
 	}
 
@@ -68,13 +68,13 @@ export default function UpdateProjectModal( props ) {
 		if (props.project.id != null){		
 			setShow(true);  
 		}else{
-			alert("Not project selected yet");
+			alert("Not project selected to update");
 		}
 	}
 	
 	return (
 		<>
-		<button className="btn btn-sm btn-outline-warning" onClick={handleShow}>
+		<button className="btn btn-sm btn-warning" onClick={handleShow}>
 			Update
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 

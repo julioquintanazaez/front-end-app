@@ -21,7 +21,8 @@ const LaborDelete = ( props ) => {
 				},
 			}).then(response => {
 				if (response.status === 201) {
-					console.log("Labor successfuly deleted");		
+					console.log("Labor successfuly deleted");
+					alert("Labor delete successfuly");					
 				}else {
 					console.log("Labor delete failed, please try again");			
 				}
@@ -39,7 +40,7 @@ const LaborDelete = ( props ) => {
 		if (props.id != null){
 			deleteLabor();
 		}else{
-			alert("Not project selected yet");
+			alert("Not labor selected to delete");
 		}
 	}
 	
