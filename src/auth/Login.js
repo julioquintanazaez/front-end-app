@@ -11,7 +11,7 @@ function Login () {
 	const [username, setUserName] = useState("");
 	const [password, setPassword] = useState("");
 	
-	const { isLoggedIn, setToken, setIsLoggedIn } = useContext(Context);	
+	const { isLoggedIn, setToken, setIsLoggedIn } = useContext(Context);	 //handleGetCurrentUser
 	 
 	const authenticate_user = async () => {
 		 
@@ -35,7 +35,7 @@ function Login () {
 				alert('User ' + username + ' status: logged');
 				setUserName("");
 				setPassword("");
-				const origin = location.state?.from?.pathname || '/dashboard'; //To remember the last page after be bloqueted
+				const origin = location.state?.from?.pathname || '/manager'; //To remember the last page after be bloqueted
 				navigate(origin);
 			}else {	
 				console.log("Registration Failed, please try again");
@@ -62,7 +62,7 @@ function Login () {
 		setToken("");
 		setIsLoggedIn(false);
 		setUserName("");
-		setPassword("");
+		setPassword("");		
 		navigate("/");
 	};
 	
@@ -107,10 +107,7 @@ function Login () {
 							<button type="submit" className="btn btn-primary">
 									Submit
 							</button>					
-						</div>
-						<p className="forgot-password text-right mt-2">
-							Forgot <a href="#">password?</a>
-						</p>
+						</div>						
 					</div>
 					
 					)}

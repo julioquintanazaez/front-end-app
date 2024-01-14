@@ -5,9 +5,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-export default function ReadMaterialInfo ( props )  {
+export default function ReadMaterialInfo ( )  {
 	
-	const { token } = useContext(Context);
+	const { token, selectedlabor } = useContext(Context);
 	const [materials, setMaterials] = useState([]);
 	
 	const fetchInfo_Material = async (id) => {
@@ -34,17 +34,17 @@ export default function ReadMaterialInfo ( props )  {
 	
 			
 	useEffect(()=> {
-		if (props.id != null){	
-			fetchInfo_Material(props.id);
+		if (selectedlabor.id != null){	
+			fetchInfo_Material(selectedlabor.id);
 		}	
-	}, [props]);
+	}, [selectedlabor]);
 	
 	const renderBadgesData = () => {
 		return materials?.map((material, index) => (
 			<div>
 				{ material.material_type } : <span className="badge bg-info">  {material.material_type_number} </span>
-				{ "Material #:" } <span className="badge bg-info">  {material.material_number} </span>
-				{ "Material total amount:" } <span className="badge bg-info">  {material.material_amount} </span>
+				{ "Materials #:" } <span className="badge bg-info">  {material.material_number} </span>
+				{ "Total amount:" } <span className="badge bg-info">  {material.material_amount} </span>
 			</div>
 		));
 	}

@@ -6,9 +6,9 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
 
-export default function TaskReport ( props ) {
+export default function TaskReport ( ) {
 	
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);	
 	
 	const generateReportTask = async (id) => {		 
 		
@@ -39,8 +39,8 @@ export default function TaskReport ( props ) {
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (props.id != null){
-			generateReportTask(props.id);
+		if (selectedlabor.id != null){
+			generateReportTask(selectedlabor.id);
 		}else{
 			alert("Not Labor selected for Task preport");
 		}

@@ -5,39 +5,40 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-const ProjectDelete = ( props ) => {
+const ProjectDelete = ( ) => {
 	
-	const { token } = useContext(Context);	
+	const { token } = useContext(Context);
+	const { selectedproject, setSelectedProject, setSelectedLabor } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	
-	const deleteProject = async () => {		 
+	const deleteProject = async () => {			
 		
-		if (props.id != ""){
-			await axios({
-				method: 'delete',
-				url: "/delete_project/" + props.id,			
-				headers: {
-					'accept': 'application/json',
-					'Authorization': "Bearer " + token,
-				},
-			}).then(response => {
-				if (response.status === 201) {
-					console.log("Project Successfuly deleted");		
-					alert("Project delete successfuly");
-				}else {
-					console.log("Project delete failed, please try again");			
-				}
-			}).catch((error) => {
-				console.log("Error conecting with backend server or with submited data, project ID: " + props.id);
-				console.log(error);
-			});
-		}else{
-			alert("Please select a project...");	
-		}
+		await axios({
+			method: 'delete',
+			url: "/delete_project/" + selectedproject.id,			
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {
+				console.log("Project Successfuly deleted");		
+				alert("Project delete successfuly");
+				setSelectedProject({});
+				setSelectedLabor({});
+				setControlUpdates(handleControlUpdate());
+			}else {
+				console.log("Project delete failed, please try again");			
+			}
+		}).catch((error) => {
+			console.log("Error conecting with backend server or with submited data, project ID: " + selectedproject.id);
+			console.log(error);
+		});
 	}
 	
 	const handleDeleteSubmit = (event) => {
 		event.preventDefault();
-		if (props.id != null){
+		if (selectedproject.id != null){
 			deleteProject();
 		}else{
 			alert("Not project selected to delete");

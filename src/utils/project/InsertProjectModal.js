@@ -3,17 +3,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
 
 
 export default function InsertProjectModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
+	const { token, user } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [name, setName] = useState(""); 
 	const [description, setDescription] = useState("");
 	const [manager, setManager] = useState("");
 	const [email, setEmail] = useState("");	
+	const [enddate, setEndDate] = useState(new Date());
 	
 	const registerProject = async () => {
 		
@@ -23,8 +26,9 @@ export default function InsertProjectModal( ) {
 			data: {
 				project_name: name,
 				desc_proj: description,
-				manager: manager,	
-				mail_manager: email,						
+				manager: user.username,	
+				mail_manager: user.email,
+				enddate_proj: enddate.toISOString().split('T')[0],
 			},
 			headers: {
 				'accept': 'application/json',
@@ -32,35 +36,37 @@ export default function InsertProjectModal( ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log("Project data inserted successfuly ");
-				alert({"Project Successfuly inserted": name});	
+				console.log("Project data inserted successfuly");
+				alert("Project Successfuly inserted");	
 				setName("");
 				setDescription("");
-				setManager("");
-				setEmail("");
+				setEndDate("");
+				setControlUpdates(handleControlUpdate());
+			}else if (response.status === 401) {
+				console.log("Not enought permissions");
+				alert("Permisions denied");	
 			}else if (response.status === 500) {
 				console.log("Integrity error");
-				alert({"Project already exist in DB": name});	
+				alert("Project already exist in DB");	
 			}else {
 				console.log("Insert project Failed, please try again");	
-				alert({"Insert project Failed, please try again": name});	
+				alert("Insert project Failed, please try again");	
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": name});
-			alert({"An error ocurr ": name});	
+			console.log("An error ocurr");
+			alert("An error ocurr");	
 		});				  
 	}
   
 	const handleClose = () => {
 		setName("");
 		setDescription("");
-		setManager("");
-		setEmail("");
+		setEndDate("");
 		setShow(false);
 	}
 	
 	const handleSave = () => {
-		if (name != null && description != null && manager != null && email != null){
+		if (name != null && description != null && enddate != null && user.username != null && user.email != null){			
 			registerProject();
 		}else{
 			alert("Some missing parameters");
@@ -76,8 +82,8 @@ export default function InsertProjectModal( ) {
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
-				<Modal.Title>
-					Insert project data
+				<Modal.Title>					
+					<p>Insert project data</p>
 				</Modal.Title>
 			</Modal.Header>
 
@@ -93,17 +99,15 @@ export default function InsertProjectModal( ) {
 				  className="form-control mt-2"
 				  placeholder="e.g: Some to-do"
 				/>
-				<input type="text" value={manager}
-				  onChange={(e) => setManager(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: John Doe"
-				/>
-				<input type="email" value={email}
-				  onChange={(e) => setEmail(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: johndoe@gmail{hotmail, etc}.com"
-				/>
-				<label>johndoe@gmail.com</label>
+				<label> Set-up deadline for the project </label>
+				<div className="day">
+					<DatePicker 
+						showIcon
+						selected={enddate} 
+						onChange={(date) => setEndDate(date)} 
+						dateFormat="Pp"
+					/>
+				</div>
 			
 			</Modal.Body>
 

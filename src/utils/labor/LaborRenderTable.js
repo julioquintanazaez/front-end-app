@@ -7,17 +7,18 @@ import axios from 'axios';
 import moment from "moment";
 
 
-export default function LaborRenderTable ( props ) {
+export default function LaborRenderTable ( ) {
 
-	const { token } = useContext(Context); 
+	const { token, setSelectedLabor, projectlabors } = useContext(Context); 
 		
 	const renderTableData = () => {
-		return props.values.labors?.map((labor, index) => (
+		return projectlabors?.map((labor, index) => (
 				<tr className="row-md" key={labor.id}>
 					<th scope="row">{index + 1}</th>					
 					<td>{labor.type}</td>
 					<td>{labor.desc_labor}</td>
-					<td>{labor.enddate_labor}</td>			
+					<td>{labor.inidate_labor != null ? labor.inidate_labor.split('T')[0] : labor.inidate_labor}</td>
+					<td>{labor.enddate_labor != null ? labor.enddate_labor.split('T')[0] : labor.enddate_labor}</td>
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -25,7 +26,7 @@ export default function LaborRenderTable ( props ) {
 									<button 
 										type="button" 
 										className="btn btn-sm btn-info" 							
-										onClick={(e) => props.values.setSelectedLabor(labor)} > 
+										onClick={(e) => setSelectedLabor(labor)} > 
 											Set
 									</button>
 								</div>
@@ -45,6 +46,7 @@ export default function LaborRenderTable ( props ) {
 							<th scope="col">#</th>							
 							<th scope="col">Type</th>							
 							<th scope="col">Description</th>
+							<th scope="col">Start Date</th>
 							<th scope="col">End Date</th>
 							<th scope="col">Actions</th>
 						</tr>

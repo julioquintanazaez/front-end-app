@@ -7,22 +7,22 @@ import axios from 'axios';
 import moment from "moment";
 
 
-const TaskLaborTableByID = ( props ) => {
+const TaskLaborTableByID = ( ) => {
 
-	const { token } = useContext(Context);
+	const { token, selectedlabor } = useContext(Context);
     const [taskslabors, setTasksLabors] = useState([]); 	
 	
-	if ( props.values.id ){
+	if ( selectedlabor.id ){
 		useEffect(()=> {
 			fetchTaskLabor();
-		}, [props]);
+		}, [selectedlabor]);
 	}
 		
 	const fetchTaskLabor = async () => {
 		
 		await axios({
 			method: 'get',
-			url: '/read_tasks_by_labor_id/' + props.values.id,
+			url: '/read_tasks_by_labor_id/' + selectedlabor.id,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,

@@ -6,9 +6,9 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
 
-export default function MaterialReport ( props ) {
+export default function MaterialReport ( ) {
 	
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);	
 	
 	const generateReportMaterial = async (id) => {		 
 		
@@ -39,8 +39,8 @@ export default function MaterialReport ( props ) {
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (props.id != null){
-			generateReportMaterial(props.id);
+		if (selectedlabor.id != null){
+			generateReportMaterial(selectedlabor.id);
 		}else{
 			alert("Not Labor selected for Materials report");
 		}

@@ -9,8 +9,12 @@ export default function UpdateLaborModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);		
 	const [desc_labor, setDescription] = useState("");
+	const [type, setType] = useState("");
+	
+	const options = ["Ducts", "Sensors and Accessories", "Other Materials", "Equipments"]
 	
 	const updateLabor = async (id) => {
 		
@@ -18,7 +22,8 @@ export default function UpdateLaborModal( props ) {
 			method: 'put',
 			url: "/update_labor/" + id,
 			data: {
-				desc_labor: desc_labor,						
+				desc_labor: desc_labor,	
+				type: type,					
 			},
 			headers: {
 				'accept': 'application/json',
@@ -29,6 +34,7 @@ export default function UpdateLaborModal( props ) {
 				console.log("Labor data updated successfuly ");
 				alert("Labor data updated successfuly");	
 				setDescription("");
+				setControlUpdates(handleControlUpdate());
 			}else {
 				console.log("Update Labor failed, please try again");	
 				alert(Labor);	
@@ -45,15 +51,15 @@ export default function UpdateLaborModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (desc_labor != null){
-			updateLabor(props.labor.id);
+		if (desc_labor != null && type != null){
+			updateLabor(selectedlabor.id);
 		}else{
 			alert("Some missing parameters");
 		}
 	}
 
 	const handleShow = () => {
-		if (props.labor.id != null){		
+		if (selectedlabor.id != null){		
 			setShow(true);  
 		}else{
 			alert("Not labor selected yet");
@@ -68,16 +74,31 @@ export default function UpdateLaborModal( props ) {
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Update labor {props.labor.type}
+					Update labor {selectedlabor.type}
 				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>				
+			<Modal.Body>
+			
+				<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >	
+					<option selected>Open to select an option</option>
+					{options?.map(opt => (
+						<option 
+							key={opt}
+							value={opt}
+							onClick={(e) => setType(e.target.value)}>
+							{opt}
+						</option>
+					))}
+				</select>
+				<label> Old type: {selectedlabor.type} </label>		
+
 				<input type="text" value={desc_labor}
 				  onChange={(e) => setDescription(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="e.g: Some to-do"
 				/>
-				<label> Old unit: {props.labor.desc_labor} </label>			
+				<label> Old description: {selectedlabor.desc_labor} </label>		
+				
 			</Modal.Body>
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>

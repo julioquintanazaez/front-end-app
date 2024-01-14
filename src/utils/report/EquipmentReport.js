@@ -8,7 +8,7 @@ import axios from 'axios';
 
 export default function EquipmentReport ( props ) {
 	
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);	
 	
 	const generateReportEquipment = async (id) => {		 
 		
@@ -38,8 +38,8 @@ export default function EquipmentReport ( props ) {
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (props.id != null){
-			generateReportEquipment(props.id);
+		if (selectedlabor.id != null){
+			generateReportEquipment(selectedlabor.id);
 		}else{
 			alert("Not Labor selected for Equipment report");
 		}

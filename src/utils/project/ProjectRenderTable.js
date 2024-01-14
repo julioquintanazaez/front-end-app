@@ -17,6 +17,8 @@ export default function ProjectRenderTable ( props ) {
 				<tr className="row-md" key={project.id}>
 					<th scope="row">{index + 1}</th>					
 					<td>{project.project_name}</td>
+					<td>{project.inidate_proj != null ? project.inidate_proj.split('T')[0] : project.inidate_proj}</td>
+					<td>{project.enddate_proj != null ? project.enddate_proj.split('T')[0] : project.enddate_proj}</td>
 					<td>{project.is_active ? "Active" : "Not Active"}</td>		
 					<td> 
 						<div className="row justify-content-center">	
@@ -43,8 +45,10 @@ export default function ProjectRenderTable ( props ) {
 					<thead className="table-dark">
 						<tr>
 							<th scope="col">#</th>							
-							<th scope="col">Name</th>							
-							<th scope="col">Update</th>
+							<th scope="col">Name</th>	
+							<th scope="col">Start Date</th>
+							<th scope="col">End Date</th>
+							<th scope="col">Open</th>
 							<th scope="col">Actions</th>
 						</tr>
 					</thead>

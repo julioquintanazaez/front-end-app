@@ -9,7 +9,8 @@ export default function InsertMaterialModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);		
 	const [material_name, setMaterial_name] = useState(""); 
 	const [material_type, setMaterial_type] = useState("");
 	const [material_quantity, setMaterial_quantity] = useState("");
@@ -27,7 +28,7 @@ export default function InsertMaterialModal( props ) {
 				material_type: material_type,
 				material_quantity: material_quantity,
 				material_price: material_price,				
-				labor_material_id: props.id,				
+				labor_material_id: selectedlabor.id,				
 			},
 			headers: {
 				'accept': 'application/json',
@@ -41,6 +42,7 @@ export default function InsertMaterialModal( props ) {
 				setMaterial_type("");
 				setMaterial_quantity("");
 				setMaterial_price("");
+				setControlUpdates(handleControlUpdate());
 			} else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Material already exist in DB": material_name});	
@@ -71,7 +73,7 @@ export default function InsertMaterialModal( props ) {
 	}
 
 	const handleShow = () => {
-		if (props.id != null){		
+		if (selectedlabor.id != null){		
 			setShow(true);  
 		}else{
 			alert("Not labor selected yet");

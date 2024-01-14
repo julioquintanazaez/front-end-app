@@ -5,18 +5,17 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-const LaborActivate = ( ) => {
+const LaborOpen = ( props ) => {
 	
-	const { token, selectedlabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token } = useContext(Context);	
 	
-	const changeActivityLabor = async (labor) => {		
+	const changeOpenStatusLabor = async (labor) => {		
 		
 		await axios({
 			method: 'put',
-			url: "/activate_labor/" + labor.id,
+			url: "/open_status_labor/" + labor.id,
 			data: {
-					is_active: labor.is_active ? false : true						
+					is_open: labor.is_open ? false : true						
 					},
 			headers: {
 				'accept': 'application/json',
@@ -24,32 +23,31 @@ const LaborActivate = ( ) => {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log("Labor status successfuly changed");
-				setControlUpdates(handleControlUpdate());				
+				console.log("Labor open status successfuly changed");		
 			}else {
-				console.log("Labor active status  change failed, please try again");			
+				console.log("Labor open status change failed, please try again");			
 			}
 		}).catch((error) => {
 			console.log(error);
 		});
 	}	
 	
-	const handleActivityLabor = (event) => {
+	const handleStatusLabor = (event) => {
 		event.preventDefault();
-		if (selectedlabor.id != null){
-			changeActivityLabor(selectedlabor);
+		if (props.labor.id != null){
+			changeOpenStatusLabor(props.labor);
 		}else{
 			alert("Not labor selected yet");
 		}
 	}
 	
-	if(selectedlabor.is_active){
+	if(props.labor.is_open){
 		return (	
 			<>
 				<button type="btn" 
 						className="btn btn-sm btn-success"
-						onClick={(e) => handleActivityLabor(e)} > 
-						Activate 
+						onClick={(e) => handleStatusLabor(e)} > 
+						Close 
 				</button>
 			</>
 		);
@@ -58,12 +56,12 @@ const LaborActivate = ( ) => {
 			<>
 				<button type="btn" 
 						className="btn btn-sm btn-outline-success"
-						onClick={(e) => handleActivityLabor(e)} > 
-						Activate 
+						onClick={(e) => handleStatusLabor(e)} > 
+						Open 
 				</button>
 			</>
 		);
 	}
 }
 
-export default LaborActivate;
+export default LaborOpen;

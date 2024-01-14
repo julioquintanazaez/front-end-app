@@ -5,9 +5,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-export default function ReadTaskInfo ( props )  {
+export default function ReadTaskInfo ( )  {
 	
-	const { token } = useContext(Context);
+	const { token, selectedlabor } = useContext(Context);
 	const [task_type, setTask_type] = useState("");
 	const [task_hourmen, setTask_hourmen] = useState("");
 	const [task_number, setTask_number] = useState("");
@@ -40,16 +40,16 @@ export default function ReadTaskInfo ( props )  {
 	
 		
 	useEffect(()=> {
-		if (props.id != null){	
-			fetchInfo_Task(props.id);
+		if (selectedlabor.id != null){	
+			fetchInfo_Task(selectedlabor.id);
 		}	
-	}, [props]);
+	}, [selectedlabor]);
 	
 	return (							
 		<div>
-			Task per worker: <span className="badge bg-info"> {task_hourmen} </span>
+			Workers #: <span className="badge bg-info"> {task_hourmen} </span>
 			Task #: <span className="badge bg-info">  {task_number} </span>
-			Task total price: <span className="badge bg-info">  {task_price} </span>
+			Total price: <span className="badge bg-info">  {task_price} </span>
 		</div>
 	);
 }

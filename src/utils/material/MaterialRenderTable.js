@@ -12,6 +12,7 @@ import UpdateMaterialModal from './UpdateMaterialModal.js';
 export default function MaterialRenderTable ( props ) {
 
 	const { token } = useContext(Context); 
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	
 	const deleteMaterial = async (id) => {		 
 		
@@ -26,6 +27,7 @@ export default function MaterialRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Material Successfuly deleted");
+					setControlUpdates(handleControlUpdate());
 					alert("Material delete successfuly");
 				}else {
 					console.log("Material delete Failed, please try again");

@@ -10,90 +10,68 @@ import UserInsert from './../utils/user/UserInsert.js';
 import UserTable from './../utils/user/UserTable.js';
 import UserUpdate from './../utils/user/UserUpdate.js';
 import UserResetPass from './../utils/user/UserResetPass.js';
+import RegisterUserModal from './../utils/user/RegisterUserModal.js';
+import ResetUserPasswordModal from './../utils/user/ResetUserPasswordModal.js';
+import UpdateUserModal from './../utils/user/UpdateUserModal.js';
 
 
 const Admin = () => {
 	
-	const { setToken, setUser, token, user, isLoggedIn, setIsLoggedIn } = useContext(Context);
+	const { token } = useContext(Context);
 	const navigate = useNavigate();
 	
-	const [selecteduser, setSelectedUser] = useState("");
+	const [selecteduser, setSelectedUser] = useState({});
 	
-	console.log({"Usuario": selecteduser});
+	console.log({"Usuario": selecteduser.username});
 	
 	return (
 		<div>
-			<div className="container-fluid-md">
-				<div className="row">				
-					<div className="col-sm-2">					
-						<Navigation />												
-					</div>			
-					
-					<div className="container-fluid col-sm-10">					
-					
-						<UserTable setSelectedUser={setSelectedUser} />
-						
-						<div class="accordion" id="accordionExample">
-						
-						  <div class="accordion-item">
-							<h2 class="accordion-header">
-							  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							  
-								Create User 
-								
-							  </button>
-							</h2>
-							<div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-							  <div class="accordion-body">
-									
-									<UserInsert />
-									
-									
-									
-							  </div>
-							</div>
-						  </div>
-						  <div class="accordion-item">
-							<h2 class="accordion-header">
-							  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-								
-								Update user 
-								
-								
-							  </button>
-							</h2>
-							<div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-							  <div class="accordion-body">
-								
-								<UserUpdate selecteduser={selecteduser} />
-								
-							  </div>
-							</div>
-						  </div>
-						  <div class="accordion-item">
-							<h2 class="accordion-header">
-							  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-								
-								Reset password
-								
-								
-							  </button>
-							</h2>
-							<div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-							  <div class="accordion-body">
-								
-								<UserResetPass selecteduser={selecteduser} />
-								
-							  </div>
-							</div>
-						  </div>
-						  
-						</div>	
-								 
+			<div className="container-fluid-md">			
+				<div className="row">			
+					<div className="col-sm">											
+						<Navigation />											
 					</div>
-					
 				</div>
-			</div>			
+				<div className="row">	
+					<div className="col-sm"><br/>
+						<div className="container overflow-hidden"><br/>		
+						
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">								
+										<UserTable setSelectedUser={setSelectedUser} />								
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
+											<div className="row">
+												<div className="col col-sm-6">
+													<h4> {selecteduser.username}</h4>
+													<h6>
+													{selecteduser.username != null 
+														? !selecteduser.disable
+															? <span className="badge bg-success"> Active </span>
+															: <span className="badge bg-warning"> Not active </span>	
+														: <span className="badge bg-secondary"> No user select </span>
+													}
+													</h6>
+												</div>										
+											</div>
+										</div><br/>										
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
+											< RegisterUserModal />
+										</div>	
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
+											< ResetUserPasswordModal selecteduser={selecteduser}/>										
+										</div>	
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
+											< UpdateUserModal selecteduser={selecteduser}/>										
+										</div>									
+									</div>							
+								</div>
+							</div>	
+
+						</div>
+					</div>
+				</div>			
+			</div>
 		</div>
 	);
   

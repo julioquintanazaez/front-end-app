@@ -15,6 +15,9 @@ import InsertProjectModal from './../utils/project/InsertProjectModal.js';
 import UpdateProjectModal from './../utils/project/UpdateProjectModal.js';
 import ProjectRenderTable from './../utils/project/ProjectRenderTable.js';
 import ProjectActivate from './../utils/project/ProjectActivate.js';
+import UpdateProjectEndDateModal from './../utils/project/UpdateProjectEndDateModal.js';
+import ViewTableProjectModal from './../utils/project/ViewTableProjectModal.js';
+
 
 //Handle Labor 
 import InsertLaborModal from './../utils/labor/InsertLaborModal.js';
@@ -23,6 +26,7 @@ import UpdateLaborModal from './../utils/labor/UpdateLaborModal.js';
 import LaborDelete from './../utils/labor/LaborDelete.js';
 import LaborActivate from './../utils/labor/LaborActivate.js';
 import LaborRenderTable from './../utils/labor/LaborRenderTable.js';
+import UpdateLaborEndDateModal from './../utils/labor/UpdateLaborEndDateModal.js';
 
 //Handle Task 
 import InsertTaskModal from './../utils/task/InsertTaskModal.js';
@@ -65,44 +69,26 @@ import TaskReport from './../utils/report/TaskReport.js';
 
 
 const Manager = () => {	
-	
-	const { setToken, setUser, token, user, isLoggedIn, setIsLoggedIn, mainproject, setMainProject } = useContext(Context);
+
 	const navigate = useNavigate();
 	
-	const [selectedproject, setSelectedProject] = useState({});	
-	const [selectedlabor, setSelectedLabor] = useState({}); 
-	
-	const [projects, setProjects] = useState([]); 
-	const [projectlabors, setProjectLabors] = useState([]); 
-	const [tasks, setTask] = useState([]);
+	const [tasks, setTasks] = useState([]);
 	const [equipments, setEquipments] = useState([]);
 	const [materials, setMaterials] = useState([]);
 	
-	const fetchProjects = async () => {				
-		await axios({
-			method: 'get',
-			url: '/read_projects/',
-			headers: {
-				'accept': 'application/json',
-				'Authorization': "Bearer " + token,
-			},
-		}).then(response => {
-			if (response.status === 201) {
-				console.log({"Response projects ":response.data});	
-				setProjects(response.data);
-				console.log({"Load projects successfuly ": projects});
-				//alert("Load projects successfuly");
-			}else {
-				console.log("Load from server Failed, please try again");			
-			}
-		}).catch((error) => {
-			console.log({"An error ocur": error});
-		});								
-	}	
+	//From CONTEXT
+	const { token, setToken } = useContext(Context);
+	const { tokentype, setTokenType } = useContext(Context);
+	const { user, setUser } = useContext(Context);
+	const { isLoggedIn, setIsLoggedIn } = useContext(Context);
+	const { projects, setProjects } = useContext(Context);	
+	const { selectedproject, setSelectedProject } = useContext(Context);	
+	const { projectlabors, setProjectLabors } = useContext(Context);
+	const { selectedlabor, setSelectedLabor } = useContext(Context);
+	const { isAdmin } = useContext(Context);
+	const { controlUpdates } = useContext(Context);
 	
-	useEffect(()=> {
-		fetchProjects();
-    }, [projectlabors]);	
+	
 	
 	const fetchTasks = async (id) => {
 		
@@ -116,7 +102,7 @@ const Manager = () => {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log({"Response ":response.data});	
-				setTask(response.data);
+				setTasks(response.data);
 				console.log("Data was readed successfuly from database");				
 			}else {
 				console.log("Load Failed, please try again");	
@@ -184,10 +170,9 @@ const Manager = () => {
 				},
 			}).then(response => {
 				if (response.status === 201) {
-					console.log({"Response categories ":response.data});	
+					console.log({"Response labors ":response.data});	
 					setProjectLabors(response.data);
-					console.log({"Loaded categories successfuly ": projectlabors});	
-					alert("Read labors successfully");
+					console.log({"Loaded labors successfuly ": projectlabors});					
 				}else {
 					console.log("Load from server Failed, please try again");			
 				}
@@ -198,219 +183,224 @@ const Manager = () => {
 	}
 
 	useEffect(()=> {
-		fetchLabors(selectedproject.id);
-    }, [selectedproject]);		
+		if (selectedproject.id != null){
+			fetchLabors(selectedproject.id);
+		}
+    }, [selectedproject, controlUpdates]);		
 	
-	const updateTables = () => {
-		fetchTasks(selectedlabor.id);	
-		fetchEquipments(selectedlabor.id);
+	const updateMaterials = () => {
 		fetchMaterials(selectedlabor.id);		
 	}
-		
+	
 	useEffect(()=> {
 		if (selectedlabor.id != null){
-			updateTables();
+			updateMaterials();
 		}
-    }, [selectedlabor]);	
+    }, [controlUpdates]);	
+
+	const updateTasks = () => {
+		fetchTasks(selectedlabor.id);			
+	}
+	
+	useEffect(()=> {
+		if (selectedlabor.id != null){
+			updateTasks();
+		}
+    }, [controlUpdates]);	
+	
+	const updateEquipments = () => {
+		fetchEquipments(selectedlabor.id);			
+	}
+	
+	useEffect(()=> {
+		if (selectedlabor.id != null){
+			updateEquipments();
+		}
+    }, [controlUpdates]);	
+	
+	
+	
+	console.log({"Status selected labor":selectedlabor.is_open ? "Open": "Close"})
 	
 	return (
 		
 		<div className="container-fluid-md">			
-			<div className="row">
-			
+			<div className="row">															
 				<div className="col-sm">											
 					<Navigation />											
-				</div><br/>
-				
-				<div className="col-sm-10"><br/>
-					
-					<nav class="navbar navbar-expand-lg navbar-light bg-light">
-						<div class="container-fluid">
-							<a class="navbar-brand" href="#">Home</a>
-							<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-								<span class="navbar-toggler-icon"></span>
-							</button>
-							<div class="collapse navbar-collapse" id="navbarNav">
-								<ul class="navbar-nav">
-									<li class="nav-item">
-									  <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-									</li>
-									<li class="nav-item">
-									  <a class="nav-link" href="#">Manager</a>
-									</li>
-									<li class="nav-item">
-									  <a class="nav-link" href="#">About</a>
-									</li>
-									<li class="nav-item">
-									  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrator</a>
-									</li>
-								</ul>
-							</div>
-							<button 
-								type="button" 
-								className="btn btn-sm btn-secondary" 							
-								onClick={(e) => logoutUser()}> 
-									LogOut
-							</button>
-						</div>
-					</nav><br/>
-					
-					<div class="col-sm-10">
-					
-						<div class="container overflow-hidden"><br/>
-							
-							<div class="row gx-5">
-								<div class="col">
-									<div class="p-3 border bg-light">
-									
-										< ProjectRenderTable values={{projects: projects, setSelectedProject: setSelectedProject}} />
-										
+				</div>
+			</div>	
+			<div className="row">	
+				<div className="col"><br/>					
+					<div className="col">					
+						<div className="container overflow-hidden"><br/>								
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
-											<div class="row">
-												<div class="col col-sm-6">
-													<h3> {selectedproject.project_name} </h3>	 	
-												</div>	
-												<div class="container col text-end">
-													<UpdateProjectModal project={selectedproject} />
-													<ProjectDelete id={selectedproject.id} />
-													<ProjectActivate project={selectedproject} />
-												</div>	
+											<div className="row">
+												<div className="col col-sm-6">
+													< ViewTableProjectModal />
+												</div>
 											</div>
-										</div><br/>
-										
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
-											<InsertProjectModal />									
-										</div>	
-										
+										</div>
 									</div>									
 								</div>
 							</div><br/>
 							
-							<div class="row gx-5">
-								<div class="col">
-									<div class="p-3 border bg-light">
-										
-										< LaborRenderTable values={{labors: projectlabors, setSelectedLabor: setSelectedLabor}} />
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">
 										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
-											<div class="row">
-												<div class="col col-sm-6">
-													<h3> {selectedlabor.type} </h3>	 	
+											<div className="row">
+												<div className="col col-sm-6">
+													<h3> {selectedproject.project_name} </h3>														
+														<h6>
+														{selectedproject.project_name != null 
+															? <span className="badge bg-success"> main </span>
+															: <span className="badge bg-warning"> no project select </span>
+														}
+														</h6>
 												</div>	
-												<div class="container col text-end">
-													<UpdateLaborModal labor={selectedlabor} />
-													<LaborDelete id={selectedlabor.id} />
-													<LaborActivate labor={selectedlabor} />
+												<div className="container col text-end">
+													<UpdateProjectModal />
+													<ProjectDelete />													
+													<UpdateProjectEndDateModal />
+													<ProjectActivate />
 												</div>	
 											</div>
-										</div><br/>
-												
+										</div><br/>										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
-											<InsertLaborModal id={selectedproject.id} />									
-										</div>	
-											
-										
+											<InsertProjectModal />									
+										</div>											
+									</div>									
+								</div>
+							</div><br/>							
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">										
+										< LaborRenderTable />										
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
+											<div className="row">
+												<div className="col col-sm-6">
+													<h4> {selectedlabor.type}</h4>
+													<h6>
+													{selectedlabor.type != null 
+														? selectedlabor.is_active
+															? <span className="badge bg-warning"> Open </span>
+															: <span className="badge bg-danger"> Close </span>
+														: <span className="badge bg-warning"> No labor select </span>
+													}
+													</h6>
+												</div>	
+												<div className="container col text-end">
+													<UpdateLaborModal />
+													<LaborDelete />
+													<UpdateLaborEndDateModal />
+													<LaborActivate />
+												</div>	
+											</div>
+										</div><br/>												
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
+											<InsertLaborModal />									
+										</div>											
 									</div>											
 								</div>
-							</div><br/>
-							
-							<div class="row gx-5">
-								<div class="col">
-									<div class="p-3 border bg-light">
+							</div><br/>							
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">
 										Tasks from labor: {selectedlabor.type}
 										<div className="form-control form-control-sm mt-2" id="FormControlSelectProject">											 	
 											<TaskRenderTable tasks={tasks} />			
 										</div>		
 										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">	
-											<div class="row">
-												<div class="col col-sm text-end">
-													<TaskReport id={selectedlabor.id} />
+											<div className="row">
+												<div className="col col-sm text-end">
+													<TaskReport />
 												</div>												
 											</div>
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonTaskLabor">
-											<div class="row">
-												<div class="col col-sm-3">
-													<InsertTaskModal id={selectedlabor.id} />	 	
+											<div className="row">
+												<div className="col col-sm-3">
+													<InsertTaskModal />	 	
 												</div>												
-												<div class="container col text-end">
-													<ReadTaskInfo id={selectedlabor.id} />
+												<div className="container col text-end">
+													<ReadTaskInfo />
 												</div>
 											</div>
 										</div>									
 									</div>
 								</div>
-							</div><br/>
-							
-							<div class="row gx-5">
-								<div class="col">
-									<div class="p-3 border bg-light">
+							</div><br/>							
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">
 										Equipments from labor: {selectedlabor.type}
 										<div className="form-control form-control-sm mt-2" id="FormControlSelectProject">											 	
 											<EquipmentRenderTable equipments={equipments} />			
 										</div>		
 										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">	
-											<div class="row">
-												<div class="col col-sm text-end">
-													<EquipmentReport id={selectedlabor.id} />
+											<div className="row">
+												<div className="col col-sm text-end">
+													<EquipmentReport />
 												</div>												
 											</div>
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonEquipmentLabor">		
-											<div class="row">
-												<div class="col col-sm-3">
-													<InsertEquipmentModal id={selectedlabor.id} />	  	
+											<div className="row">
+												<div className="col col-sm-3">
+													<InsertEquipmentModal />	  	
 												</div>												
-												<div class="container col text-end">
-													<ReadEquipmentInfo id={selectedlabor.id} />
+												<div className="container col text-end">
+													<ReadEquipmentInfo />
 												</div>
 											</div>
 										</div>								
 									</div>
 								</div>
-							</div><br/>
-							
-							<div class="row gx-5">
-								<div class="col">
-									<div class="p-3 border">
+							</div><br/>							
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border">
 										Materials from labor: {selectedlabor.type}
 										<div className="form-control form-control-sm mt-2" id="FormControlSelectProject">											 	
 											<MaterialRenderTable materials={materials} />	
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">	
-											<div class="row">
-												<div class="col col-sm text-end">
-													<MaterialReport id={selectedlabor.id} />
+											<div className="row">
+												<div className="col col-sm text-end">
+													<MaterialReport />
 												</div>												
 											</div>
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">	
-											<div class="row">
-												<div class="col col-sm-3">
-													<InsertMaterialModal id={selectedlabor.id} />
+											<div className="row">
+												<div className="col col-sm-3">
+													<InsertMaterialModal />
 												</div>												
-												<div class="container col text-end">
-													<ReadMaterialInfo id={selectedlabor.id} />	
+												<div className="container col text-end">
+													<ReadMaterialInfo />	
 												</div>
 											</div>
 										</div>									
 									</div>
 								</div>
-							</div><br/>
-							
-							<div class="row gx-5">
-								<div class="col">
-									<div class="p-3 border bg-light">	
+							</div><br/>							
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">	
 										<div className="d-grid gap-2">
-											<div class="container col text-end">
-												<LaborReport id={selectedlabor.id} />
+											<div className="container col text-end">
+												<LaborReport />
 											</div>	
 										</div>	
 									</div>
 								</div>
-							</div><br/>
-						</div>
-						
+							</div>
+						</div>						
 					</div>	
 				</div>				
 			</div>		

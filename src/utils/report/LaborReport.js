@@ -6,9 +6,9 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
 
-export default function LaborReport ( props ) {
+export default function LaborReport ( ) {
 	
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);	
 	
 	const generateReportLabor = async (id) => {		 
 		
@@ -39,8 +39,8 @@ export default function LaborReport ( props ) {
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (props.id != null){
-			generateReportLabor(props.id);
+		if (selectedlabor.id != null){
+			generateReportLabor(selectedlabor.id);
 		}else{
 			alert("Not labor selected yet");
 		}

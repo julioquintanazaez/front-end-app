@@ -3,17 +3,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
 
 
-export default function InsertTaskModal( props ) {
+export default function InsertTaskModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [description, setDescription] = useState(""); 
 	const [mechanicals, setMechanicals] = useState("");
 	const [hour, setHour] = useState("");
 	const [task_price, setTask_price] = useState("");
+	const [end_date, setEnd_Date] = useState(new Date());
 		
 	const registerTask = async () => {
 		
@@ -25,7 +28,8 @@ export default function InsertTaskModal( props ) {
 				description: description,
 				hour: hour,	
 				task_price: task_price,
-				labor_task_id: props.id, 
+				enddate_task: end_date.toISOString().split('T')[0],
+				labor_task_id: selectedlabor.id, 
 			},
 			headers: {
 				'accept': 'application/json',
@@ -34,11 +38,12 @@ export default function InsertTaskModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Task data inserted successfuly ");
-				//alert({"Task Successfuly deleted": description});	
 				setDescription("");
 				setMechanicals("");
 				setHour("");
 				setTask_price("");
+				setEnd_Date("");
+				setControlUpdates(handleControlUpdate());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Task already exist in DB": description});	
@@ -57,22 +62,24 @@ export default function InsertTaskModal( props ) {
 		setMechanicals("");
 		setHour("");
 		setTask_price("");
+		setEnd_Date("");
 		setShow(false);
 	}
 	
 	const handleSave = () => {
 		if (description != null && mechanicals != null && hour != null && task_price != null){
 			registerTask();
+			handleClose();
 		}else{
 			alert("Some missing parameters");
 		}
 	}
 
 	const handleShow = () => {
-		if (props.id != null){		
+		if (selectedlabor.id != null && selectedlabor.enddate_labor != null){		
 			setShow(true);  
 		}else{
-			alert("Not labor selected yet");
+			alert("Not labor selected or end date stablished for that labor");
 		}
 	} 
 
@@ -110,6 +117,17 @@ export default function InsertTaskModal( props ) {
 				  className="form-control mt-2"
 				  placeholder="Price fro the work (e.g: 1200)"
 				/>
+				<label> Set-up deadline dir task </label>
+				<div className="day">
+					<DatePicker 
+						showIcon
+						minDate={new Date(selectedlabor.inidate_labor != "" ? selectedlabor.inidate_labor : new Date())}	
+						maxDate={new Date(selectedlabor.enddate_labor != "" ? selectedlabor.enddate_labor : new Date())}
+						selected={end_date} 
+						onChange={(date) => setEnd_Date(date)} 
+						dateFormat="Pp"
+					/>
+				</div>
 			
 			</Modal.Body>
 

@@ -5,9 +5,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-export default function ReadEquipmentInfo ( props )  {
+export default function ReadEquipmentInfo ( )  {
 	
-	const { token } = useContext(Context);
+	const { token, selectedlabor } = useContext(Context);
 	const [equipment_type, setEquipment_type] = useState("");
 	const [equipment_number, setEquipment_number] = useState("");
 	const [equipment_amount, setEquipment_amount] = useState("");
@@ -38,15 +38,15 @@ export default function ReadEquipmentInfo ( props )  {
 	
 			
 	useEffect(()=> {
-		if (props.id != null){	
-			fetchInfo_Equipment(props.id);
+		if (selectedlabor.id != null){	
+			fetchInfo_Equipment(selectedlabor.id);
 		}	
-	}, [props]);
+	}, [selectedlabor]);
 		
 	return (							
 		<div>
-			Equipment #: <span className="badge bg-info">  {equipment_number} </span>
-			Equipment total amount: <span className="badge bg-info">  {equipment_amount} </span>
+			Equipments #: <span className="badge bg-info">  {equipment_number} </span>
+			Total amount: <span className="badge bg-info">  {equipment_amount} </span>
 		</div>
 	);
 }

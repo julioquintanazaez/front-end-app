@@ -9,7 +9,8 @@ export default function InsertEquipmentModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
+	const { token, selectedlabor } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [equipment_name, setEquipment_name] = useState(""); 
 	const [equipment_quantity, setEquipment_quantity] = useState("");
 	const [equipment_unit_price, setEquipment_unit_price] = useState("");
@@ -23,7 +24,7 @@ export default function InsertEquipmentModal( props ) {
 				equipment_name: equipment_name,
 				equipment_quantity: equipment_quantity,
 				equipment_unit_price: equipment_unit_price,	
-				labor_equipment_id: props.id,					
+				labor_equipment_id: selectedlabor.id,					
 			},
 			headers: {
 				'accept': 'application/json',
@@ -36,6 +37,7 @@ export default function InsertEquipmentModal( props ) {
 				setEquipment_name("");
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
+				setControlUpdates(handleControlUpdate());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Equipment already exist in DB": equipment_name});	
@@ -66,7 +68,7 @@ export default function InsertEquipmentModal( props ) {
 	}
 
 	const handleShow = () => {
-		if (props.id != null){		
+		if (selectedlabor.id != null){		
 			setShow(true);  
 		}else{
 			alert("Not labor selected yet");

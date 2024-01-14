@@ -84,14 +84,14 @@ const UserTable = (props) => {
 				if (response.status === 201) {
 					console.log({"Response ": response.data});	
 					console.log("User updated successfuly");	
-					alert({"User updated successfuly": username});
+					alert("User updated successfuly");
 				}else {
 					console.log({"Update goes rongs": response.data});
-					alert({"User update Failed, please try again": username});
+					alert("User update Failed, please try again");
 				}
 			}).catch((error) => {
 				console.log({"An error ocur": error});
-				alert({"Something rong with the server conection": username});
+				alert("Something rong with the server conection");
 			});		
 		}else{
 			alert("Please select a user...");
@@ -112,35 +112,49 @@ const UserTable = (props) => {
 					<td>{user.full_name}</td>
 					<td>{user.username}</td>
 					<td>{user.email}</td>
-					<td>{user.role}</td>
+					<td>{user.role[0]}</td>
 					<td>{user.disable ? "Not Active" : "Active"}</td>
 					<td> 
-						<div className="row">	
-							<div className="col-sm-3">
-								<button 
-									type="button" 
-									className="btn btn-info btn-sm" 							
-									onClick={(e) => props.setSelectedUser(user)}> 
-										Upd
-								</button><br/>
+						
+						<div className="col-sm-10 justify-content-end">
+						
+							<div className="row">						
+								
+								<div className="col-sm-2">
+									<div className="d-grid gap-3">
+										<button 
+											type="button" 
+											className="btn btn-sm btn-info ml-2 mr-2" 							
+											onClick={(e) => props.setSelectedUser(user)}> 
+												Set
+										</button>
+									</div>
+								</div>
+								<div className="col-sm-2">
+									<div className="d-grid gap-3">
+										<button 
+											type="button" 
+											className="btn btn-sm btn-danger ml-2 mr-2" 							
+											onClick={(e) => deleteUser(user.username)}> 
+												Del
+										</button>
+									</div>
+								</div>
+								<div className="col-sm-2">	
+									<div className="d-grid gap-3">
+										<button 
+											type="button" 
+											className= "btn btn-sm btn-warning ml-2 mr-2"				
+											onClick={(e) => activateUser(user)}> 
+												Activate
+										</button>
+									</div>
+								</div>	
+								
 							</div>
-							<div className="col-sm-3">
-								<button 
-									type="button" 
-									className="btn btn-danger btn-sm" 							
-									onClick={(e) => deleteUser(user.username)}> 
-										Del
-								</button>
-							</div>
-							<div className="col-sm-3">
-								<button 
-									type="button" 
-									className= "btn btn-sm btn-warning"				
-									onClick={(e) => activateUser(user)}> 
-										Activate
-								</button>
-							</div>
+							
 						</div>						
+						
 					</td>
 				</tr>
 			));
@@ -158,7 +172,7 @@ const UserTable = (props) => {
 							<th scope="col">Mail</th>							
 							<th scope="col">Role</th>
 							<th scope="col">Active</th>
-							<th scope="col"></th>
+							<th scope="col">Actions</th>
 						</tr>
 					</thead>
 					<tbody className="table-group-divider">						

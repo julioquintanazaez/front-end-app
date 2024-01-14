@@ -10,6 +10,7 @@ export default function UpdateEquipmentModal( props ) {
 	const [show, setShow] = useState(false);
 
 	const { token } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [equipment_quantity, setEquipment_quantity] = useState("");
 	const [equipment_unit_price, setEquipment_unit_price] = useState("");
 	
@@ -31,6 +32,7 @@ export default function UpdateEquipmentModal( props ) {
 				console.log("Equipment data updated successfuly ");
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
+				setControlUpdates(handleControlUpdate());
 				alert("Equipment data updated successfuly");	
 			}else {
 				console.log("Update Equipment failed, please try again");	

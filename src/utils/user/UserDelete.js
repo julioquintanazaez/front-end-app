@@ -5,33 +5,29 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-const LaborDelete = ( ) => {
+const ProjectDelete = ( props ) => {
 	
 	const { token } = useContext(Context);	
-	const { selectedlabor, setSelectedLabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	
-	const deleteLabor = async () => {		 
+	const deleteProject = async () => {		 
 		
-		if (selectedlabor.id != ""){
+		if (props.id != ""){
 			await axios({
 				method: 'delete',
-				url: "/delete_labor/" + selectedlabor.id,			
+				url: "/delete_project/" + props.id,			
 				headers: {
 					'accept': 'application/json',
 					'Authorization': "Bearer " + token,
 				},
 			}).then(response => {
 				if (response.status === 201) {
-					console.log("Labor successfuly deleted");
-					alert("Labor delete successfuly");
-					setSelectedLabor({});
-					setControlUpdates(handleControlUpdate());
+					console.log("Project Successfuly deleted");		
+					alert("Project delete successfuly");
 				}else {
-					console.log("Labor delete failed, please try again");			
+					console.log("Project delete failed, please try again");			
 				}
 			}).catch((error) => {
-				console.log("Error conecting with backend server or with submited data: " + selectedlabor.id);
+				console.log("Error conecting with backend server or with submited data, project ID: " + props.id);
 				console.log(error);
 			});
 		}else{
@@ -41,10 +37,10 @@ const LaborDelete = ( ) => {
 	
 	const handleDeleteSubmit = (event) => {
 		event.preventDefault();
-		if (selectedlabor.id != null){
-			deleteLabor();
+		if (props.id != null){
+			deleteProject();
 		}else{
-			alert("Not labor selected to delete");
+			alert("Not project selected to delete");
 		}
 	}
 	
@@ -59,4 +55,4 @@ const LaborDelete = ( ) => {
 	);
 }
 
-export default LaborDelete;
+export default ProjectDelete;

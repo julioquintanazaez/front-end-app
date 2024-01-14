@@ -105,6 +105,7 @@ export default function ViewLaborModal( props ) {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body> 	
+			
 				<div className="table-responsive-md">
 					<table className="table table-striped table-bordered ">
 						<thead className="table-dark">
@@ -119,7 +120,8 @@ export default function ViewLaborModal( props ) {
 							{renderTableData()}
 						</tbody>
 					</table>
-				</div>    
+				</div>  
+				
 			</Modal.Body>
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>

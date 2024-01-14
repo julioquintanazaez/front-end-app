@@ -5,10 +5,10 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-const ProjectActivate = ( props ) => {
+const ProjectActivate = ( ) => {
 	
-	const { token } = useContext(Context);	
-	
+	const { token, selectedproject } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const changeActivityProject = async (project) => {		
 		
 		await axios({
@@ -23,7 +23,8 @@ const ProjectActivate = ( props ) => {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log("Project successfuly changed");		
+				console.log("Project successfuly changed");	
+				setControlUpdates(handleControlUpdate());
 			}else {
 				console.log("Project activation failed, please try again");			
 			}
@@ -34,14 +35,14 @@ const ProjectActivate = ( props ) => {
 	
 	const handleActivityProject = (event) => {
 		event.preventDefault();
-		if (props.project.id != null){
-			changeActivityProject(props.project);
+		if (selectedproject.id != null){
+			changeActivityProject(selectedproject);
 		}else{
 			alert("Not project selected to activate");
 		}
 	}
 	
-	if(props.project.is_active){
+	if(selectedproject.is_active){
 		return (	
 			<>
 				<button type="btn" 

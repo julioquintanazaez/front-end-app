@@ -8,12 +8,10 @@ import moment from "moment";
 
 import UpdateEquipmentModal from './UpdateEquipmentModal.js';
 
-
-
 export default function EquipmentRenderTable ( props ) {
 
 	const { token } = useContext(Context); 
-	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	
 	const deleteEquipment = async (id) => {		 
 		
@@ -28,7 +26,9 @@ export default function EquipmentRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Equipment Successfuly deleted");
+					setControlUpdates(handleControlUpdate());
 					alert("Equipment delete successfuly");
+					setControlUpdates(handleControlUpdate());
 				}else {
 					console.log("Equipment delete Failed, please try again");
 				}

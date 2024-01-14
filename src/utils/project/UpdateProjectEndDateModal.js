@@ -3,29 +3,26 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { format } from "date-fns";
+import { DayPicker, DateFormatter } from "react-day-picker";
+import DatePicker from "react-datepicker";
 
 
-export default function UpdateProjectModal( ) {
+export default function UpdateProjectEndDateModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, user, selectedproject } = useContext(Context);
+	const { token, selectedproject } = useContext(Context);	
 	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
-	const [project_name, setName] = useState(""); 
-	const [desc_proj, setDescription] = useState("");
-	const [manager, setManager] = useState("");
-	const [email, setEmail] = useState("");	
+	const [date, setDate] = useState(new Date());
 	
 	const updateProject = async () => {
 		
 		await axios({
 			method: 'put',
-			url: "/update_project/" + selectedproject.id,
+			url: "/update_project_date/" + selectedproject.id,
 			data: {
-				project_name: project_name,
-				desc_proj: desc_proj,
-				manager: user.username,	
-				mail_manager: user.email,							
+				enddate_proj: date.toISOString().split('T')[0],							
 			},
 			headers: {
 				'accept': 'application/json',
@@ -34,28 +31,26 @@ export default function UpdateProjectModal( ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project data updated successfuly ");
-				alert({"Project data updated successfuly": project_name});	
-				setName("");
-				setDescription("");
+				alert("Project data updated successfuly");	
+				setDate("");
 				setControlUpdates(handleControlUpdate());
 			}else {
 				console.log("Update project failed, please try again");	
-				alert({"Update project failed, please try again": project_name});	
+				alert("Update project failed, please try again");	
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": project_name});
-			alert({"An error ocurr ": project_name});	
+			console.log("An error ocurr ");
+			alert("An error ocurr ");	
 		});				  
 	}
   
 	const handleClose = () => {
-		setName("");
-		setDescription("");
+		setDate("");
 		setShow(false);
 	}
 	
 	const handleUpdate = () => {
-		if (name != null && desc_proj != null && user.username != null && user.email != null){
+		if (date != null){
 			updateProject();
 		}else{
 			alert("Some missing parameters fro project update");
@@ -70,37 +65,35 @@ export default function UpdateProjectModal( ) {
 		}
 	}
 	
+	let footer = <p> Please pick a day </p>;
+	if (date){
+		footer = <p> You picked {format(date, 'PP')} </p>;
+	}
+	
 	return (
 		<>
-		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			Update
+		<button className="btn btn-sm btn-secondary" onClick={handleShow}>
+			Date
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Update project data
+					Date
 				</Modal.Title>
 			</Modal.Header>
 
-			<Modal.Body>
+			<Modal.Body>				
 				
-				<input type="text" value={project_name}
-				  onChange={(e) => setName(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some place"
-				/>
-				<label> Old name: {selectedproject.project_name} </label>
+				<label>So that a project can be closed it is necessary that all their labors have a closing date </label>				
+				<div className="day">
+					<DatePicker 
+						showIcon
+						selected={date} 
+						minDate={new Date(selectedproject.inidate_proj != "" ? selectedproject.inidate_proj : new Date())}	
+						onChange={(date) => setDate(date)} 
+					/>
+				</div>		
 				
-				<input type="text" value={desc_proj}
-				  onChange={(e) => setDescription(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some to-do"
-				/>
-				<label> Old unit: {selectedproject.desc_proj} </label>	
-				
-				<label> Actual manager: {user.username} </label>				
-				<label> Email: {user.email} </label>		
-			
 			</Modal.Body>
 
 			<Modal.Footer>		
@@ -108,7 +101,7 @@ export default function UpdateProjectModal( ) {
 					Close
 				</Button>
 				<Button className="btn-sm" variant="primary" onClick={handleUpdate}>
-					Update project
+					Update date
 				</Button>		  
 			</Modal.Footer>
 			</Modal>
