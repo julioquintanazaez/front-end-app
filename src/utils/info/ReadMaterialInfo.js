@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function ReadMaterialInfo ( )  {
 	
-	const { token, selectedlabor } = useContext(Context);
+	const { token, selectedlabor, controlUpdates } = useContext(Context);
 	const [materials, setMaterials] = useState([]);
 	
 	const fetchInfo_Material = async (id) => {
@@ -37,7 +37,7 @@ export default function ReadMaterialInfo ( )  {
 		if (selectedlabor.id != null){	
 			fetchInfo_Material(selectedlabor.id);
 		}	
-	}, [selectedlabor]);
+	}, [selectedlabor, controlUpdates]);
 	
 	const renderBadgesData = () => {
 		return materials?.map((material, index) => (

@@ -11,7 +11,7 @@ function Login () {
 	const [username, setUserName] = useState("");
 	const [password, setPassword] = useState("");
 	
-	const { isLoggedIn, setToken, setIsLoggedIn } = useContext(Context);	 //handleGetCurrentUser
+	const { isLoggedIn, setToken, setIsLoggedIn, handleGetCurrentUser } = useContext(Context);	 //handleGetCurrentUser
 	 
 	const authenticate_user = async () => {
 		 

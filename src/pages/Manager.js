@@ -188,36 +188,17 @@ const Manager = () => {
 		}
     }, [selectedproject, controlUpdates]);		
 	
-	const updateMaterials = () => {
-		fetchMaterials(selectedlabor.id);		
+	const updateData = () => {
+		fetchMaterials(selectedlabor.id);
+		fetchTasks(selectedlabor.id);
+		fetchEquipments(selectedlabor.id);	
 	}
 	
 	useEffect(()=> {
 		if (selectedlabor.id != null){
-			updateMaterials();
+			updateData();
 		}
-    }, [controlUpdates]);	
-
-	const updateTasks = () => {
-		fetchTasks(selectedlabor.id);			
-	}
-	
-	useEffect(()=> {
-		if (selectedlabor.id != null){
-			updateTasks();
-		}
-    }, [controlUpdates]);	
-	
-	const updateEquipments = () => {
-		fetchEquipments(selectedlabor.id);			
-	}
-	
-	useEffect(()=> {
-		if (selectedlabor.id != null){
-			updateEquipments();
-		}
-    }, [controlUpdates]);	
-	
+    }, [selectedlabor, controlUpdates]);	
 	
 	
 	console.log({"Status selected labor":selectedlabor.is_open ? "Open": "Close"})
@@ -279,8 +260,10 @@ const Manager = () => {
 							</div><br/>							
 							<div className="row gx-5">
 								<div className="col">
-									<div className="p-3 border bg-light">										
-										< LaborRenderTable />										
+									<div className="p-3 border bg-light">	
+									
+										< LaborRenderTable />		
+										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
 											<div className="row">
 												<div className="col col-sm-6">

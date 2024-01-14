@@ -9,6 +9,7 @@ export default function ViewTableProjectModal( ) {
 	const [show, setShow] = useState(false);
 
 	const { token, user, setSelectedProject } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [projects, setProjects] = useState([]);	
 	
 		
@@ -25,6 +26,7 @@ export default function ViewTableProjectModal( ) {
 			if (response.status === 201) {
 				console.log("Project successfuly readed for user");
 				setProjects(response.data);
+				setControlUpdates(handleControlUpdate());
 			}else {
 				console.log("Read project failed, please try again");	
 				alert("Read project failed, please try again");	
@@ -35,8 +37,7 @@ export default function ViewTableProjectModal( ) {
 		});		
 	}
   
-	const handleClose = (project) => {
-		setSelectedProject(project)
+	const handleClose = () => {
 		setShow(false);
 	}
 	
@@ -64,7 +65,7 @@ export default function ViewTableProjectModal( ) {
 									<button 
 										type="button" 
 										className="btn btn-sm btn-info" 							
-										onClick={(e) => handleClose(project) } > 
+										onClick={(e) => setSelectedProject(project) } > 
 											Pick
 									</button>
 								</div>

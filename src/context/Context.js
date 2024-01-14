@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import axios from 'axios';
+import { useLocalStorage } from "./useLocalStorage";
 
 export const Context = React.createContext();
 
@@ -10,15 +11,14 @@ export const ContextProvider = ({ children }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	
-	const [token, setToken] = useState("");
-	const [tokentype, setTokenType] = useState("");
-	const [user, setUser] = useState({});
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [token, setToken] = useLocalStorage("token", "");
+	const [user, setUser] = useLocalStorage("user", {});
+	const [isAdmin, setIsAdmin] = useLocalStorage("admin", false);
+	const [isLoggedIn, setIsLoggedIn] = useLocalStorage("logged", false);
 	const [projects, setProjects] = useState([]);
 	const [projectlabors, setProjectLabors] = useState([]);
 	const [selectedproject, setSelectedProject] = useState({});
 	const [selectedlabor, setSelectedLabor] = useState({});
-	const [isAdmin, setIsAdmin] = useState(false);
 	const [controlUpdates, setControlUpdates] = useState(false);
 	
 	const handleLogout = () => {
@@ -39,7 +39,7 @@ export const ContextProvider = ({ children }) => {
 	const handleRole = (role) => {	
 		let res = false;
 		role.forEach(function(role, index){
-			console.log(role);
+			//console.log(role);
 			if (role == "admin"){
 				setIsAdmin(true);				
 			}						
@@ -59,19 +59,18 @@ export const ContextProvider = ({ children }) => {
 		}).then(response => {
 			if (response.status === 200) {
 				console.log("Authentication successfully");
-				setUser(response.data);
-				console.log({"Response user from context": response.data.role});
+				setUser(response.data);				
 				handleRole(response.data.role);
-				//console.log({"Response user role from context": isAdmin});
+				console.log({"Response user from context": response.data.role});
 			}else {	
 				console.log("Registration Failed from context, please try again");
 				alert("Conextion failed from context, redirect to login page");	
-				handleLogout();			
+				navigate('/');		
 			}
 		}).catch((error) => {
 			console.log("Registration Failed from context, some error happend with server, please try again");
 			alert("Conextion failed from context, redirect to login page");	
-			handleLogout();			
+			navigate('/');	
 		});			
 	}	
 	

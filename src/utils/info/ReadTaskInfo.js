@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function ReadTaskInfo ( )  {
 	
-	const { token, selectedlabor } = useContext(Context);
+	const { token, selectedlabor, controlUpdates } = useContext(Context);
 	const [task_type, setTask_type] = useState("");
 	const [task_hourmen, setTask_hourmen] = useState("");
 	const [task_number, setTask_number] = useState("");
@@ -43,7 +43,7 @@ export default function ReadTaskInfo ( )  {
 		if (selectedlabor.id != null){	
 			fetchInfo_Task(selectedlabor.id);
 		}	
-	}, [selectedlabor]);
+	}, [selectedlabor, controlUpdates]);
 	
 	return (							
 		<div>

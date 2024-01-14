@@ -111,7 +111,7 @@ const TaskLaborTableByID = ( ) => {
 							type="button" 
 							className="btn btn-info btn-sm bt-success" 							
 							onClick={(e) => changeActivityTaskLabor(tsklab)}> 
-								{tsklab.is_active ? "On" : "Off"}	
+								{tsklab.is_active ? "On Work" : "Done"}	
 						</button><br/>
 					</div>
 					<td> 

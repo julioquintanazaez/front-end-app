@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function ReadEquipmentInfo ( )  {
 	
-	const { token, selectedlabor } = useContext(Context);
+	const { token, selectedlabor, controlUpdates } = useContext(Context);
 	const [equipment_type, setEquipment_type] = useState("");
 	const [equipment_number, setEquipment_number] = useState("");
 	const [equipment_amount, setEquipment_amount] = useState("");
@@ -41,7 +41,7 @@ export default function ReadEquipmentInfo ( )  {
 		if (selectedlabor.id != null){	
 			fetchInfo_Equipment(selectedlabor.id);
 		}	
-	}, [selectedlabor]);
+	}, [selectedlabor, controlUpdates]);
 		
 	return (							
 		<div>
