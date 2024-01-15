@@ -96,10 +96,7 @@ export default function UpdateProjectModal( ) {
 				  className="form-control mt-2"
 				  placeholder="e.g: Some to-do"
 				/>
-				<label> Old unit: {selectedproject.desc_proj} </label>	
-				
-				<label> Actual manager: {user.username} </label>				
-				<label> Email: {user.email} </label>		
+				<label> Old unit: {selectedproject.desc_proj} </label>						
 			
 			</Modal.Body>
 

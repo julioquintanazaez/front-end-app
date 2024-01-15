@@ -9,6 +9,8 @@ export default function RegisterUserModal( ) {
 	
 	const [show, setShow] = useState(false);
 
+	const { token, user } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [fullname, setFullName] = useState("");
 	const [username, setUserName] = useState("");
 	const [email, setEmail] = useState("");
@@ -30,16 +32,21 @@ export default function RegisterUserModal( ) {
 				role: role,
 				disable: true,
 				hashed_password: password
-			}
+			},
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("User data registered successfuly ");
-				alert({"User data registered successfuly": username});	
+				alert("User data registered successfuly");	
 				setFullName("");
 				setUserName("");
 				setEmail("");
 				setRole("");
 				setPassword("");
+				setControlUpdates(handleControlUpdate());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"User already exist in DB": username});	
@@ -70,7 +77,7 @@ export default function RegisterUserModal( ) {
 		}
 	}
 	
-	const handleRole = (role) => {
+	const handleSelectRole = (role) => {
 		if (role == "admin"){
 			setRole(["admin", "manager", "user"]);
 		}else if (role == "manager"){
@@ -131,7 +138,7 @@ export default function RegisterUserModal( ) {
 						<option 
 							key={opt}
 							value={opt}
-							onClick={(e) => handleRole(e.target.value)}>
+							onClick={(e) => handleSelectRole(e.target.value)}>
 							{opt}
 						</option>
 					))}

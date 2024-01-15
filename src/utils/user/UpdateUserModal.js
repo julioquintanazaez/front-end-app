@@ -10,6 +10,7 @@ export default function UpdateUserModal( props ) {
 	const [show, setShow] = useState(false);
 
 	const { token } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [full_name, setFullName] = useState("");
 	const [username, setUserName] = useState("");
 	const [useremail, setEmail] = useState("");
@@ -30,10 +31,11 @@ export default function UpdateUserModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log({"User updated successfuly": username});	
+				console.log("User updated successfuly");	
 				setFullName("");	
 				setUserName("");	
-				setEmail("");					
+				setEmail("");	
+				setControlUpdates(handleControlUpdate());
 			}else {
 				console.log({"Update goes rongs": response.data});			
 			}

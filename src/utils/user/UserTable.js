@@ -10,12 +10,12 @@ import AlertMessage from './../../components/AlertMessage.js';
 
 const UserTable = (props) => {
 
-	const { token } = useContext(Context);
+	const { token, user, controlUpdates } = useContext(Context);
     const [users, setUsers] = useState([]); 	
 	
 	useEffect(()=> {
         fetchUsers();
-    }, []);
+    }, [users, controlUpdates]);
 		
 	const fetchUsers = async () => {
 		
@@ -43,38 +43,43 @@ const UserTable = (props) => {
 	const deleteUser = async (username) => {		 
 		
 		if (username != ""){
-			await axios({
-				method: 'delete',
-				url: "/delete_user/" + username,			
-				headers: {
-					'accept': 'application/json',
-					'Authorization': "Bearer " + token,
-				},
-			}).then(response => {
-				if (response.status === 201) {
-					console.log("User Successfuly deleted");	
-					alert({"User Successfuly deleted": username});			
-				}else {
-					console.log("User delete Failed, please try again");
-					alert({"User delete Failed, please try again": username});						
-				}
-			}).catch((error) => {
-				console.log(error);
-				alert({"Something rong with the server conection": username});
-			});
+			if (username != user.username){
+				await axios({
+					method: 'delete',
+					url: "/delete_user/" + username,			
+					headers: {
+						'accept': 'application/json',
+						'Authorization': "Bearer " + token,
+					},
+				}).then(response => {
+					if (response.status === 201) {
+						console.log("User Successfuly deleted");	
+						setControlUpdates(handleControlUpdate());
+						alert("User Successfuly deleted");			
+					}else {
+						console.log("User delete Failed, please try again");
+						alert("User delete Failed, please try again");						
+					}
+				}).catch((error) => {
+					console.log(error);
+					alert("Something rong with the server conection");
+				});
+			}else{
+				alert("Please cant not delete your own user");	
+			}
 		}else{
 			alert("Please select a user...");	
 		}
 	}	
 	
-	const activateUser = async (user) => {
+	const activateUser = async (user_item) => {
 		
-		if (user.username != ""){
+		if (user_item.username != ""){
 			await axios({
 				method: 'put',
-				url: "/activate_user/" + user.username,
+				url: "/activate_user/" + user_item.username,
 				data: {
-						disable: user.disable ? false : true						
+						disable: user_item.disable ? false : true						
 						},
 				headers: {
 					'accept': 'application/json',
@@ -98,22 +103,22 @@ const UserTable = (props) => {
 		}			
 	}
 	
-	const buttonClassActivate = async (user) => {
-		if (user.disable){
+	const buttonClassActivate = async (user_item) => {
+		if (user_item.disable){
 			return "btn-danger";
 		}
 		return "btn btn-sm btn-success";
 	}
 	
 	const renderTableData = () => {
-		return users?.map((user, index) => (
-				<tr className="row-md" key={user.username}>
+		return users?.map((user_item, index) => (
+				<tr className="row-md" key={user_item.username}>
 					<th scope="row">{index + 1}</th>
-					<td>{user.full_name}</td>
-					<td>{user.username}</td>
-					<td>{user.email}</td>
-					<td>{user.role[0]}</td>
-					<td>{user.disable ? "Not Active" : "Active"}</td>
+					<td>{user_item.full_name}</td>
+					<td>{user_item.username}</td>
+					<td>{user_item.email}</td>
+					<td>{user_item.role[0]}</td>
+					<td>{user_item.disable ? "Not Active" : "Active"}</td>
 					<td> 
 						
 						<div className="col-sm-10 justify-content-end">
@@ -125,7 +130,7 @@ const UserTable = (props) => {
 										<button 
 											type="button" 
 											className="btn btn-sm btn-info ml-2 mr-2" 							
-											onClick={(e) => props.setSelectedUser(user)}> 
+											onClick={(e) => props.setSelectedUser(user_item)}> 
 												Set
 										</button>
 									</div>
@@ -135,7 +140,7 @@ const UserTable = (props) => {
 										<button 
 											type="button" 
 											className="btn btn-sm btn-danger ml-2 mr-2" 							
-											onClick={(e) => deleteUser(user.username)}> 
+											onClick={(e) => deleteUser(user_item.username)}> 
 												Del
 										</button>
 									</div>
@@ -145,7 +150,7 @@ const UserTable = (props) => {
 										<button 
 											type="button" 
 											className= "btn btn-sm btn-warning ml-2 mr-2"				
-											onClick={(e) => activateUser(user)}> 
+											onClick={(e) => activateUser(user_item)}> 
 												Activate
 										</button>
 									</div>

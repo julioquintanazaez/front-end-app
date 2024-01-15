@@ -9,7 +9,8 @@ export default function ResetUserPasswordDrop( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, user } = useContext(Context);	
+	const { token, user } = useContext(Context);
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("")
 	
@@ -28,6 +29,7 @@ export default function ResetUserPasswordDrop( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});	
+				setControlUpdates(handleControlUpdate());
 				alert("User Successfuly handle");								
 			}else {
 				console.log({"Update goes rongs": response.data});	

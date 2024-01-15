@@ -10,6 +10,7 @@ export default function ResetUserPasswordModal( props ) {
 	const [show, setShow] = useState(false);
 
 	const { token } = useContext(Context);	
+	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("")
 	
@@ -27,11 +28,12 @@ export default function ResetUserPasswordModal( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log({"Response ": response.data});	
-				alert({"User Successfuly handle": props.selecteduser.username});								
+				console.log({"Response ": response.data});
+				setControlUpdates(handleControlUpdate());
+				alert("User Successfuly handle");								
 			}else {
 				console.log({"Update goes rongs": response.data});	
-				alert({"User reset password failed, please try again": props.selecteduser.username});
+				alert("User reset password failed, please try again");
 			}
 			
 		}).catch((error) => {
