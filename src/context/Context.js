@@ -1,8 +1,7 @@
 // Context.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import axios from 'axios';
-import { useLocalStorage } from "./useLocalStorage";
 
 export const Context = React.createContext();
 
@@ -11,15 +10,16 @@ export const ContextProvider = ({ children }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	
-	const [token, setToken] = useLocalStorage("token", "");
-	const [user, setUser] = useLocalStorage("user", {});
-	const [isAdmin, setIsAdmin] = useLocalStorage("admin", false);
-	const [isLoggedIn, setIsLoggedIn] = useLocalStorage("logged", false);
+	const [token, setToken] = useState(window.localStorage.getItem("PROJECT_APP_TOKEN")); 
+	const [user, setUser] = useState({});
+	const [isAdmin, setIsAdmin] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [projects, setProjects] = useState([]);
 	const [projectlabors, setProjectLabors] = useState([]);
 	const [selectedproject, setSelectedProject] = useState({});
 	const [selectedlabor, setSelectedLabor] = useState({});
-	const [controlUpdates, setControlUpdates] = useState(false);
+	const [controlUpdates, setControlUpdates] = useState(false);	
+	
 	
 	const handleLogout = () => {
 		setToken("");
@@ -29,6 +29,7 @@ export const ContextProvider = ({ children }) => {
 		setProjectLabors([]);
 		setSelectedProject({});
 		setSelectedLabor({});
+		window.localStorage.removeItem("PROJECT_APP_TOKEN");
 		navigate('/');
 	}
 	
@@ -39,7 +40,6 @@ export const ContextProvider = ({ children }) => {
 	const handleRole = (role) => {	
 		let res = false;
 		role.forEach(function(role, index){
-			//console.log(role);
 			if (role == "admin"){
 				setIsAdmin(true);				
 			}						
@@ -47,29 +47,45 @@ export const ContextProvider = ({ children }) => {
 		return res;
 	}
 	
-	//useEffect to fetch the current user, if the proccess goes rong clean the token and redirect ro login
+	useEffect(()=> {
+		if (token){	
+			try {
+				window.localStorage.setItem("PROJECT_APP_TOKEN", token);	
+				handleGetCurrentUser();
+			}catch(err){}
+		}else{
+			try {
+				window.localStorage.removeItem("PROJECT_APP_TOKEN");
+			}catch(err){}
+		}
+	}, [token]);	
+	
 	const handleGetCurrentUser = async () => {
+		
 		await axios({
 			method: 'get',
 			url: '/get_user_status/',                         
 			headers: {
 				'accept': 'application/json',
-				'Authorization': "Bearer " + token,
+				'Authorization': "Bearer " + token,  
 			},
 		}).then(response => {
 			if (response.status === 200) {
 				console.log("Authentication successfully");
-				setUser(response.data);				
+				setUser(response.data);	
+				setIsLoggedIn(true);
 				handleRole(response.data.role);
 				console.log({"Response user from context": response.data.role});
 			}else {	
 				console.log("Registration Failed from context, please try again");
-				alert("Conextion failed from context, redirect to login page");	
+				handleLogout();
+				alert("Conextion failed from context something happend with response, redirect to login page");					
 				navigate('/');		
 			}
 		}).catch((error) => {
 			console.log("Registration Failed from context, some error happend with server, please try again");
-			alert("Conextion failed from context, redirect to login page");	
+			handleLogout();
+			alert("Conextion failed from context some thing happend with server, redirect to login page");	
 			navigate('/');	
 		});			
 	}	

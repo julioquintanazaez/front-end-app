@@ -15,16 +15,17 @@ import ResetUserPasswordDrop from './../utils/user/ResetUserPasswordDrop.js';
 const Navigation = ( props ) => {
 	
 	const { handleLogout, handleGetCurrentUser } = useContext(Context);
-	const { token, user, isLoggedIn, isAdmin } = useContext(Context);
+	const { token, setToken, user, isLoggedIn, isAdmin } = useContext(Context);
 	const { setProjects, projects } = useContext(Context);
+	
 	
 	const logoutUser = () => {
 		handleLogout();
 	}
 	
-	useEffect(()=> {
-		handleGetCurrentUser();
-	}, []);	
+	//useEffect(()=> {
+	//	handleGetCurrentUser();
+	//}, []);	
 	
 	const fetchProjects = async (email) => {				
 		await axios({
@@ -50,15 +51,14 @@ const Navigation = ( props ) => {
 	
 	useEffect(()=> {
 		fetchProjects(user.email);
-    }, []);	 
-	
+    }, []);	 	
 	
 	return (
 		<>
 			<Navbar expand="lg" fixed="top" className="navbar-light" bg="bg-dark" data-bs-theme="dark">
 				<Container>
 					<Navbar.Brand href="#home">
-						Project manager
+						Project manager 
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse className="justify-content-end">

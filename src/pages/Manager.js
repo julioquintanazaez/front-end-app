@@ -67,7 +67,6 @@ import MaterialReport from './../utils/report/MaterialReport.js';
 import TaskReport from './../utils/report/TaskReport.js';
 
 
-
 const Manager = () => {	
 
 	const navigate = useNavigate();
@@ -77,8 +76,7 @@ const Manager = () => {
 	const [materials, setMaterials] = useState([]);
 	
 	//From CONTEXT
-	const { token, setToken } = useContext(Context);
-	const { tokentype, setTokenType } = useContext(Context);
+	const { token } = useContext(Context);
 	const { user, setUser } = useContext(Context);
 	const { isLoggedIn, setIsLoggedIn } = useContext(Context);
 	const { projects, setProjects } = useContext(Context);	
@@ -201,8 +199,6 @@ const Manager = () => {
     }, [selectedlabor, controlUpdates]);	
 	
 	
-	console.log({"Status selected labor":selectedlabor.is_open ? "Open": "Close"})
-	
 	return (
 		
 		<div className="container-fluid-md">			
@@ -211,7 +207,8 @@ const Manager = () => {
 					<Navigation />											
 				</div>
 			</div>	
-			<div className="row">	
+			
+			<div className="row">				
 				<div className="col"><br/>					
 					<div className="col">					
 						<div className="container overflow-hidden"><br/>								
@@ -220,8 +217,8 @@ const Manager = () => {
 									<div className="p-3 border bg-light">										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
 											<div className="row">
-												<div className="col col-sm-6">
-													< ViewTableProjectModal />
+												<div className="col col-sm-6">													
+													< ViewTableProjectModal />													
 												</div>
 											</div>
 										</div>

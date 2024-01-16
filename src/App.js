@@ -1,9 +1,8 @@
 import './App.css';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Routes, Route, Link, NavLink, useNavigate } from 'react-router-dom';
 import { ContextProvider, Context } from './context/Context';
 import { ProtectedRoute } from './context/ProtectedRoute';
-
 
 import Login from './auth/Login.js';
 import MainDashboard from './pages/Dashboard.js';
@@ -13,11 +12,8 @@ import Manager from './pages/Manager.js';
 
 
 
-const App = () => {
+const App = () => {	
 	
-	const [token, setToken] = useState("");
-	const [user, setUser] = useState({});
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	
 	//&& user_logged.role.includes('admin')
 	/*

@@ -11,7 +11,7 @@ function Login () {
 	const [username, setUserName] = useState("");
 	const [password, setPassword] = useState("");
 	
-	const { isLoggedIn, setToken, setIsLoggedIn, handleGetCurrentUser } = useContext(Context);	 //handleGetCurrentUser
+	const { isLoggedIn, setToken, setIsLoggedIn, handleLogout } = useContext(Context);
 	 
 	const authenticate_user = async () => {
 		 
@@ -34,21 +34,19 @@ function Login () {
 				setIsLoggedIn(true);
 				alert('User ' + username + ' status: logged');
 				setUserName("");
-				setPassword("");
-				const origin = location.state?.from?.pathname || '/manager'; //To remember the last page after be bloqueted
+				setPassword("");	
+				const origin = location.state?.from?.pathname || '/manager'; 
 				navigate(origin);
 			}else {	
 				console.log("Registration Failed, please try again");
-				setToken("");
-				setIsLoggedIn(false);				
+				handleLogout();				
 				alert("Registration Failed, please try again");	
 				navigate("/");				
 			}
 		}).catch((error) => {
 			console.log(error);
-			setToken("");
-			setIsLoggedIn(false);	
-			alert("Some error ocurring with the server");
+			handleLogout();	
+			alert("Some error ocurring with the server in loggin");
 			navigate("/");
 		});		
 	};		
@@ -59,7 +57,6 @@ function Login () {
 	}	
 
 	const signOut = () => {
-		setToken("");
 		setIsLoggedIn(false);
 		setUserName("");
 		setPassword("");		

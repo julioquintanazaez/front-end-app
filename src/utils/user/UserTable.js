@@ -10,12 +10,12 @@ import AlertMessage from './../../components/AlertMessage.js';
 
 const UserTable = (props) => {
 
-	const { token, user, controlUpdates } = useContext(Context);
+	const { token, user, controlUpdates, setControlUpdates, handleControlUpdate } = useContext(Context);
     const [users, setUsers] = useState([]); 	
 	
 	useEffect(()=> {
         fetchUsers();
-    }, [users, controlUpdates]);
+    }, [controlUpdates]);
 		
 	const fetchUsers = async () => {
 		
@@ -88,7 +88,8 @@ const UserTable = (props) => {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log({"Response ": response.data});	
-					console.log("User updated successfuly");	
+					console.log("User updated successfuly");
+					setControlUpdates(handleControlUpdate());
 					alert("User updated successfuly");
 				}else {
 					console.log({"Update goes rongs": response.data});
