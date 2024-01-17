@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { Form } from 'react-bootstrap';
 
 
 export default function UpdateLaborModal( props ) {
@@ -14,7 +15,7 @@ export default function UpdateLaborModal( props ) {
 	const [desc_labor, setDescription] = useState("");
 	const [type, setType] = useState("");
 	
-	const options = ["Ducts", "Sensors and Accessories", "Other Materials", "Equipments"]
+	const options = ["Demolition", "Documental", "Reconstruction", "Roof"]
 	
 	const updateLabor = async (id) => {
 		
@@ -79,17 +80,18 @@ export default function UpdateLaborModal( props ) {
 			</Modal.Header>
 			<Modal.Body>
 			
-				<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >	
-					<option selected>Open to select an option</option>
-					{options?.map(opt => (
-						<option 
-							key={opt}
-							value={opt}
-							onClick={(e) => setType(e.target.value)}>
-							{opt}
-						</option>
-					))}
-				</select>
+				<Form.Label>Select a role</Form.Label>
+				<Form.Control 
+						as="select" 
+						onClick={(e) => setType(e.target.value)}
+						>
+						<option selected>Open to select an option</option>
+						{options?.map(opt => (
+							<option key={opt} value={opt} >
+								{opt}
+							</option>
+						))}						
+				</Form.Control>
 				<label> Old type: {selectedlabor.type} </label>		
 
 				<input type="text" value={desc_labor}

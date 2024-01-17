@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { Form } from 'react-bootstrap';
 
 
 export default function InsertMaterialModal( props ) {
@@ -99,17 +100,18 @@ export default function InsertMaterialModal( props ) {
 				  className="form-control mt-2"
 				  placeholder="A name (e.g: Rectangular ducks)"
 				/>
-				<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >	
-					<option selected>Open to select an option</option>
-					{options?.map(opt => (
-						<option 
-							key={opt}
-							value={opt}
-							onClick={(e) => setMaterial_type(e.target.value)}>
-							{opt}
-						</option>
-					))}
-				</select>
+				<Form.Label>Select a role</Form.Label>
+				<Form.Control 
+						as="select" 
+						onClick={(e) => setMaterial_type(e.target.value)}
+						>
+						<option selected>Open to select an option</option>
+						{options?.map(opt => (
+							<option key={opt} value={opt} >
+								{opt}
+							</option>
+						))}						
+				</Form.Control>
 				<input type="text" value={material_quantity}
 				  onChange={(e) => setMaterial_quantity(e.target.value)}
 				  className="form-control mt-2"

@@ -6,6 +6,7 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import addDays from "date-fns/addDays";
+import { Form } from 'react-bootstrap';
 
 export default function InsertLaborModal( ) {
 	
@@ -92,17 +93,19 @@ export default function InsertLaborModal( ) {
 
 			<Modal.Body>
 				
-				<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >	
-					<option selected>Open to select an option</option>
-					{options?.map(opt => (
-						<option 
-							key={opt}
-							value={opt}
-							onClick={(e) => setType(e.target.value)}>
-							{opt}
-						</option>
-					))}
-				</select>
+				<Form.Label>Select a role</Form.Label>
+				<Form.Control 
+						as="select" 
+						onClick={(e) => setType(e.target.value)}
+						>
+						<option selected>Open to select an option</option>
+						{options?.map(opt => (
+							<option key={opt} value={opt} >
+								{opt}
+							</option>
+						))}						
+				</Form.Control>
+				
 				<input type="text" value={desc_labor}
 				  onChange={(e) => setDescription(e.target.value)}
 				  className="form-control mt-2"
