@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
@@ -129,21 +130,21 @@ export default function RegisterUserModal( ) {
 				  className="form-control mt-1"
 				  placeholder="Enter email (e.g peter@gmail.com)"
 				/>
-				<label>peter@gmail.com</label><br/>
-			
-				<label>User role</label>
-				<select className="form-control form-control-sm mt-2" id="FormControlSelectCategory" >	
-					<option selected>Open to select an option</option>
-					{options?.map(opt => (
-						<option 
-							key={opt}
-							value={opt}
-							onClick={(e) => handleSelectRole(e.target.value)}>
-							{opt}
-						</option>
-					))}
-				</select>
-			
+				<label>peter@gmail.com</label><br/>			
+				
+				<Form.Label>Select a role</Form.Label>
+				<Form.Control 
+						as="select" 
+						onClick={(e) => handleSelectRole(e.target.value)}
+						>
+						<option selected>Open to select an option</option>
+						{options?.map(opt => (
+							<option key={opt} value={opt} >
+								{opt}
+							</option>
+						))}						
+				</Form.Control>
+				
 				<label>Password</label>
 				<input
 				  type="password"
