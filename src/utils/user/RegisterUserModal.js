@@ -137,7 +137,6 @@ export default function RegisterUserModal( ) {
 						as="select" 
 						onClick={(e) => handleSelectRole(e.target.value)}
 						>
-						<option selected>Open to select an option</option>
 						{options?.map(opt => (
 							<option key={opt} value={opt} >
 								{opt}

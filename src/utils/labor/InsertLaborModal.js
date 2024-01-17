@@ -98,7 +98,6 @@ export default function InsertLaborModal( ) {
 						as="select" 
 						onClick={(e) => setType(e.target.value)}
 						>
-						<option selected>Open to select an option</option>
 						{options?.map(opt => (
 							<option key={opt} value={opt} >
 								{opt}

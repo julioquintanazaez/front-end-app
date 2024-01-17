@@ -105,7 +105,6 @@ export default function InsertMaterialModal( props ) {
 						as="select" 
 						onClick={(e) => setMaterial_type(e.target.value)}
 						>
-						<option selected>Open to select an option</option>
 						{options?.map(opt => (
 							<option key={opt} value={opt} >
 								{opt}
