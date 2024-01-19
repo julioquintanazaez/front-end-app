@@ -1,13 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { useNavigate } from "react-router";
+
 
 export default function ReadMaterialInfo ( )  {
 	
-	const { token, selectedlabor, controlUpdates } = useContext(Context);
+	const navigate = useNavigate();
+	const { token, selectedlabor, messages, handleLogout } = useContext(Context);
 	const [materials, setMaterials] = useState([]);
 	
 	const fetchInfo_Material = async (id) => {
@@ -29,6 +31,7 @@ export default function ReadMaterialInfo ( )  {
 			}
 		}).catch((error) => {
 			console.log({"An error ocur reading material info": error});
+			handleLogout();
 		});			  
 	}
 	
@@ -37,7 +40,7 @@ export default function ReadMaterialInfo ( )  {
 		if (selectedlabor.id != null){	
 			fetchInfo_Material(selectedlabor.id);
 		}	
-	}, [selectedlabor, controlUpdates]);
+	}, [selectedlabor, messages]);
 	
 	const renderBadgesData = () => {
 		return materials?.map((material, index) => (

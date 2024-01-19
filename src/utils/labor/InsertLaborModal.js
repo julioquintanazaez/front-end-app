@@ -12,8 +12,7 @@ export default function InsertLaborModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, selectedproject } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	const [type, setType] = useState(""); 
 	const [desc_labor, setDescription] = useState("");
 	const [enddate, setEndDate] = useState(new Date());
@@ -42,17 +41,20 @@ export default function InsertLaborModal( ) {
 				setType("");
 				setDescription("");
 				setEndDate("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Labor inserted successfully");
 			}else if (response.status === 500) {
 				console.log("Integrity error");
+				setMessages("Labor exist in Database");
 				alert("Labor already exist in DB");	
 			}else {
 				console.log("Insert labor failed, please try again");	
 				alert("Insert labor failed, please try again");	
+				setMessages("Labor exist in Database");
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");
 			alert("An error ocurr ");	
+			handleLogout();
 		});	  
 	}
   
@@ -64,7 +66,7 @@ export default function InsertLaborModal( ) {
 	}
 	
 	const handleSave = () => {
-		if (type != null && desc_labor != null && selectedproject.id != null && enddate != null){
+		if (type !== "" && desc_labor !== "" && selectedproject.id != null && enddate != null){
 			registerLabor();
 		}else{
 			alert("Some missing parameters");
@@ -82,12 +84,12 @@ export default function InsertLaborModal( ) {
 	return (
 		<>
 		<Button className="nextButton btn-sm" onClick={handleShow}>
-			Hire labor (+)
+			Add Labor (+)
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Insert labor data
+					Hire a labor for project {selectedproject.project_name}
 				</Modal.Title>
 			</Modal.Header>
 

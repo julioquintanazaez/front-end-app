@@ -69,14 +69,12 @@ import TaskReport from './../utils/report/TaskReport.js';
 
 const Manager = () => {	
 
-	const navigate = useNavigate();
-	
 	const [tasks, setTasks] = useState([]);
 	const [equipments, setEquipments] = useState([]);
 	const [materials, setMaterials] = useState([]);
 	
 	//From CONTEXT
-	const { token } = useContext(Context);
+	const { token, messages, handlelogout } = useContext(Context);
 	const { user, setUser } = useContext(Context);
 	const { isLoggedIn, setIsLoggedIn } = useContext(Context);
 	const { projects, setProjects } = useContext(Context);	
@@ -85,7 +83,6 @@ const Manager = () => {
 	const { selectedlabor, setSelectedLabor } = useContext(Context);
 	const { isAdmin } = useContext(Context);
 	const { controlUpdates } = useContext(Context);
-	
 	
 	
 	const fetchTasks = async (id) => {
@@ -108,6 +105,7 @@ const Manager = () => {
 		}).catch((error) => {
 			console.log({"An error ocur": error});
 			alert({"An error ocur": "Server side"});
+			handlelogout();
 		});			  
 	}
 	
@@ -131,6 +129,7 @@ const Manager = () => {
 		}).catch((error) => {
 			console.log({"An error ocur": error});
 			alert({"An error ocur": "Server side"});
+			handlelogout();
 		});			  
 	}
 	
@@ -154,6 +153,7 @@ const Manager = () => {
 		}).catch((error) => {
 			console.log({"An error ocur": error});
 			alert({"An error ocur": "Server side"});
+			handlelogout();
 		});			  
 	}
 	
@@ -161,7 +161,7 @@ const Manager = () => {
 		if (id != null){				
 			await axios({
 				method: 'get',
-				url: '/read_labors_by_project_id/' + id,
+				url: '/read_labors_by_project_id/' + id,  //read_labors_with_stats_by_project_id  read_labors_by_project_id
 				headers: {
 					'accept': 'application/json',
 					'Authorization': "Bearer " + token,
@@ -176,6 +176,7 @@ const Manager = () => {
 				}
 			}).catch((error) => {
 				console.log({"An error ocur": error});
+				handlelogout();
 			});				
 		} 					
 	}
@@ -184,7 +185,7 @@ const Manager = () => {
 		if (selectedproject.id != null){
 			fetchLabors(selectedproject.id);
 		}
-    }, [selectedproject, controlUpdates]);		
+    }, [selectedproject, messages]);		
 	
 	const updateData = () => {
 		fetchMaterials(selectedlabor.id);
@@ -196,7 +197,7 @@ const Manager = () => {
 		if (selectedlabor.id != null){
 			updateData();
 		}
-    }, [selectedlabor, controlUpdates]);	
+    }, [selectedlabor, messages]);	
 	
 	
 	return (
@@ -245,7 +246,6 @@ const Manager = () => {
 													<UpdateProjectModal />
 													<ProjectDelete />													
 													<UpdateProjectEndDateModal />
-													<ProjectActivate />
 												</div>	
 											</div>
 										</div><br/>										
@@ -267,9 +267,7 @@ const Manager = () => {
 													<h4> {selectedlabor.type}</h4>
 													<h6>
 													{selectedlabor.type != null 
-														? selectedlabor.is_active
-															? <span className="badge bg-warning"> Open </span>
-															: <span className="badge bg-danger"> Close </span>
+														? <span className="badge bg-success"> main </span>															
 														: <span className="badge bg-warning"> No labor select </span>
 													}
 													</h6>
@@ -278,7 +276,6 @@ const Manager = () => {
 													<UpdateLaborModal />
 													<LaborDelete />
 													<UpdateLaborEndDateModal />
-													<LaborActivate />
 												</div>	
 											</div>
 										</div><br/>												
@@ -368,18 +365,7 @@ const Manager = () => {
 										</div>									
 									</div>
 								</div>
-							</div><br/>							
-							<div className="row gx-5">
-								<div className="col">
-									<div className="p-3 border bg-light">	
-										<div className="d-grid gap-2">
-											<div className="container col text-end">
-												<LaborReport />
-											</div>	
-										</div>	
-									</div>
-								</div>
-							</div>
+							</div>							
 						</div>						
 					</div>	
 				</div>				

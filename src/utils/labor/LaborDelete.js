@@ -7,9 +7,9 @@ import axios from 'axios';
 
 const LaborDelete = ( ) => {
 	
-	const { token } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const { selectedlabor, setSelectedLabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	
 	
 	const deleteLabor = async () => {		 
 		
@@ -26,13 +26,14 @@ const LaborDelete = ( ) => {
 					console.log("Labor successfuly deleted");
 					alert("Labor delete successfuly");
 					setSelectedLabor({});
-					setControlUpdates(handleControlUpdate());
+					setMessages("Labor deleted successfully");
 				}else {
 					console.log("Labor delete failed, please try again");			
 				}
 			}).catch((error) => {
 				console.log("Error conecting with backend server or with submited data: " + selectedlabor.id);
 				console.log(error);
+				handleLogout();
 			});
 		}else{
 			alert("Please select a project...");	

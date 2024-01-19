@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { useNavigate } from "react-router";
+
 
 export default function ReadUserNumberProjectsInfo ( props )  {
 	
-	const { token } = useContext(Context);
+	const { token, messages, handleLogout } = useContext(Context);
 	const { user, projects } = useContext(Context);
 	const [number, setNumber] = useState(0);
 
@@ -30,13 +31,14 @@ export default function ReadUserNumberProjectsInfo ( props )  {
 			}
 		}).catch((error) => {
 			console.log({"An error ocur reading user projects info": error});
+			handleLogout();
 		});			  
 	}
 	
 			
 	useEffect(()=> {			
 		fetchNumberOfProjects(user.email);			
-	}, [, projects]);
+	}, [, projects, messages]);
 		
 	return (							
 		<div>

@@ -7,8 +7,9 @@ import axios from 'axios';
 
 const ProjectActivate = ( ) => {
 	
-	const { token, selectedproject } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
+	
+	
 	const changeActivityProject = async (project) => {		
 		
 		await axios({
@@ -24,12 +25,13 @@ const ProjectActivate = ( ) => {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project successfuly changed");	
-				setControlUpdates(handleControlUpdate());
+				setMessages("Project activated succesfully");
 			}else {
 				console.log("Project activation failed, please try again");			
 			}
 		}).catch((error) => {
 			console.log(error);
+			handleLogout();
 		});
 	}	
 	

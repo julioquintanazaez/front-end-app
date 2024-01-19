@@ -3,14 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { useNavigate } from "react-router";
 
 
 export default function InsertEquipmentModal( props ) {
 	
 	const [show, setShow] = useState(false);
-
-	const { token, selectedlabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);	
 	const [equipment_name, setEquipment_name] = useState(""); 
 	const [equipment_quantity, setEquipment_quantity] = useState("");
 	const [equipment_unit_price, setEquipment_unit_price] = useState("");
@@ -37,7 +36,7 @@ export default function InsertEquipmentModal( props ) {
 				setEquipment_name("");
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Equipment updated successfuly")
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Equipment already exist in DB": equipment_name});	
@@ -48,6 +47,7 @@ export default function InsertEquipmentModal( props ) {
 		}).catch((error) => {
 			console.log({"An error ocurr ": equipment_name});
 			alert({"An error ocurr ": equipment_name});	
+			handleLogout();
 		});	
 			  
 	}
@@ -60,7 +60,7 @@ export default function InsertEquipmentModal( props ) {
 	}
 	
 	const handleSave = () => {
-		if (equipment_name != null && equipment_quantity != null && equipment_unit_price != null){
+		if (equipment_name !== "" && equipment_quantity !== "" && equipment_unit_price !== ""){
 			registerEquipment();
 		}else{
 			alert("Some missing parameters");
@@ -78,7 +78,7 @@ export default function InsertEquipmentModal( props ) {
 	return (
 		<>
 		<Button className="nextButton btn-sm" onClick={handleShow}>
-			Equipment
+			Add Equipment (+) {selectedlabor.type != null && <span className="badge bg-success"> for {selectedlabor.type} labor </span>}
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>

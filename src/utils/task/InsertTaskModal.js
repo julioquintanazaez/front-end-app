@@ -10,8 +10,7 @@ export default function InsertTaskModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, selectedlabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);	
 	const [description, setDescription] = useState(""); 
 	const [mechanicals, setMechanicals] = useState("");
 	const [hour, setHour] = useState("");
@@ -43,7 +42,7 @@ export default function InsertTaskModal( ) {
 				setHour("");
 				setTask_price("");
 				setEnd_Date("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Task added succesffully");
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Task already exist in DB": description});	
@@ -54,6 +53,7 @@ export default function InsertTaskModal( ) {
 		}).catch((error) => {
 			console.log({"An error ocurr ": description});
 			alert({"An error ocurr ": description});	
+			handleLogout();
 		});					  
 	}
   
@@ -67,7 +67,7 @@ export default function InsertTaskModal( ) {
 	}
 	
 	const handleSave = () => {
-		if (description != null && mechanicals != null && hour != null && task_price != null){
+		if (description !== "" && mechanicals !== "" && hour !== "" && task_price !== ""){
 			registerTask();
 			handleClose();
 		}else{
@@ -86,7 +86,7 @@ export default function InsertTaskModal( ) {
 	return (
 		<>
 		<Button className="nextButton btn-sm" onClick={handleShow}>
-			Task
+			Add Task (+) {selectedlabor.type != null && <span className="badge bg-success"> for {selectedlabor.type} labor </span>}
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>

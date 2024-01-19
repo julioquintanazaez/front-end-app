@@ -9,8 +9,7 @@ export default function ResetUserPasswordDrop( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, user } = useContext(Context);
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, user, setMessages, handleLogout } = useContext(Context);
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("")
 	
@@ -29,7 +28,7 @@ export default function ResetUserPasswordDrop( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});	
-				setControlUpdates(handleControlUpdate());
+				setMessages("User password reset successfully");
 				alert("User Successfuly handle");								
 			}else {
 				console.log({"Update goes rongs": response.data});	
@@ -38,6 +37,7 @@ export default function ResetUserPasswordDrop( props ) {
 			
 		}).catch((error) => {
 			console.log({"An error ocur": error});
+			handleLogout();
 		});				  
 	}
   
@@ -47,7 +47,7 @@ export default function ResetUserPasswordDrop( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (password != null && password == password2){
+		if (password !== "" && password == password2){
 			updateUserPassword();
 		}else{
 			alert("Some missing parameters for password");
@@ -78,6 +78,7 @@ export default function ResetUserPasswordDrop( props ) {
 					onChange={(e) => setPassword(e.target.value)}
 					className="form-control mt-2"
 					placeholder="password"
+					required
 				/>
 
 				<input
@@ -86,6 +87,7 @@ export default function ResetUserPasswordDrop( props ) {
 				  onChange={(e) => setPassword2(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="Retype password"
+				  required
 				/>	
 			
 			</Modal.Body>

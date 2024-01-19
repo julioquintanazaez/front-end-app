@@ -11,7 +11,7 @@ export default function InsertProjectModal( ) {
 	const [show, setShow] = useState(false);
 
 	const { token, user } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { setMessages, handleLogout } = useContext(Context);	
 	const [name, setName] = useState(""); 
 	const [description, setDescription] = useState("");
 	const [manager, setManager] = useState("");
@@ -41,7 +41,7 @@ export default function InsertProjectModal( ) {
 				setName("");
 				setDescription("");
 				setEndDate("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Project created successfully");
 			}else if (response.status === 401) {
 				console.log("Not enought permissions");
 				alert("Permisions denied");	
@@ -54,7 +54,8 @@ export default function InsertProjectModal( ) {
 			}
 		}).catch((error) => {
 			console.log("An error ocurr");
-			alert("An error ocurr");	
+			alert("An error ocurr");
+			handleLogout();
 		});				  
 	}
   
@@ -66,7 +67,7 @@ export default function InsertProjectModal( ) {
 	}
 	
 	const handleSave = () => {
-		if (name != null && description != null && enddate != null && user.username != null && user.email != null){			
+		if (name !== "" && description !== "" && enddate !== "" && user.username != null && user.email != null){			
 			registerProject();
 		}else{
 			alert("Some missing parameters");
@@ -93,12 +94,20 @@ export default function InsertProjectModal( ) {
 				  onChange={(e) => setName(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="e.g: Some place"
+				  required
 				/>
+				<div className="invalid-feedback">
+					Please provide a valid password
+				</div>
 				<input type="text" value={description}
 				  onChange={(e) => setDescription(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="e.g: Some to-do"
+				  required
 				/>
+				<div className="invalid-feedback">
+					Please provide a valid password
+				</div>
 				<label> Set-up deadline for the project </label>
 				<div className="day">
 					<DatePicker 

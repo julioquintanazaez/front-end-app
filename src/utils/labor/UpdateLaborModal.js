@@ -9,8 +9,7 @@ import { Form } from 'react-bootstrap';
 export default function UpdateLaborModal( props ) {
 	
 	const [show, setShow] = useState(false);
-
-	const { token, selectedlabor } = useContext(Context);
+	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);
 	const { setControlUpdates, handleControlUpdate } = useContext(Context);		
 	const [desc_labor, setDescription] = useState("");
 	const [type, setType] = useState("");
@@ -35,14 +34,16 @@ export default function UpdateLaborModal( props ) {
 				console.log("Labor data updated successfuly ");
 				alert("Labor data updated successfuly");	
 				setDescription("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Labor update successfully");
 			}else {
 				console.log("Update Labor failed, please try again");	
 				alert(Labor);	
+				setMessages("Labor update failed");				
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");
 			alert("An error ocurr ");	
+			handleLogout();
 		});				  
 	}
   
@@ -52,7 +53,7 @@ export default function UpdateLaborModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (desc_labor != null && type != null){
+		if (desc_labor !== "" && type !== ""){
 			updateLabor(selectedlabor.id);
 		}else{
 			alert("Some missing parameters");

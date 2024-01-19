@@ -10,8 +10,7 @@ export default function RegisterUserModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, user } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, user, setMessages, handleLogout } = useContext(Context);	
 	const [fullname, setFullName] = useState("");
 	const [username, setUserName] = useState("");
 	const [email, setEmail] = useState("");
@@ -47,7 +46,7 @@ export default function RegisterUserModal( ) {
 				setEmail("");
 				setRole("");
 				setPassword("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("User data registered successfuly");
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"User already exist in DB": username});	
@@ -57,7 +56,8 @@ export default function RegisterUserModal( ) {
 			}
 		}).catch((error) => {
 			console.log({"An error ocurr ": username});
-			alert({"An error ocurr ": username});	
+			alert({"An error ocurr ": username});
+			handleLogout();
 		});				  
 	}
   
@@ -71,7 +71,7 @@ export default function RegisterUserModal( ) {
 	}
 	
 	const handleSave = () => {
-		if (username != null && email != null && role != null && password != null){
+		if (username !== "" && email !== "" && role !== "" && password !== ""){
 			registerUser();
 		}else{
 			alert("Some missing parameters");
@@ -111,6 +111,7 @@ export default function RegisterUserModal( ) {
 				  onChange={(e) => setFullName(e.target.value)}
 				  className="form-control mt-1"
 				  placeholder="Enter name (e.g: Peter Crouch)"
+				  required
 				/>
 			
 				<label>User name</label>
@@ -120,6 +121,7 @@ export default function RegisterUserModal( ) {
 				  onChange={(e) => setUserName(e.target.value)}
 				  className="form-control mt-1"
 				  placeholder="Enter nickname (e.g: peter87)"
+				  required
 				/>
 			
 				<label>Email address</label>
@@ -129,6 +131,7 @@ export default function RegisterUserModal( ) {
 				  onChange={(e) => setEmail(e.target.value)}
 				  className="form-control mt-1"
 				  placeholder="Enter email (e.g peter@gmail.com)"
+				  required
 				/>
 				<label>peter@gmail.com</label><br/>			
 				
@@ -151,6 +154,7 @@ export default function RegisterUserModal( ) {
 				  onChange={(e) => setPassword(e.target.value)}
 				  className="form-control mt-1"
 				  placeholder="Enter password"
+				  required
 				/>
 			
 				<label>Confirm Password</label>
@@ -160,6 +164,7 @@ export default function RegisterUserModal( ) {
 				  onChange={(e) => setPassword2(e.target.value)}
 				  className="form-control mt-1"
 				  placeholder="Re-enter password"
+				  required
 				/>
 			
 			</Modal.Body>

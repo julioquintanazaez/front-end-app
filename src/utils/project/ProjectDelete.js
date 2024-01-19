@@ -8,8 +8,8 @@ import axios from 'axios';
 const ProjectDelete = ( ) => {
 	
 	const { token } = useContext(Context);
-	const { selectedproject, setSelectedProject, setSelectedLabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { selectedproject, setSelectedProject, setSelectedLabor, setMessages, handleLogout } = useContext(Context);	
+	
 	
 	const deleteProject = async () => {			
 		
@@ -26,13 +26,14 @@ const ProjectDelete = ( ) => {
 				alert("Project delete successfuly");
 				setSelectedProject({});
 				setSelectedLabor({});
-				setControlUpdates(handleControlUpdate());
+				setMessages("Project deleted successfully");
 			}else {
 				console.log("Project delete failed, please try again");			
 			}
 		}).catch((error) => {
 			console.log("Error conecting with backend server or with submited data, project ID: " + selectedproject.id);
 			console.log(error);
+			handleLogout();
 		});
 	}
 	

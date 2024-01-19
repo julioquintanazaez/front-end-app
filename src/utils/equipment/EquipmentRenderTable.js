@@ -1,21 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import moment from "moment";
+import { Table } from 'react-bootstrap';
+import { useNavigate } from "react-router";
 
 import UpdateEquipmentModal from './UpdateEquipmentModal.js';
 
 export default function EquipmentRenderTable ( props ) {
 
-	const { token } = useContext(Context); 
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context); 
+	
 	
 	const deleteEquipment = async (id) => {		 
 		
-		if (id != ""){
+		if (id !== ""){
 			await axios({
 				method: 'delete',
 				url: "/delete_equipment/" + id,			
@@ -28,12 +29,13 @@ export default function EquipmentRenderTable ( props ) {
 					console.log("Equipment Successfuly deleted");
 					setControlUpdates(handleControlUpdate());
 					alert("Equipment delete successfuly");
-					setControlUpdates(handleControlUpdate());
+					setMessages("Equipment deleted successfully");
 				}else {
 					console.log("Equipment delete Failed, please try again");
 				}
 			}).catch((error) => {
-				alert("Please select a material...");	
+				alert("Please select a material...");
+				handleLogout();
 			});
 		}else{
 			alert("Please select a material...");	
@@ -50,16 +52,20 @@ export default function EquipmentRenderTable ( props ) {
 					<td>{equipment.equipment_amount}</td>		
 					<td> 
 						<div className="row">	
-							<div className="col-sm-4">								
-								<UpdateEquipmentModal equipment={equipment} />								
+							<div className="col">
+								<div className="d-grid gap-2">		
+									<UpdateEquipmentModal equipment={equipment} />								
+								</div>
 							</div>
-							<div className="col-sm-2">
-								<button 
-									type="button" 
-									className="btn btn-sm btn-outline-danger" 							
-									onClick={(e) => deleteEquipment(equipment.id)}> 
-										Delete
-								</button>
+							<div className="col">
+								<div className="d-grid gap-2">		
+									<button 
+										type="button" 
+										className="btn btn-sm btn-outline-danger" 							
+										onClick={(e) => deleteEquipment(equipment.id)}> 
+											Delete
+									</button>
+								</div>
 							</div>
 						</div>						
 					</td>
@@ -69,23 +75,21 @@ export default function EquipmentRenderTable ( props ) {
 
 	return (
 		<div className>            	
-            <div className="table-responsive-md">
-				<table className="table table-striped table-bordered ">
-					<thead className="table-dark">
-						<tr>
-							<th scope="col">#</th>							
-							<th scope="col">Name</th>							
-							<th scope="col">Quantity</th>
-							<th scope="col">Unit Price</th>
-							<th scope="col">Amount</th>	
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody className="table-group-divider">						
-						{renderTableData()}
-					</tbody>
-				</table>
-			</div>          
+            <Table className="table table-striped table-bordered" responsive>
+				<thead className="table-dark">
+					<tr>
+						<th scope="col">#</th>							
+						<th scope="col">Name</th>							
+						<th scope="col">Quantity</th>
+						<th scope="col">Unit Price</th>
+						<th scope="col">Amount</th>	
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody className="table-group-divider">						
+					{renderTableData()}
+				</tbody>
+			</Table>  
         </div>
 	);  
 }

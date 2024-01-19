@@ -7,8 +7,8 @@ import axios from 'axios';
 
 const LaborActivate = ( ) => {
 	
-	const { token, selectedlabor } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);	
+	
 	
 	const changeActivityLabor = async (labor) => {		
 		
@@ -25,12 +25,13 @@ const LaborActivate = ( ) => {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Labor status successfuly changed");
-				setControlUpdates(handleControlUpdate());				
+				setMessages("Labor activated successfully");				
 			}else {
 				console.log("Labor active status  change failed, please try again");			
 			}
 		}).catch((error) => {
 			console.log(error);
+			handleLogout();
 		});
 	}	
 	

@@ -9,8 +9,7 @@ export default function UpdateProjectModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, user, selectedproject } = useContext(Context);
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, user, selectedproject, setMessages, handleLogout } = useContext(Context);
 	const [project_name, setName] = useState(""); 
 	const [desc_proj, setDescription] = useState("");
 	const [manager, setManager] = useState("");
@@ -37,14 +36,15 @@ export default function UpdateProjectModal( ) {
 				alert({"Project data updated successfuly": project_name});	
 				setName("");
 				setDescription("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Project updated successfully");
 			}else {
 				console.log("Update project failed, please try again");	
 				alert({"Update project failed, please try again": project_name});	
 			}
 		}).catch((error) => {
 			console.log({"An error ocurr ": project_name});
-			alert({"An error ocurr ": project_name});	
+			alert({"An error ocurr ": project_name});
+			handleLogout();
 		});				  
 	}
   
@@ -55,7 +55,7 @@ export default function UpdateProjectModal( ) {
 	}
 	
 	const handleUpdate = () => {
-		if (name != null && desc_proj != null && user.username != null && user.email != null){
+		if (name !== "" && desc_proj !== "" && user.username != null && user.email != null){
 			updateProject();
 		}else{
 			alert("Some missing parameters fro project update");
@@ -88,6 +88,7 @@ export default function UpdateProjectModal( ) {
 				  onChange={(e) => setName(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="e.g: Some place"
+				  required
 				/>
 				<label> Old name: {selectedproject.project_name} </label>
 				
@@ -95,6 +96,7 @@ export default function UpdateProjectModal( ) {
 				  onChange={(e) => setDescription(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="e.g: Some to-do"
+				  required
 				/>
 				<label> Old unit: {selectedproject.desc_proj} </label>						
 			

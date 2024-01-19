@@ -9,7 +9,7 @@ export default function UpdateTaskModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [mechanicals, setMechanicals] = useState("");
 	const [hour, setHour] = useState("");
 	const [task_price, setTask_price] = useState("");
@@ -34,7 +34,7 @@ export default function UpdateTaskModal( props ) {
 				setMechanicals("");
 				setHour("");
 				setTask_price("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Task updated succesffully");
 				alert("Task data updated successfuly");	
 			}else {
 				console.log("Update task failed, please try again");	
@@ -43,6 +43,7 @@ export default function UpdateTaskModal( props ) {
 		}).catch((error) => {
 			console.log("An error ocurr ");
 			alert("An error ocurr ");	
+			handleLogout();
 		});				  
 	}
   
@@ -54,7 +55,7 @@ export default function UpdateTaskModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (mechanicals != null && hour != null && task_price != null){
+		if (mechanicals !== "" && hour != null && task_price != null){
 			updateTask(props.task.id);
 		}else{
 			alert("Some missing parameters");

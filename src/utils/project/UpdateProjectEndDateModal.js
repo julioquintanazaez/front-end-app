@@ -12,8 +12,7 @@ export default function UpdateProjectEndDateModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, selectedproject } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	const [date, setDate] = useState(new Date());
 	
 	const updateProject = async () => {
@@ -33,7 +32,7 @@ export default function UpdateProjectEndDateModal( ) {
 				console.log("Project data updated successfuly ");
 				alert("Project data updated successfuly");	
 				setDate("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Project date updated successfully");
 			}else {
 				console.log("Update project failed, please try again");	
 				alert("Update project failed, please try again");	
@@ -41,6 +40,7 @@ export default function UpdateProjectEndDateModal( ) {
 		}).catch((error) => {
 			console.log("An error ocurr ");
 			alert("An error ocurr ");	
+			handleLogout();
 		});				  
 	}
   
@@ -50,7 +50,7 @@ export default function UpdateProjectEndDateModal( ) {
 	}
 	
 	const handleUpdate = () => {
-		if (date != null){
+		if (date !== ""){
 			updateProject();
 		}else{
 			alert("Some missing parameters fro project update");

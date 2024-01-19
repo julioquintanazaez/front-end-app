@@ -5,6 +5,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import moment from "moment";
+import { Table } from 'react-bootstrap';
+
+import LaborReport from './../report/LaborReport.js'; 
 
 
 export default function LaborRenderTable ( ) {
@@ -31,6 +34,11 @@ export default function LaborRenderTable ( ) {
 									</button>
 								</div>
 							</div>
+							<div className="col">
+								<div className="d-grid gap-2">
+									< LaborReport labor={labor}/>
+								</div>
+							</div>
 						</div>						
 					</td>
 				</tr>
@@ -39,23 +47,21 @@ export default function LaborRenderTable ( ) {
 
 	return (
 		<div className>            	
-            <div className="table-responsive-md">
-				<table className="table table-striped table-bordered ">
-					<thead className="table-dark">
-						<tr>
-							<th scope="col">#</th>							
-							<th scope="col">Type</th>							
-							<th scope="col">Description</th>
-							<th scope="col">Start Date</th>
-							<th scope="col">End Date</th>
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody className="table-group-divider">						
-						{renderTableData()}
-					</tbody>
-				</table>
-			</div>          
+			<Table className="table table-striped table-bordered" responsive>
+				<thead className="table-dark">
+					<tr>
+						<th scope="col">#</th>							
+						<th scope="col">Type</th>							
+						<th scope="col">Description</th>
+						<th scope="col">Start Date</th>
+						<th scope="col">End Date</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody className="table-group-divider">						
+					{renderTableData()}
+				</tbody>
+			</Table>  
         </div>
 	);  
 }

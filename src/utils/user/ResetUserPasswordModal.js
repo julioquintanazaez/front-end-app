@@ -9,8 +9,7 @@ export default function ResetUserPasswordModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("")
 	
@@ -29,7 +28,7 @@ export default function ResetUserPasswordModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});
-				setControlUpdates(handleControlUpdate());
+				setMessages("User password updated successfully");
 				alert("User Successfuly handle");								
 			}else {
 				console.log({"Update goes rongs": response.data});	
@@ -38,6 +37,7 @@ export default function ResetUserPasswordModal( props ) {
 			
 		}).catch((error) => {
 			console.log({"An error ocur": error});
+			handleLogout();
 		});				  
 	}
   
@@ -47,7 +47,7 @@ export default function ResetUserPasswordModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (props.selecteduser.username != null && password != null && password == password2){
+		if (props.selecteduser.username != null && password !== "" && password === password2){
 			updateUserPassword();
 		}else{
 			alert("Some missing parameters for password");
@@ -82,7 +82,11 @@ export default function ResetUserPasswordModal( props ) {
 					onChange={(e) => setPassword(e.target.value)}
 					className="form-control mt-2"
 					placeholder="password"
+					required
 				/>
+				<div className="invalid-feedback">
+					Please provide a valid password
+				</div>
 
 				<input
 				  type="password"
@@ -90,7 +94,11 @@ export default function ResetUserPasswordModal( props ) {
 				  onChange={(e) => setPassword2(e.target.value)}
 				  className="form-control mt-2"
 				  placeholder="Retype password"
+				  required
 				/>	
+				<div className="invalid-feedback">
+					Please provide a valid password
+				</div>
 			
 			</Modal.Body>
 

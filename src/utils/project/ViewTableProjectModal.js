@@ -1,53 +1,30 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+
+import ReadUserNumberProjectsInfo from './../info/ReadUserNumberProjectsInfo.js';
 
 export default function ViewTableProjectModal( ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, user, setSelectedProject } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
-	const [projects, setProjects] = useState([]);	
+	const { token, user, setSelectedProject, projects } = useContext(Context);
 	
-		
-	const fetchUserProjects = async (email) => {					
-		
-		await axios({
-			method: 'get',
-			url: '/read_projects_by_user_email/' + email,
-			headers: {
-				'accept': 'application/json',
-				'Authorization': "Bearer " + token,
-			},
-		}).then(response => {
-			if (response.status === 201) {
-				console.log("Project successfuly readed for user");
-				setProjects(response.data);
-				setControlUpdates(handleControlUpdate());
-			}else {
-				console.log("Read project failed, please try again");	
-				alert("Read project failed, please try again");	
-			}
-		}).catch((error) => {
-			console.log("An error ocurr with project");
-			alert("An error ocurr with project");	
-		});		
-	}
-  
+	
 	const handleClose = () => {
 		setShow(false);
 	}
 	
 	const handleShow = () => {
-		fetchUserProjects(user.email);
 		setShow(true);
 	}  
 	
 	const handleSet = (project) => {
-		setShow(false); 
+		setSelectedProject(project)
+		setShow(false);
 	}  
 	
 	const renderTableData = () => {
@@ -65,7 +42,7 @@ export default function ViewTableProjectModal( ) {
 									<button 
 										type="button" 
 										className="btn btn-sm btn-info" 							
-										onClick={(e) => setSelectedProject(project) } > 
+										onClick={(e) => handleSet(project) } > 
 											Pick
 									</button>
 								</div>
@@ -79,7 +56,7 @@ export default function ViewTableProjectModal( ) {
 	return (
 		<>
 		<Button className="nextButton btn-sm" onClick={handleShow}>
-			Search your projects
+			Show your projects < ReadUserNumberProjectsInfo />
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lg" > 
 			<Modal.Header closeButton>
@@ -89,23 +66,21 @@ export default function ViewTableProjectModal( ) {
 			</Modal.Header>
 			<Modal.Body> 	
 			
-				<div className="table-responsive-md">
-					<table className="table table-striped table-bordered ">
-						<thead className="table-dark">
-							<tr>
-								<th scope="col">#</th>							
-								<th scope="col">Name</th>	
-								<th scope="col">Start Date</th>
-								<th scope="col">End Date</th>
-								<th scope="col">Open</th>
-								<th scope="col">Actions</th>
-							</tr>
-						</thead>
-						<tbody className="table-group-divider">						
-							{renderTableData()}
-						</tbody>
-					</table>
-				</div>  
+				<Table className="table" striped bordered hover size="sm" responsive>
+					<thead className="table-dark">
+						<tr>
+							<th scope="col">#</th>							
+							<th scope="col">Name</th>	
+							<th scope="col">Start Date</th>
+							<th scope="col">End Date</th>
+							<th scope="col">Open</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody className="table-group-divider">						
+						{renderTableData()}
+					</tbody>
+				</Table>
 				
 			</Modal.Body>
 			<Modal.Footer>		

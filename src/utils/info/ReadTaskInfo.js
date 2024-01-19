@@ -1,13 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { useNavigate } from "react-router";
 
 export default function ReadTaskInfo ( )  {
 	
-	const { token, selectedlabor, controlUpdates } = useContext(Context);
+	const { token, selectedlabor, messages, handleLogout } = useContext(Context);
 	const [task_type, setTask_type] = useState("");
 	const [task_hourmen, setTask_hourmen] = useState("");
 	const [task_number, setTask_number] = useState("");
@@ -35,6 +35,7 @@ export default function ReadTaskInfo ( )  {
 			}
 		}).catch((error) => {
 			console.log({"An error ocur reading task info": error});
+			handleLogout();
 		});			  
 	}
 	
@@ -43,11 +44,11 @@ export default function ReadTaskInfo ( )  {
 		if (selectedlabor.id != null){	
 			fetchInfo_Task(selectedlabor.id);
 		}	
-	}, [selectedlabor, controlUpdates]);
+	}, [selectedlabor, messages]);
 	
 	return (							
 		<div>
-			Workers #: <span className="badge bg-info"> {task_hourmen} </span>
+			Hour/Mens: <span className="badge bg-info"> {task_hourmen} </span>
 			Task #: <span className="badge bg-info">  {task_number} </span>
 			Total price: <span className="badge bg-info">  {task_price} </span>
 		</div>

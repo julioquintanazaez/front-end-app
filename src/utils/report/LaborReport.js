@@ -6,9 +6,9 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
 
-export default function LaborReport ( ) {
+export default function LaborReport ( props ) {
 	
-	const { token, selectedlabor } = useContext(Context);	
+	const { token, selectedlabor, handleLogout } = useContext(Context);	
 	
 	const generateReportLabor = async (id) => {		 
 		
@@ -33,14 +33,15 @@ export default function LaborReport ( ) {
 		}).catch((error) => {
 			console.log("Error conecting with backend server or with submited data: " + id);
 			console.log(error);
+			handleLogout();
 		});
 		
 	}
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (selectedlabor.id != null){
-			generateReportLabor(selectedlabor.id);
+		if (props.labor.id != null){
+			generateReportLabor(props.labor.id);
 		}else{
 			alert("Not labor selected yet");
 		}
@@ -51,7 +52,7 @@ export default function LaborReport ( ) {
 			<button type="submit" 
 					className="btn btn-sm btn-outline-success"
 					onClick={(e) => handleSubmit(e)} > 
-					Summary (PDF) 
+					PDF 
 			</button>
 		</>
 	);

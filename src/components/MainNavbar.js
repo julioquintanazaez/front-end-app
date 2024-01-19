@@ -14,44 +14,13 @@ import ResetUserPasswordDrop from './../utils/user/ResetUserPasswordDrop.js';
 
 const Navigation = ( props ) => {
 	
-	const { handleLogout, handleGetCurrentUser } = useContext(Context);
-	const { token, setToken, user, isLoggedIn, isAdmin } = useContext(Context);
-	const { setProjects, projects } = useContext(Context);
+	const { handleLogout } = useContext(Context);
+	const { user, isAdmin } = useContext(Context);
 	
 	
 	const logoutUser = () => {
 		handleLogout();
 	}
-	
-	//useEffect(()=> {
-	//	handleGetCurrentUser();
-	//}, []);	
-	
-	const fetchProjects = async (email) => {				
-		await axios({
-			method: 'get',
-			url: '/read_projects_by_user_email/' + email,
-			headers: {
-				'accept': 'application/json',
-				'Authorization': "Bearer " + token,
-			},
-		}).then(response => {
-			if (response.status === 201) {
-				console.log({"Response projects ":response.data});	
-				setProjects(response.data);
-				console.log({"Load projects from nav successfuly ": projects});
-				//alert("Load projects successfuly");
-			}else {
-				console.log("Load from server Failed in nav routing, please try again");			
-			}
-		}).catch((error) => {
-			console.log({"An error ocur in nav routing": error});
-		});								
-	}	
-	
-	useEffect(()=> {
-		fetchProjects(user.email);
-    }, []);	 	
 	
 	return (
 		<>
@@ -67,35 +36,31 @@ const Navigation = ( props ) => {
 								<Nav.Link>Projects</Nav.Link>
 							</LinkContainer>
 							{isAdmin && 
-								<LinkContainer to="/admin">
-									<Nav.Link>Admin panel</Nav.Link>
-								</LinkContainer>					
-							}							
+							<NavDropdown title="Admin panel">
+								<NavDropdown.Item>
+									<LinkContainer to="/about">
+										<Nav.Link>Admin projects</Nav.Link>
+									</LinkContainer>									
+								</NavDropdown.Item>	
+								<NavDropdown.Item>
+									<LinkContainer to="/admin">
+										<Nav.Link>Admin users</Nav.Link>
+									</LinkContainer>									
+								</NavDropdown.Item>	
+							</NavDropdown >
+							}
 							<LinkContainer to="/about">
 								<Nav.Link>About Us</Nav.Link>
-							</LinkContainer>	
+							</LinkContainer>
 						</Nav>	
 						<Nav className="justify-content-end">
-							<NavDropdown title={user.email} id="basic-nav-dropdown">
-								<NavDropdown.Item>
-									<p>User projects </p>
-									< ReadUserNumberProjectsInfo />
-								</NavDropdown.Item>
+							<NavDropdown title={user.email} id="basic-nav-dropdown">																				
 								<NavDropdown.Divider />
-								<NavDropdown.Item>									
-									User statistics
-								</NavDropdown.Item>
-								{isAdmin ? ( 
-									<NavDropdown.Item>									
-										General statistics
-									</NavDropdown.Item>								
-								): null}								
+									<ResetUserPasswordDrop />
 								<NavDropdown.Divider />
-								<ResetUserPasswordDrop />
-								<NavDropdown.Divider />
-								<NavDropdown.Item as="button" onClick={logoutUser}>
-									LogOut
-								</NavDropdown.Item>
+									<NavDropdown.Item as="button" onClick={logoutUser}>
+										LogOut
+									</NavDropdown.Item>
 							</NavDropdown>
 						</Nav>
 					</Navbar.Collapse>

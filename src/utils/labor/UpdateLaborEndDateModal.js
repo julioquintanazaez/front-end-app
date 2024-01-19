@@ -6,14 +6,13 @@ import axios from 'axios';
 import { format } from "date-fns";
 import { DayPicker, DateFormatter } from "react-day-picker";
 import DatePicker from "react-datepicker";
+import { useNavigate } from "react-router";
 
 
 export default function UpdateLaborEndDateModal( ) {
 	
 	const [show, setShow] = useState(false);
-
-	const { token, selectedlabor, selectedproject } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, selectedlabor, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	const [date, setDate] = useState(new Date());
 	
 	const updateLabor = async (id) => {
@@ -32,14 +31,15 @@ export default function UpdateLaborEndDateModal( ) {
 			if (response.status === 201) {
 				console.log("Labor data updated successfuly ");
 				setDate("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Labor end date updated successfully");
 			}else {
 				console.log("Update labor failed, please try again");	
 				alert("Update labor failed, please try again");	
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");
-			alert("An error ocurr ");	
+			alert("An error ocurr ");
+			handleLogout();
 		});				  
 	}
   
@@ -49,7 +49,7 @@ export default function UpdateLaborEndDateModal( ) {
 	}
 	
 	const handleUpdate = () => {
-		if (date != null){
+		if (date !== ""){
 			updateLabor(selectedlabor.id);
 			setShow(false);
 		}else{

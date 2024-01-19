@@ -3,14 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-
+import { useNavigate } from "react-router";
 
 export default function UpdateEquipmentModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [equipment_quantity, setEquipment_quantity] = useState("");
 	const [equipment_unit_price, setEquipment_unit_price] = useState("");
 	
@@ -32,8 +31,8 @@ export default function UpdateEquipmentModal( props ) {
 				console.log("Equipment data updated successfuly ");
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
-				setControlUpdates(handleControlUpdate());
-				alert("Equipment data updated successfuly");	
+				alert("Equipment data updated successfuly");
+				setMessages("Equipment updated successfuly")
 			}else {
 				console.log("Update Equipment failed, please try again");	
 				alert("Update Equipment failed, please try again");	
@@ -41,6 +40,7 @@ export default function UpdateEquipmentModal( props ) {
 		}).catch((error) => {
 			console.log("An error ocurr ");
 			alert("An error ocurr ");	
+			handleLogout();
 		});				  
 	}
   
@@ -51,7 +51,7 @@ export default function UpdateEquipmentModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (equipment_quantity != null && equipment_unit_price != null){
+		if (equipment_quantity !== "" && equipment_unit_price !== ""){
 			updateEquipment(props.equipment.id);
 		}else{
 			alert("Some missing parameters");

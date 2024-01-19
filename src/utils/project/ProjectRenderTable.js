@@ -10,10 +10,11 @@ import moment from "moment";
 
 export default function ProjectRenderTable ( props ) {
 
-	const { token } = useContext(Context); 	
+	const { token } = useContext(Context); 
+	const [projects, setProjects] = useContext(Context);
 
 	const renderTableData = () => {
-		return props.values.projects?.map((project, index) => (
+		return projects?.map((project, index) => (
 				<tr className="row-md" key={project.id}>
 					<th scope="row">{index + 1}</th>					
 					<td>{project.project_name}</td>

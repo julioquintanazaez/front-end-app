@@ -5,17 +5,18 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import AlertMessage from './../../components/AlertMessage.js';
+import { Table } from 'react-bootstrap';
 
 
 
 const UserTable = (props) => {
 
-	const { token, user, controlUpdates, setControlUpdates, handleControlUpdate } = useContext(Context);
+	const { token, user, messages, setMessages, handleLogout } = useContext(Context);
     const [users, setUsers] = useState([]); 	
 	
 	useEffect(()=> {
         fetchUsers();
-    }, [controlUpdates]);
+    }, [messages]);
 		
 	const fetchUsers = async () => {
 		
@@ -36,13 +37,13 @@ const UserTable = (props) => {
 			}
 		}).catch((error) => {
 			console.log({"An error ocur": error});
-			
+			handleLogout();
 		});			  
 	}
 	
 	const deleteUser = async (username) => {		 
 		
-		if (username != ""){
+		if (username !== ""){
 			if (username != user.username){
 				await axios({
 					method: 'delete',
@@ -54,7 +55,7 @@ const UserTable = (props) => {
 				}).then(response => {
 					if (response.status === 201) {
 						console.log("User Successfuly deleted");	
-						setControlUpdates(handleControlUpdate());
+						setMessages("User deleted successfuly");
 						alert("User Successfuly deleted");			
 					}else {
 						console.log("User delete Failed, please try again");
@@ -63,6 +64,7 @@ const UserTable = (props) => {
 				}).catch((error) => {
 					console.log(error);
 					alert("Something rong with the server conection");
+					handleLogout();
 				});
 			}else{
 				alert("Please cant not delete your own user");	
@@ -74,7 +76,7 @@ const UserTable = (props) => {
 	
 	const activateUser = async (user_item) => {
 		
-		if (user_item.username != ""){
+		if (user_item.username != null){
 			await axios({
 				method: 'put',
 				url: "/activate_user/" + user_item.username,
@@ -89,7 +91,7 @@ const UserTable = (props) => {
 				if (response.status === 201) {
 					console.log({"Response ": response.data});	
 					console.log("User updated successfuly");
-					setControlUpdates(handleControlUpdate());
+					setMessages("User activated successfuly");
 					alert("User updated successfuly");
 				}else {
 					console.log({"Update goes rongs": response.data});
@@ -98,6 +100,7 @@ const UserTable = (props) => {
 			}).catch((error) => {
 				console.log({"An error ocur": error});
 				alert("Something rong with the server conection");
+				handleLogout();
 			});		
 		}else{
 			alert("Please select a user...");
@@ -120,13 +123,10 @@ const UserTable = (props) => {
 					<td>{user_item.email}</td>
 					<td>{user_item.role[0]}</td>
 					<td>{user_item.disable ? "Not Active" : "Active"}</td>
-					<td> 
-						
-						<div className="col-sm-10 justify-content-end">
-						
-							<div className="row">						
-								
-								<div className="col-sm-2">
+					<td> 						
+						<div className="col justify-content-end">						
+							<div className="row">											
+								<div className="col">
 									<div className="d-grid gap-3">
 										<button 
 											type="button" 
@@ -136,7 +136,7 @@ const UserTable = (props) => {
 										</button>
 									</div>
 								</div>
-								<div className="col-sm-2">
+								<div className="col">
 									<div className="d-grid gap-3">
 										<button 
 											type="button" 
@@ -146,7 +146,7 @@ const UserTable = (props) => {
 										</button>
 									</div>
 								</div>
-								<div className="col-sm-2">	
+								<div className="col">	
 									<div className="d-grid gap-3">
 										<button 
 											type="button" 
@@ -155,37 +155,32 @@ const UserTable = (props) => {
 												Activate
 										</button>
 									</div>
-								</div>	
-								
-							</div>
-							
+								</div>									
+							</div>						
 						</div>						
-						
 					</td>
-				</tr>
+				</tr>					
 			));
 		}
 
 	return (
 		<div className>            	
-            <div className="table-responsive-md">
-				<table className="table table-striped table-bordered ">
-					<thead className="table-dark">
-						<tr>
-							<th scope="col">#</th>	
-							<th scope="col">Name</th>							
-							<th scope="col">User</th>
-							<th scope="col">Mail</th>							
-							<th scope="col">Role</th>
-							<th scope="col">Active</th>
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody className="table-group-divider">						
-						{renderTableData()}
-					</tbody>
-				</table>
-			</div>          
+            <Table className="table table-striped table-bordered" responsive>
+				<thead className="table-dark">
+					<tr>
+						<th scope="col">#</th>	
+						<th scope="col">Name</th>							
+						<th scope="col">User</th>
+						<th scope="col">Mail</th>							
+						<th scope="col">Role</th>
+						<th scope="col">Active</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody className="table-group-divider">						
+					{renderTableData()}
+				</tbody>
+			</Table>   
         </div>
 	);  
 }

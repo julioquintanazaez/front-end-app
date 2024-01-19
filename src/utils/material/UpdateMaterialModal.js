@@ -9,8 +9,7 @@ export default function UpdateMaterialModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [material_quantity, setMaterial_quantity] = useState("");
 	const [material_price, setMaterial_price] = useState("");
 	
@@ -34,7 +33,7 @@ export default function UpdateMaterialModal( props ) {
 				console.log("Material data updated successfuly ");
 				setMaterial_quantity("");
 				setMaterial_price("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Material updated successfully");
 				alert("Material data updated successfuly");	
 			}else {
 				console.log("Update Material failed, please try again");	
@@ -43,6 +42,7 @@ export default function UpdateMaterialModal( props ) {
 		}).catch((error) => {
 			console.log("An error ocurr ");
 			alert("An error ocurr ");	
+			handleLogout();
 		});				  
 	}
   
@@ -53,7 +53,7 @@ export default function UpdateMaterialModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (material_quantity != null && material_price != null){
+		if (material_quantity !== "" && material_price !== ""){
 			updateMaterial(material.id);
 		}else{
 			alert("Some missing parameters");

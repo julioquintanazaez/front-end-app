@@ -9,8 +9,7 @@ export default function UpdateUserModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token } = useContext(Context);	
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [full_name, setFullName] = useState("");
 	const [username, setUserName] = useState("");
 	const [useremail, setEmail] = useState("");
@@ -35,12 +34,13 @@ export default function UpdateUserModal( props ) {
 				setFullName("");	
 				setUserName("");	
 				setEmail("");	
-				setControlUpdates(handleControlUpdate());
+				setMessages("User updated successfully");
 			}else {
 				console.log({"Update goes rongs": response.data});			
 			}
 		}).catch((error) => {
 			console.log({"An error ocur": error});
+			handleLogout();
 		});				  
 	}
   
@@ -52,7 +52,7 @@ export default function UpdateUserModal( props ) {
 	}
 	
 	const handleUpdate = () => {
-		if (username != null && full_name != null && useremail != null){
+		if (username !== "" && full_name !== "" && useremail !== ""){
 			updateUser(props.selecteduser.username);
 		}else{
 			alert("Some missing parameters for user update");

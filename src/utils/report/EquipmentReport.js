@@ -8,7 +8,7 @@ import axios from 'axios';
 
 export default function EquipmentReport ( props ) {
 	
-	const { token, selectedlabor } = useContext(Context);	
+	const { token, selectedlabor, handleLogout } = useContext(Context);	
 	
 	const generateReportEquipment = async (id) => {		 
 		
@@ -33,6 +33,7 @@ export default function EquipmentReport ( props ) {
 		}).catch((error) => {
 			console.log("Error conecting with backend server or with submited data: " + id);
 			console.log(error);
+			handleLogout();
 		});
 	}
 	

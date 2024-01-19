@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const LaborEquipmentUpdate = (props) => {
 	
-	const { token } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [quantity, setQuantity] = useState("");
 	const [unit_price, setUnit_Price] = useState("");
 		
@@ -29,7 +29,8 @@ const LaborEquipmentUpdate = (props) => {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log({"Response ": response.data});	
-					console.log("Labor & Equipment data updated successfuly");				
+					console.log("Labor & Equipment data updated successfuly");	
+					setMessages("Equipment updated successfuly")
 				}else {
 					console.log({"Update goes rongs": response.data});			
 				}

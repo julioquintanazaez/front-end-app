@@ -1,13 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { useNavigate } from "react-router";
 
 export default function ReadEquipmentInfo ( )  {
 	
-	const { token, selectedlabor, controlUpdates } = useContext(Context);
+	const { token, selectedlabor, messages, handleLogout } = useContext(Context);
 	const [equipment_type, setEquipment_type] = useState("");
 	const [equipment_number, setEquipment_number] = useState("");
 	const [equipment_amount, setEquipment_amount] = useState("");
@@ -33,6 +33,7 @@ export default function ReadEquipmentInfo ( )  {
 			}
 		}).catch((error) => {
 			console.log({"An error ocur reading equipment info": error});
+			handleLogout();
 		});			  
 	}
 	
@@ -41,7 +42,7 @@ export default function ReadEquipmentInfo ( )  {
 		if (selectedlabor.id != null){	
 			fetchInfo_Equipment(selectedlabor.id);
 		}	
-	}, [selectedlabor, controlUpdates]);
+	}, [selectedlabor, messages]);
 		
 	return (							
 		<div>

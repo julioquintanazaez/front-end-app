@@ -5,18 +5,19 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import moment from "moment";
+import { Table } from 'react-bootstrap';
 
 import UpdateMaterialModal from './UpdateMaterialModal.js';
 
 
 export default function MaterialRenderTable ( props ) {
 
-	const { token } = useContext(Context); 
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);	
+	const { token, setMessages, handleLogout } = useContext(Context); 
+	
 	
 	const deleteMaterial = async (id) => {		 
 		
-		if (id != ""){
+		if (id !== ""){
 			await axios({
 				method: 'delete',
 				url: "/delete_material/" + id,			
@@ -34,6 +35,7 @@ export default function MaterialRenderTable ( props ) {
 				}
 			}).catch((error) => {
 				alert("Please select a material...");	
+				handleLogout();
 			});
 		}else{
 			alert("Please select a material...");	
@@ -51,11 +53,13 @@ export default function MaterialRenderTable ( props ) {
 					<td>{material.material_amount}</td>			
 					<td> 
 						<div className="row justify-content-center">	
-							<div className="d-grid gap-2">
-								<div className="col-sm-3">								
+							<div className="col">	
+								<div className="d-grid gap-2">															
 									<UpdateMaterialModal material={material} />								
 								</div>
-								<div className="col-sm-3">
+							</div>
+							<div className="col">
+								<div className="d-grid gap-2">		
 									<button 
 										type="button" 
 										className="btn btn-sm btn-outline-danger" 							
@@ -72,24 +76,22 @@ export default function MaterialRenderTable ( props ) {
 
 	return (
 		<div className>            	
-            <div className="table-responsive-md">
-				<table className="table table-striped table-bordered ">
-					<thead className="table-dark">
-						<tr>
-							<th scope="col">#</th>							
-							<th scope="col">Name</th>	
-							<th scope="col">Type</th>							
-							<th scope="col">Quantity</th>
-							<th scope="col">Price</th>
-							<th scope="col">Amount</th>	
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody className="table-group-divider">						
-						{renderTableData()}
-					</tbody>
-				</table>
-			</div>          
+            <Table className="table table-striped table-bordered" responsive>
+				<thead className="table-dark">
+					<tr>
+						<th scope="col">#</th>							
+						<th scope="col">Name</th>	
+						<th scope="col">Type</th>							
+						<th scope="col">Quantity</th>
+						<th scope="col">Price</th>
+						<th scope="col">Amount</th>	
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody className="table-group-divider">						
+					{renderTableData()}
+				</tbody>
+			</Table>   
         </div>
 	);  
 }

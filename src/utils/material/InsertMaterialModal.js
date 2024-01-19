@@ -10,8 +10,7 @@ export default function InsertMaterialModal( props ) {
 	
 	const [show, setShow] = useState(false);
 
-	const { token, selectedlabor } = useContext(Context);
-	const { setControlUpdates, handleControlUpdate } = useContext(Context);		
+	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);
 	const [material_name, setMaterial_name] = useState(""); 
 	const [material_type, setMaterial_type] = useState("");
 	const [material_quantity, setMaterial_quantity] = useState("");
@@ -43,7 +42,7 @@ export default function InsertMaterialModal( props ) {
 				setMaterial_type("");
 				setMaterial_quantity("");
 				setMaterial_price("");
-				setControlUpdates(handleControlUpdate());
+				setMessages("Material added successfully");
 			} else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Material already exist in DB": material_name});	
@@ -53,7 +52,8 @@ export default function InsertMaterialModal( props ) {
 			}
 		}).catch((error) => {
 			console.log({"An error ocurr ": material_name});
-			alert({"An error ocurr ": material_name});	
+			alert({"An error ocurr ": material_name});
+			handleLogout();
 		});
 	}
   
@@ -66,7 +66,7 @@ export default function InsertMaterialModal( props ) {
 	}
 	
 	const handleSave = () => {
-		if (material_name != null && material_type != null && material_quantity != null && material_price != null){
+		if (material_name !== "" && material_type !== "" && material_quantity !== "" && material_price !== ""){
 			registerMaterial();
 		}else{
 			alert("Some missing parameters");
@@ -84,7 +84,7 @@ export default function InsertMaterialModal( props ) {
 	return (
 		<>
 		<Button className="btn btn-sm" onClick={handleShow}>
-			Material
+			Add Material (+) {selectedlabor.type != null && <span className="badge bg-success"> for {selectedlabor.type} labor </span>}
 		</Button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>

@@ -6,6 +6,7 @@ import { Context } from './../../context/Context';
 import axios from 'axios';
 import moment from "moment";
 import { format } from "date-fns";
+import { Table } from 'react-bootstrap';
 
 import UpdateTaskModal from './UpdateTaskModal.js';
 
@@ -13,12 +14,12 @@ import UpdateTaskModal from './UpdateTaskModal.js';
 
 export default function TaskRenderTable ( props ) {
 
-	const { token, setControlUpdates, handleControlUpdate } = useContext(Context); 
+	const { token, setMessages, handleLogout } = useContext(Context); 
 	
 	
 	const deleteTask = async (task) => {		 
 		let code = task.id;
-		if (task.id != ""){
+		if (task.id != null){
 			await axios({
 				method: 'delete',
 				url: "/delete_task/" + task.id,			
@@ -29,13 +30,14 @@ export default function TaskRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Task successfuly deleted");
-					setControlUpdates(handleControlUpdate());
+					setMessages("Task deleted succesffully");
 					alert("Material delete successfuly");
 				}else {
 					console.log("Task delete failed, please try again");
 				}
 			}).catch((error) => {
 				alert("Please select a task...");	
+				handleLogout();
 			});
 		}else{
 			alert("Please select a task...");	
@@ -44,7 +46,7 @@ export default function TaskRenderTable ( props ) {
 	
 	const changeActivityTask = async (task) => {		 
 		
-		if (task.id != ""){
+		if (task.id != null){
 			await axios({
 				method: 'put',
 				url: "/activate_task/" + task.id,
@@ -58,12 +60,13 @@ export default function TaskRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Task successfuly changed");
-					setControlUpdates(handleControlUpdate());					
+					setMessages("Task activated succesffully");				
 				}else {
 					console.log("Task activation failed, please try again");			
 				}
 			}).catch((error) => {
 				console.log(error);
+				handleLogout();
 			});
 		}else{
 			alert("Please select a task to activate...");	
@@ -89,12 +92,14 @@ export default function TaskRenderTable ( props ) {
 						</button><br/>
 					</div>
 					<td> 
-						<div className="row justify-content-center">	
-							<div className="d-grid gap-2">
-								<div className="col-sm-3">								
+						<div className="row justify-content-center">
+							<div className="col">
+								<div className="d-grid gap-2">	
 									<UpdateTaskModal task={task} />								
 								</div>
-								<div className="col-sm-3">
+							</div>
+							<div className="col">
+								<div className="d-grid gap-2">		
 									<button 
 										type="button" 
 										className="btn btn-sm btn-outline-danger" 							
@@ -111,26 +116,24 @@ export default function TaskRenderTable ( props ) {
 
 	return (
 		<div className>            	
-            <div className="table-responsive-md">
-				<table className="table table-striped table-bordered ">
-					<thead className="table-dark">
-						<tr>
-							<th scope="col">#</th>							
-							<th scope="col">Description</th>							
-							<th scope="col">Mechanicals</th>
-							<th scope="col">Hour</th>
-							<th scope="col">H/men</th>							
-							<th scope="col">Price</th>							
-							<th scope="col">End</th>
-							<th scope="col">Active</th>
-							<th scope="col">Actions</th>
-						</tr>
-					</thead>
-					<tbody className="table-group-divider">						
-						{renderTableData()}
-					</tbody>
-				</table>
-			</div>          
+            <Table className="table table-striped table-bordered" responsive>
+				<thead className="table-dark">
+					<tr>
+						<th scope="col">#</th>							
+						<th scope="col">Description</th>							
+						<th scope="col">Mechanicals</th>
+						<th scope="col">Hour</th>
+						<th scope="col">H/men</th>							
+						<th scope="col">Price</th>							
+						<th scope="col">End</th>
+						<th scope="col">Active</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody className="table-group-divider">						
+					{renderTableData()}
+				</tbody>
+			</Table>   
         </div>
 	);  
 }
