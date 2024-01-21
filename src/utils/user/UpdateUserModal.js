@@ -34,7 +34,7 @@ export default function UpdateUserModal( props ) {
 				setFullName("");	
 				setUserName("");	
 				setEmail("");	
-				setMessages("User updated successfully");
+				setMessages("User updated successfully" + Math.random());
 			}else {
 				console.log({"Update goes rongs": response.data});			
 			}

@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-import { useNavigate } from "react-router";
 
 
 export default function InsertEquipmentModal( props ) {
@@ -36,7 +35,7 @@ export default function InsertEquipmentModal( props ) {
 				setEquipment_name("");
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
-				setMessages("Equipment updated successfuly")
+				setMessages("Equipment updated successfuly" + Math.random())
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Equipment already exist in DB": equipment_name});	

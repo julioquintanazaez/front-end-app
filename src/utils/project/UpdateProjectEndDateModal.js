@@ -32,7 +32,7 @@ export default function UpdateProjectEndDateModal( ) {
 				console.log("Project data updated successfuly ");
 				alert("Project data updated successfuly");	
 				setDate("");
-				setMessages("Project date updated successfully");
+				setMessages("Project date updated successfully" + Math.random());
 			}else {
 				console.log("Update project failed, please try again");	
 				alert("Update project failed, please try again");	

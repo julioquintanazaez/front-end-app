@@ -9,6 +9,7 @@ import MainDashboard from './pages/Dashboard.js';
 import About from './pages/About.js';
 import Admin from './pages/Admin.js';
 import Manager from './pages/Manager.js';
+import Projects from './pages/Projects.js';
 
 
 
@@ -26,9 +27,10 @@ const App = () => {
 			<ContextProvider>				
 				<Routes>
 					<Route index element={<Login />} />
-					<Route path="/" element={<Login />} />					
+					<Route path="/" element={<Login />} />								
 					<Route path="/manager" element={<Manager />} />
-					<Route path="/dashboard" element={<MainDashboard />} />					
+					<Route path="/projects" element={<Projects />} />	
+					<Route path="/dashboard" element={<MainDashboard />} />	
 					<Route path="/admin" element={<Admin />} />					
 					<Route path="/about" element={<About />} />
 					<Route path="*" element={<p>There's nothing here: 404!</p>} />

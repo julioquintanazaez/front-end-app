@@ -12,8 +12,39 @@ import UpdateMaterialModal from './UpdateMaterialModal.js';
 
 export default function MaterialRenderTable ( props ) {
 
-	const { token, setMessages, handleLogout } = useContext(Context); 
+	const { token, handleLogout, selectedlabor } = useContext(Context); 
+	const { messages, setMessages } = useContext(Context); 
+	const [materials, setMaterials] = useState([]);
 	
+	const fetchMaterials = async (id) => {
+		
+		await axios({
+			method: 'get',
+			url: '/read_materials_by_labor_id/' + id,             //
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {
+				console.log({"Response ":response.data});	
+				setMaterials(response.data);
+				console.log("Data was readed successfuly from database");				
+			}else {
+				console.log("Load Failed, please try again");	
+			}
+		}).catch((error) => {
+			console.log({"An error ocur": error});
+			alert({"An error ocur": "Server side"});
+			handleLogout();
+		});			  
+	}
+	
+	useEffect(()=> {
+		if (selectedlabor.id != null){
+			fetchMaterials(selectedlabor.id);
+		}
+    }, [selectedlabor, messages]);	
 	
 	const deleteMaterial = async (id) => {		 
 		
@@ -43,7 +74,7 @@ export default function MaterialRenderTable ( props ) {
 	}	
 
 	const renderTableData = () => {
-		return props.materials?.map((material, index) => (
+		return materials?.map((material, index) => (
 				<tr className="row-md" key={material.id}>
 					<th scope="row">{index + 1}</th>					
 					<td>{material.material_name}</td>

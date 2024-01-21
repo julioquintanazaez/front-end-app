@@ -11,11 +11,41 @@ import { Table } from 'react-bootstrap';
 import UpdateTaskModal from './UpdateTaskModal.js';
 
 
-
 export default function TaskRenderTable ( props ) {
 
-	const { token, setMessages, handleLogout } = useContext(Context); 
+	const { token, selectedlabor, handleLogout } = useContext(Context); 
+	const { messages, setMessages } = useContext(Context); 
+	const [tasks, setTasks] = useState([]);
 	
+	const fetchTasks = async (id) => {
+		
+		await axios({
+			method: 'get',
+			url: '/read_tasks_by_labor_id/' + id,              //
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {
+				console.log({"Response ":response.data});	
+				setTasks(response.data);
+				console.log("Data was readed successfuly from database");				
+			}else {
+				console.log("Load Failed, please try again");	
+			}
+		}).catch((error) => {
+			console.log({"An error ocur": error});
+			alert({"An error ocur": "Server side"});
+			handleLogout();
+		});			  
+	}
+	
+	useEffect(()=> {
+		if (selectedlabor.id != null){
+			fetchTasks(selectedlabor.id);
+		}
+    }, [selectedlabor, messages]);	
 	
 	const deleteTask = async (task) => {		 
 		let code = task.id;
@@ -74,7 +104,7 @@ export default function TaskRenderTable ( props ) {
 	}	
 
 	const renderTableData = () => {
-		return props.tasks?.map((task, index) => (
+		return tasks?.map((task, index) => (
 				<tr className="row-md" key={task.id}>
 					<th scope="row">{index + 1}</th>					
 					<td>{task.description}</td>

@@ -5,7 +5,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-const LaborActivate = ( ) => {
+const LaborActivate = ( props ) => {
 	
 	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);	
 	
@@ -25,7 +25,7 @@ const LaborActivate = ( ) => {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Labor status successfuly changed");
-				setMessages("Labor activated successfully");				
+				setMessages("Labor activated successfully" + Math.random());				
 			}else {
 				console.log("Labor active status  change failed, please try again");			
 			}
@@ -37,20 +37,20 @@ const LaborActivate = ( ) => {
 	
 	const handleActivityLabor = (event) => {
 		event.preventDefault();
-		if (selectedlabor.id != null){
-			changeActivityLabor(selectedlabor);
+		if (props.labor.id != null){
+			changeActivityLabor(props.labor);
 		}else{
 			alert("Not labor selected yet");
 		}
 	}
 	
-	if(selectedlabor.is_active){
+	if(props.labor.is_active){
 		return (	
 			<>
 				<button type="btn" 
 						className="btn btn-sm btn-success"
 						onClick={(e) => handleActivityLabor(e)} > 
-						Activate 
+						Open 
 				</button>
 			</>
 		);
@@ -60,7 +60,7 @@ const LaborActivate = ( ) => {
 				<button type="btn" 
 						className="btn btn-sm btn-outline-success"
 						onClick={(e) => handleActivityLabor(e)} > 
-						Activate 
+						Close 
 				</button>
 			</>
 		);

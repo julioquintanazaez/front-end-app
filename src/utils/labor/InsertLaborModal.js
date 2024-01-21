@@ -41,7 +41,7 @@ export default function InsertLaborModal( ) {
 				setType("");
 				setDescription("");
 				setEndDate("");
-				setMessages("Labor inserted successfully");
+				setMessages("Labor inserted successfully" + Math.random());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				setMessages("Labor exist in Database");
@@ -49,7 +49,7 @@ export default function InsertLaborModal( ) {
 			}else {
 				console.log("Insert labor failed, please try again");	
 				alert("Insert labor failed, please try again");	
-				setMessages("Labor exist in Database");
+				setMessages("Labor exist in Database" + Math.random());
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");

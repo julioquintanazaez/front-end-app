@@ -26,7 +26,7 @@ const LaborDelete = ( ) => {
 					console.log("Labor successfuly deleted");
 					alert("Labor delete successfuly");
 					setSelectedLabor({});
-					setMessages("Labor deleted successfully");
+					setMessages("Labor deleted successfully" + Math.random());
 				}else {
 					console.log("Labor delete failed, please try again");			
 				}

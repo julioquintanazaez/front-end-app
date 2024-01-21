@@ -28,7 +28,7 @@ export default function ResetUserPasswordDrop( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});	
-				setMessages("User password reset successfully");
+				setMessages("User password reset successfully" + Math.random());
 				alert("User Successfuly handle");								
 			}else {
 				console.log({"Update goes rongs": response.data});	

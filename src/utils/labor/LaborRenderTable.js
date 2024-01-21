@@ -8,11 +8,46 @@ import moment from "moment";
 import { Table } from 'react-bootstrap';
 
 import LaborReport from './../report/LaborReport.js'; 
+import LaborActivate from './../labor/LaborActivate.js'; 
 
 
 export default function LaborRenderTable ( ) {
 
-	const { token, setSelectedLabor, projectlabors } = useContext(Context); 
+	const { token, handleLogout, isAdmin } = useContext(Context);
+	const { selectedlabor, setSelectedLabor } = useContext(Context);   
+	const { projectlabors, setProjectLabors } = useContext(Context);   
+	const { selectedproject } = useContext(Context);   
+	const { messages, setMessages } = useContext(Context); 
+
+	const fetchLabors = async (id) => {				
+		if (id != null){				
+			await axios({
+				method: 'get',
+				url: '/read_labors_by_project_id/' + id,  
+				headers: {
+					'accept': 'application/json',
+					'Authorization': "Bearer " + token,
+				},
+			}).then(response => {
+				if (response.status === 201) {
+					console.log({"Response labors ":response.data});	
+					setProjectLabors(response.data);
+					console.log({"Loaded labors successfuly ": projectlabors});					
+				}else {
+					console.log("Load from server Failed, please try again");			
+				}
+			}).catch((error) => {
+				console.log({"An error ocur": error});
+				handleLogout();
+			});				
+		} 					
+	}
+
+	useEffect(()=> {
+		if (selectedproject.id != null){
+			fetchLabors(selectedproject.id);
+		}
+    }, [selectedproject, messages]);	
 		
 	const renderTableData = () => {
 		return projectlabors?.map((labor, index) => (
@@ -22,6 +57,11 @@ export default function LaborRenderTable ( ) {
 					<td>{labor.desc_labor}</td>
 					<td>{labor.inidate_labor != null ? labor.inidate_labor.split('T')[0] : labor.inidate_labor}</td>
 					<td>{labor.enddate_labor != null ? labor.enddate_labor.split('T')[0] : labor.enddate_labor}</td>
+					{isAdmin &&
+					<td>
+						< LaborActivate labor={labor} />
+					</td>	
+					}
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -55,6 +95,11 @@ export default function LaborRenderTable ( ) {
 						<th scope="col">Description</th>
 						<th scope="col">Start Date</th>
 						<th scope="col">End Date</th>
+						{isAdmin &&
+						<th scope="col">
+							Open/Close
+						</th>	
+						}
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>

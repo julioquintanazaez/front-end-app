@@ -30,6 +30,7 @@ export const ContextProvider = ({ children }) => {
 		setProjectLabors([]);
 		setSelectedProject({});
 		setSelectedLabor({});
+		setIsAdmin(false);
 		window.localStorage.removeItem("PROJECT_APP_TOKEN");
 		navigate('/');
 	}
@@ -63,46 +64,17 @@ export const ContextProvider = ({ children }) => {
 				setIsLoggedIn(true);
 				handleRole(response.data.role);
 				console.log({"Response user from context": response.data.role});
-				setMessages("User logged-in successfully");
+				setMessages("User logged-in successfully" + Math.random());
 			}else {	
 				console.log("Registration Failed from context, please try again");				
-				alert("Conextion failed from context something happend with response, redirect to login page");					
 				handleLogout();		
 			}
 		}).catch((error) => {
 			console.log("Registration Failed from context, some error happend with server, please try again");			
-			alert("Conextion failed from context some thing happend with server, redirect to login page");	
 			handleLogout();
 		});			
 	}
-	
-	const fetchProjects = async (email) => {				
-		await axios({
-			method: 'get',
-			url: '/read_projects_by_user_email/' + email,
-			headers: {
-				'accept': 'application/json',
-				'Authorization': "Bearer " + token,
-			},
-		}).then(response => {
-			if (response.status === 201) {
-				console.log({"Response projects ":response.data});	
-				setProjects(response.data);
-				console.log({"Load projects from context successfuly ": projects});
-			}else {
-				console.log("Load from server Failed in nav routing, please try again");			
-			}
-		}).catch((error) => {
-			console.log({"An error ocur in nav routing": error});
-			handleLogout();
-		});								
-	}	
-	
-	useEffect(()=> {
-		if (isLoggedIn){
-			fetchProjects(user.email);
-		}
-    }, [, messages]);	 
+	 
 
 	const handleControlUpdate = () => {			
 		return controlUpdates ? false : true;
@@ -133,7 +105,6 @@ export const ContextProvider = ({ children }) => {
 							selectedlabor, setSelectedLabor,
 							handleGetCurrentUser, handleCleanCurrentUser,
 							handleLogout, isAdmin,
-							controlUpdates, setControlUpdates, handleControlUpdate,
 							messages, setMessages
 						 }}>
 			{children}

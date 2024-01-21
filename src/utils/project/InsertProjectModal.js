@@ -41,7 +41,7 @@ export default function InsertProjectModal( ) {
 				setName("");
 				setDescription("");
 				setEndDate("");
-				setMessages("Project created successfully");
+				setMessages("Project created successfully"+ Math.random());
 			}else if (response.status === 401) {
 				console.log("Not enought permissions");
 				alert("Permisions denied");	

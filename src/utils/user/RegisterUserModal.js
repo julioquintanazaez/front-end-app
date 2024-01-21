@@ -46,7 +46,7 @@ export default function RegisterUserModal( ) {
 				setEmail("");
 				setRole("");
 				setPassword("");
-				setMessages("User data registered successfuly");
+				setMessages("User data registered successfuly" + Math.random());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"User already exist in DB": username});	

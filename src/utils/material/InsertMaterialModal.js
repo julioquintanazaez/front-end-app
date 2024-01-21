@@ -42,7 +42,7 @@ export default function InsertMaterialModal( props ) {
 				setMaterial_type("");
 				setMaterial_quantity("");
 				setMaterial_price("");
-				setMessages("Material added successfully");
+				setMessages("Material added successfully" + Math.random());
 			} else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Material already exist in DB": material_name});	

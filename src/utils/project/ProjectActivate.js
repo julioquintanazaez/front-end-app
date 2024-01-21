@@ -5,7 +5,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
-const ProjectActivate = ( ) => {
+const ProjectActivate = ( props ) => {
 	
 	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	
@@ -25,7 +25,7 @@ const ProjectActivate = ( ) => {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project successfuly changed");	
-				setMessages("Project activated succesfully");
+				setMessages("Project activated succesfully" + Math.random());
 			}else {
 				console.log("Project activation failed, please try again");			
 			}
@@ -37,20 +37,20 @@ const ProjectActivate = ( ) => {
 	
 	const handleActivityProject = (event) => {
 		event.preventDefault();
-		if (selectedproject.id != null){
-			changeActivityProject(selectedproject);
+		if (props.project.id != null){
+			changeActivityProject(props.project);
 		}else{
 			alert("Not project selected to activate");
 		}
 	}
 	
-	if(selectedproject.is_active){
+	if(props.project.is_active){
 		return (	
 			<>
 				<button type="btn" 
 						className="btn btn-sm btn-success"
 						onClick={(e) => handleActivityProject(e)} > 
-						Activate 
+						Open 
 				</button>
 			</>
 		);
@@ -58,9 +58,9 @@ const ProjectActivate = ( ) => {
 		return (	
 			<>
 				<button type="btn" 
-						className="btn btn-sm btn-outline-success"
+						className="btn btn-sm btn-danger"
 						onClick={(e) => handleActivityProject(e)} > 
-						Activate 
+						Close 
 				</button>
 			</>
 		);

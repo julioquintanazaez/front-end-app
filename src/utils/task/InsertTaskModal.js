@@ -42,7 +42,7 @@ export default function InsertTaskModal( ) {
 				setHour("");
 				setTask_price("");
 				setEnd_Date("");
-				setMessages("Task added succesffully");
+				setMessages("Task added succesffully" + Math.random());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				alert({"Task already exist in DB": description});	

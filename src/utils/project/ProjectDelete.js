@@ -26,7 +26,7 @@ const ProjectDelete = ( ) => {
 				alert("Project delete successfuly");
 				setSelectedProject({});
 				setSelectedLabor({});
-				setMessages("Project deleted successfully");
+				setMessages("Project deleted successfully" + Math.random());
 			}else {
 				console.log("Project delete failed, please try again");			
 			}

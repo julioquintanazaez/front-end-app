@@ -34,7 +34,7 @@ export default function UpdateTaskModal( props ) {
 				setMechanicals("");
 				setHour("");
 				setTask_price("");
-				setMessages("Task updated succesffully");
+				setMessages("Task updated succesffully" + Math.random());
 				alert("Task data updated successfuly");	
 			}else {
 				console.log("Update task failed, please try again");	

@@ -55,7 +55,7 @@ const UserTable = (props) => {
 				}).then(response => {
 					if (response.status === 201) {
 						console.log("User Successfuly deleted");	
-						setMessages("User deleted successfuly");
+						setMessages("User deleted successfuly" + Math.random());
 						alert("User Successfuly deleted");			
 					}else {
 						console.log("User delete Failed, please try again");
@@ -91,7 +91,7 @@ const UserTable = (props) => {
 				if (response.status === 201) {
 					console.log({"Response ": response.data});	
 					console.log("User updated successfuly");
-					setMessages("User activated successfuly");
+					setMessages("User activated successfuly" + Math.random());
 					alert("User updated successfuly");
 				}else {
 					console.log({"Update goes rongs": response.data});

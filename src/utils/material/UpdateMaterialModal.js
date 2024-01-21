@@ -33,7 +33,7 @@ export default function UpdateMaterialModal( props ) {
 				console.log("Material data updated successfuly ");
 				setMaterial_quantity("");
 				setMaterial_price("");
-				setMessages("Material updated successfully");
+				setMessages("Material updated successfully" + Math.random());
 				alert("Material data updated successfuly");	
 			}else {
 				console.log("Update Material failed, please try again");	

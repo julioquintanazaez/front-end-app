@@ -11,8 +11,39 @@ import UpdateEquipmentModal from './UpdateEquipmentModal.js';
 
 export default function EquipmentRenderTable ( props ) {
 
-	const { token, setMessages, handleLogout } = useContext(Context); 
+	const { token, handleLogout, selectedlabor } = useContext(Context); 
+	const { messages, setMessages } = useContext(Context); 
+	const [equipments, setEquipments] = useState([]);
 	
+	const fetchEquipments = async (id) => {
+		
+		await axios({
+			method: 'get',
+			url: '/read_equipments_by_labor_id/' + id,        //
+			headers: {
+				'accept': 'application/json',
+				'Authorization': "Bearer " + token,
+			},
+		}).then(response => {
+			if (response.status === 201) {
+				console.log({"Response ":response.data});	
+				setEquipments(response.data);
+				console.log("Data was readed successfuly from database");				
+			}else {
+				console.log("Load Failed, please try again");	
+			}
+		}).catch((error) => {
+			console.log({"An error ocur": error});
+			alert({"An error ocur": "Server side"});
+			handleLogout();
+		});			  
+	}
+	
+	useEffect(()=> {
+		if (selectedlabor.id != null){
+			fetchEquipments(selectedlabor.id);
+		}
+    }, [selectedlabor, messages]);	
 	
 	const deleteEquipment = async (id) => {		 
 		
@@ -27,9 +58,8 @@ export default function EquipmentRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Equipment Successfuly deleted");
-					setControlUpdates(handleControlUpdate());
 					alert("Equipment delete successfuly");
-					setMessages("Equipment deleted successfully");
+					setMessages("Equipment deleted successfully:" + Math.random());
 				}else {
 					console.log("Equipment delete Failed, please try again");
 				}
@@ -43,7 +73,7 @@ export default function EquipmentRenderTable ( props ) {
 	}	
 
 	const renderTableData = () => {
-		return props.equipments?.map((equipment, index) => (
+		return equipments?.map((equipment, index) => (
 				<tr className="row-md" key={equipment.id}>
 					<th scope="row">{index + 1}</th>					
 					<td>{equipment.equipment_name}</td>

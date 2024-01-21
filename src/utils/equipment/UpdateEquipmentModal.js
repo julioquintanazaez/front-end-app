@@ -32,7 +32,7 @@ export default function UpdateEquipmentModal( props ) {
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
 				alert("Equipment data updated successfuly");
-				setMessages("Equipment updated successfuly")
+				setMessages("Equipment updated successfuly" + Math.random())
 			}else {
 				console.log("Update Equipment failed, please try again");	
 				alert("Update Equipment failed, please try again");	

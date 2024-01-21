@@ -28,7 +28,7 @@ export default function ResetUserPasswordModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});
-				setMessages("User password updated successfully");
+				setMessages("User password updated successfully" + Math.random());
 				alert("User Successfuly handle");								
 			}else {
 				console.log({"Update goes rongs": response.data});	

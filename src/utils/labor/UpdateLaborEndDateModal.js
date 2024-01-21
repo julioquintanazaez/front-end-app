@@ -31,7 +31,7 @@ export default function UpdateLaborEndDateModal( ) {
 			if (response.status === 201) {
 				console.log("Labor data updated successfuly ");
 				setDate("");
-				setMessages("Labor end date updated successfully");
+				setMessages("Labor end date updated successfully" +  Math.random());
 			}else {
 				console.log("Update labor failed, please try again");	
 				alert("Update labor failed, please try again");	

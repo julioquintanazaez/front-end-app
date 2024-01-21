@@ -38,13 +38,13 @@ const Navigation = ( props ) => {
 							{isAdmin && 
 							<NavDropdown title="Admin panel">
 								<NavDropdown.Item>
-									<LinkContainer to="/about">
-										<Nav.Link>Admin projects</Nav.Link>
+									<LinkContainer to="/projects">
+										<Nav.Link>Projects</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 								<NavDropdown.Item>
 									<LinkContainer to="/admin">
-										<Nav.Link>Admin users</Nav.Link>
+										<Nav.Link>Users</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 							</NavDropdown >

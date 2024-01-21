@@ -34,11 +34,11 @@ export default function UpdateLaborModal( props ) {
 				console.log("Labor data updated successfuly ");
 				alert("Labor data updated successfuly");	
 				setDescription("");
-				setMessages("Labor update successfully");
+				setMessages("Labor update successfully" + Math.random());
 			}else {
 				console.log("Update Labor failed, please try again");	
 				alert(Labor);	
-				setMessages("Labor update failed");				
+				setMessages("Labor update failed" + Math.random());				
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");

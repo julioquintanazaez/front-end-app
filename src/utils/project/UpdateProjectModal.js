@@ -36,7 +36,7 @@ export default function UpdateProjectModal( ) {
 				alert({"Project data updated successfuly": project_name});	
 				setName("");
 				setDescription("");
-				setMessages("Project updated successfully");
+				setMessages("Project updated successfully" + Math.random());
 			}else {
 				console.log("Update project failed, please try again");	
 				alert({"Update project failed, please try again": project_name});	
