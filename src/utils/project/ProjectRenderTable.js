@@ -7,6 +7,7 @@ import moment from "moment";
 import { Table } from 'react-bootstrap';
 
 import ProjectActivate from './../project/ProjectActivate.js';
+import ProjectReport from './../report/ProjectReport.js';
 
 export default function ProjectRenderTable ( props ) {
 
@@ -66,7 +67,12 @@ export default function ProjectRenderTable ( props ) {
 											Pick
 									</button>
 								</div>
-							</div>							
+							</div>	
+							<div className="col">
+								<div className="d-grid gap-2">
+									< ProjectReport project={project} />
+								</div>
+							</div>	
 						</div>						
 					</td>
 				</tr>

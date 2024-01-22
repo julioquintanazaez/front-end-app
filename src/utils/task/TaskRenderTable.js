@@ -60,7 +60,7 @@ export default function TaskRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Task successfuly deleted");
-					setMessages("Task deleted succesffully");
+					setMessages("Task deleted succesffully" + Math.random());
 					alert("Material delete successfuly");
 				}else {
 					console.log("Task delete failed, please try again");
@@ -90,7 +90,7 @@ export default function TaskRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Task successfuly changed");
-					setMessages("Task activated succesffully");				
+					setMessages("Task activated succesffully" + Math.random());				
 				}else {
 					console.log("Task activation failed, please try again");			
 				}

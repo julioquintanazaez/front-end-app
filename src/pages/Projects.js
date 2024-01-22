@@ -17,6 +17,7 @@ import ProjectRenderTable from './../utils/project/ProjectRenderTable.js';
 import ProjectActivate from './../utils/project/ProjectActivate.js';
 import UpdateProjectEndDateModal from './../utils/project/UpdateProjectEndDateModal.js';
 import ViewTableProjectModal from './../utils/project/ViewTableProjectModal.js';
+import AllProjectsReport from './../utils/report/AllProjectsReport.js';
 
 
 //Handle Labor 
@@ -105,6 +106,13 @@ const Manager = () => {
 													</div>
 												</div>												
 											</div>											
+										</div>
+										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">	
+											<div className="row">
+												<div className="col col-sm text-end">
+													<AllProjectsReport />
+												</div>												
+											</div>
 										</div>	
 									</div>
 								</div>
