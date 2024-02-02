@@ -6,11 +6,14 @@ import axios from 'axios';
 //import 'chart.js/auto';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut, Pie } from 'react-chartjs-2';
+import {Modal, Button} from 'react-bootstrap';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function GraphProject (  )  {
+export default function GraphProject ( props )  {
 	
+	const [propsproject, setPropsProject] = useState({});
+	const [show, setShow] = useState(false);
 	const { token, messages, handleLogout } = useContext(Context);
 	const { projects, projectlabors, selectedproject } = useContext(Context);
 	const [labortotals, setLaborsTotals] = useState([]);		
@@ -45,10 +48,10 @@ export default function GraphProject (  )  {
 	}		
 	
 	useEffect(()=> {
-		if (selectedproject.id != null){
-			fetchLaborTotals(selectedproject.id);
+		if (props.project.id != null){
+			fetchLaborTotals(props.project.id);
 		}
-    }, [selectedproject, projects, messages]);
+    }, [props, projects, messages]);
 	
 	for (var i=0; i<labortotals.length; i++) {
 		data_values.push(Number(labortotals[i]["Total_amount"]));	
@@ -59,9 +62,9 @@ export default function GraphProject (  )  {
 	const projectData = {
 		labels: tags_values,
 		datasets: [{
-			label: selectedproject.project_name,
+			label: "Amount",
 			data: data_values,
-			backgroundColor: bg_colors, //['#FF708D', '#884DFF', '#232E52'], //rgba(53, 162, 235, 0.3)
+			backgroundColor: bg_colors, 
 			borderWidth: 1,
 			borderColor: 'rgb(53, 162, 235)',
 			hoverBorderWidth: 3,
@@ -70,34 +73,52 @@ export default function GraphProject (  )  {
 		}]
 	}
 	
+	const handleClose = () => {
+		setShow(false);
+	}
+	
+	const handleShow = () => {
+		if (props.project.id != null){	
+			setPropsProject(props.project);
+			setShow(true);  
+		}
+	}
+
 	return (							
-		<div>
-			<div className="col">
-				<div className="card">
-					<h5 className="card-header">{selectedproject.project_name} statistics</h5>
-					<div className="card-body">		
-					{selectedproject.project_name != null 
-						? <Pie
-							data={projectData}
-							options={{
-								responsive: true,
-								maintainAspectRatio: false,
-								title:{
-									display: true,
-									text: 'selectedproject.project_name',
-									fontSize: '20'
-								},
-								legend: {
-									display: true,
-									position: 'right'
-								}	
-							}}
-						/>
-						: <span className="badge bg-warning"> No project select </span>
-					}
-					</div>
-				</div>
-			</div>	
-		</div>
+		<>
+			<Button className="nextButton btn-sm" onClick={handleShow}>
+				Stats
+			</Button>
+			<Modal show={show} onHide={handleClose} size="lm" > 
+			<Modal.Header closeButton>
+				<Modal.Title>
+					Statistics for {propsproject.project_name}
+				</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>					
+				 <Pie
+					data={projectData}
+					options={{
+						responsive: true,
+						maintainAspectRatio: false,
+						title:{
+							display: true,
+							text: 'Items',
+							fontSize: '20'
+						},
+						legend: {
+							display: true,
+							position: 'right'
+						}	
+					}}
+				/>			
+			</Modal.Body>
+			<Modal.Footer>		
+				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
+					Close
+				</Button>						  
+			</Modal.Footer>
+			</Modal>
+		</>		
 	);
 }

@@ -1,15 +1,23 @@
-import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
+import React, {useState, useEffect, useContext} from "react";
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function InsertProjectModal( ) {
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, user } = useContext(Context);	
 	const { setMessages, handleLogout } = useContext(Context);	
 	const [name, setName] = useState(""); 
@@ -37,24 +45,23 @@ export default function InsertProjectModal( ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project data inserted successfuly");
-				alert("Project Successfuly inserted");	
 				setName("");
 				setDescription("");
 				setEndDate("");
 				setMessages("Project created successfully"+ Math.random());
+				toast.success("Project added successfuly");
 			}else if (response.status === 401) {
 				console.log("Not enought permissions");
-				alert("Permisions denied");	
+				toast.danger("Not enought permissions");
 			}else if (response.status === 500) {
 				console.log("Integrity error");
-				alert("Project already exist in DB");	
+				toast.danger("Project already exist in DB");
 			}else {
 				console.log("Insert project Failed, please try again");	
-				alert("Insert project Failed, please try again");	
+				toast.danger("Insert project Failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr");
-			alert("An error ocurr");
+			console.log("An error ocurr");			
 			handleLogout();
 		});				  
 	}
@@ -66,67 +73,90 @@ export default function InsertProjectModal( ) {
 		setShow(false);
 	}
 	
-	const handleSave = () => {
-		if (name !== "" && description !== "" && enddate !== "" && user.username != null && user.email != null){			
+	const handleShow = () => setShow(true); 
+
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
 			registerProject();
-		}else{
-			alert("Some missing parameters");
+			handleClose();
+			setValidated(false);
 		}
 	}
-
-	const handleShow = () => setShow(true);  
 
 	return (
 		<>
 		<Button className="nextButton btn-sm" onClick={handleShow}>
 			Create project
 		</Button>
+		<ToastContainer />
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>					
 					<p>Insert project data</p>
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
 				
-				<input type="text" value={name}
-				  onChange={(e) => setName(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some place"
-				  required
-				/>
-				<div className="invalid-feedback">
-					Please provide a valid password
-				</div>
-				<input type="text" value={description}
-				  onChange={(e) => setDescription(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some to-do"
-				  required
-				/>
-				<div className="invalid-feedback">
-					Please provide a valid password
-				</div>
-				<label> Set-up deadline for the project </label>
-				<div className="day">
-					<DatePicker 
-						showIcon
-						selected={enddate} 
-						onChange={(date) => setEndDate(date)} 
-						dateFormat="Pp"
-					/>
-				</div>
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Write a name for the project</Form.Label>
+					  <Form.Control
+						required					  
+						type="text"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						placeholder="e.g: Some place"
+						defaultValue=""
+					  />							
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write a description for the project</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						placeholder="e.g: Some to-do"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="6" controlId="validationCustom03" >
+					  <Form.Label>Set-up a deadline for the project</Form.Label>
+						<DatePicker 
+							showIcon
+							selected={enddate} 						
+							onChange={(enddate) => setEndDate(enddate)} 
+							dateFormat="Pp"
+						/>
+					</Form.Group>					
+				  </Row>
+				  
+				  <Button type="submit">Save project</Button>
+				  
+				</Form>
 			
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleSave}>
-					Save project
-				</Button>		  
+				</Button>  
 			</Modal.Footer>
 			</Modal>
 		</>

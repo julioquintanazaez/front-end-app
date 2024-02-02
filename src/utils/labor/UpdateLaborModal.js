@@ -1,14 +1,23 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
 
-export default function UpdateLaborModal( props ) {
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+export default function UpdateLaborModal ( props ) {
 	
+	const [labor, setLabor] = useState(false);
 	const [show, setShow] = useState(false);
+	const [validated, setValidated] = useState(false);
 	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);
 	const { setControlUpdates, handleControlUpdate } = useContext(Context);		
 	const [desc_labor, setDescription] = useState("");
@@ -32,41 +41,52 @@ export default function UpdateLaborModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Labor data updated successfuly ");
-				alert("Labor data updated successfuly");	
+				toast.success("Labor data updated successfuly");				
 				setDescription("");
 				setMessages("Labor update successfully" + Math.random());
 			}else {
-				console.log("Update Labor failed, please try again");	
-				alert(Labor);	
+				toast.danger("Update Labor failed, please try again");
 				setMessages("Labor update failed" + Math.random());				
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			alert("An error ocurr ");	
+			console.log("An error ocurr");
+			toast.warning("An error ocurr");
 			handleLogout();
 		});				  
 	}
   
 	const handleClose = () => {
+		setType("");
 		setDescription("");
 		setShow(false);
 	}
 	
-	const handleUpdate = () => {
-		if (desc_labor !== "" && type !== ""){
-			updateLabor(selectedlabor.id);
-		}else{
-			alert("Some missing parameters");
-		}
-	}
-
 	const handleShow = () => {
-		if (selectedlabor.id != null){		
+		if (props.labor.id != null){
+			setLabor(props.labor);
 			setShow(true);  
 		}else{
-			alert("Not labor selected yet");
+			toast.warning("Not labor selected yet");
 		}
 	}
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			updateLabor(labor.id);
+			handleClose();
+			setValidated(false);
+		}
+	};
 	
 	return (
 		<>
@@ -76,39 +96,55 @@ export default function UpdateLaborModal( props ) {
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Update labor {selectedlabor.type}
+					Update labor {labor.type}
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-			
-				<Form.Label>Select a role</Form.Label>
-				<Form.Control 
-						as="select" 
-						onClick={(e) => setType(e.target.value)}
+				
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Select a new labor type</Form.Label>
+					    <Form.Control 
+						  required
+						  as="select" 
+						  onClick={(e) => setType(e.target.value)}
 						>
 						{options?.map(opt => (
 							<option key={opt} value={opt} >
 								{opt}
 							</option>
-						))}						
-				</Form.Control>
-				<label> Old type: {selectedlabor.type} </label>		
-
-				<input type="text" value={desc_labor}
-				  onChange={(e) => setDescription(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some to-do"
-				/>
-				<label> Old description: {selectedlabor.desc_labor} </label>		
+						))}	
+					  </Form.Control>
+					  <label> Old type: {labor.type} </label>		
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write some description for this labor</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={desc_labor}
+						onChange={(e) => setDescription(e.target.value)}
+						placeholder="e.g: Some to-do"
+						defaultValue=""
+					  />
+					  <label> Old description: {labor.desc_labor} </label>		
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				 
+				  
+				  <Button type="submit">Update data</Button>
+				  
+				</Form>
 				
 			</Modal.Body>
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleUpdate}>
-					Update labor
-				</Button>		  
+				</Button>					  
 			</Modal.Footer>
 			</Modal>
 		</>

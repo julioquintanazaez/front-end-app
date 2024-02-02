@@ -1,16 +1,26 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import addDays from "date-fns/addDays";
-import { Form } from 'react-bootstrap';
+
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function InsertLaborModal( ) {
 	
 	const [show, setShow] = useState(false);
+	const [validated, setValidated] = useState(false);
 
 	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	const [type, setType] = useState(""); 
@@ -27,7 +37,6 @@ export default function InsertLaborModal( ) {
 			data: {
 				type: type,
 				desc_labor: desc_labor,				
-				enddate_labor: enddate.toISOString().split('T')[0],
 				project_id: selectedproject.id,	
 			},
 			headers: {
@@ -37,23 +46,22 @@ export default function InsertLaborModal( ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Labor data inserted successfuly ");
-				alert("Labor Successfuly inserted");	
+				toast.success("Labor added successfuly");
 				setType("");
 				setDescription("");
-				setEndDate("");
 				setMessages("Labor inserted successfully" + Math.random());
 			}else if (response.status === 500) {
 				console.log("Integrity error");
 				setMessages("Labor exist in Database");
-				alert("Labor already exist in DB");	
+				toast.danger("Labor already exist in DB");
 			}else {
 				console.log("Insert labor failed, please try again");	
-				alert("Insert labor failed, please try again");	
+				toast.danger("Insert labor failed, please try again");
 				setMessages("Labor exist in Database" + Math.random());
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			alert("An error ocurr ");	
+			console.log("An error ocurr");
+			toast.danger("An error ocurr");	
 			handleLogout();
 		});	  
 	}
@@ -61,7 +69,6 @@ export default function InsertLaborModal( ) {
 	const handleClose = () => {
 		setType("");
 		setDescription("");
-		setEndDate("");
 		setShow(false);
 	}
 	
@@ -69,7 +76,7 @@ export default function InsertLaborModal( ) {
 		if (type !== "" && desc_labor !== "" && selectedproject.id != null && enddate != null){
 			registerLabor();
 		}else{
-			alert("Some missing parameters");
+			toast.warning("Some missing parameters");
 		}
 	}
 
@@ -77,9 +84,27 @@ export default function InsertLaborModal( ) {
 		if (selectedproject.id != null){		
 			setShow(true);  
 		}else{
-			alert("Not project selected for labor creation");
+			toast.warning("Not project selected for labor creation");
 		}
 	}  
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			registerLabor();
+			handleClose();
+			setValidated(false);
+		}
+	}
 
 	return (
 		<>
@@ -92,48 +117,48 @@ export default function InsertLaborModal( ) {
 					Hire a labor for project {selectedproject.project_name}
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
 				
-				<Form.Label>Select a labor to add</Form.Label>
-				<Form.Control 
-						as="select" 
-						onClick={(e) => setType(e.target.value)}
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Select a labor type from list</Form.Label>
+					    <Form.Control 
+						  required
+						  as="select" 
+						  onClick={(e) => setType(e.target.value)}
 						>
 						{options?.map(opt => (
 							<option key={opt} value={opt} >
 								{opt}
 							</option>
-						))}						
-				</Form.Control>
-				
-				<input type="text" value={desc_labor}
-				  onChange={(e) => setDescription(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some to-do"
-				/>
-				
-				<label> Set-up deadline for the project </label>
-				<div className="day">
-					<DatePicker 
-						showIcon
-						minDate={new Date(selectedproject.inidate_proj != "" ? selectedproject.inidate_proj : new Date())}	
-						maxDate={new Date(selectedproject.enddate_proj != "" ? selectedproject.enddate_proj : new Date())}
-						selected={enddate} 						
-						onChange={(enddate) => setEndDate(enddate)} 
-						dateFormat="Pp"
-					/>
-				</div>
+						))}	
+					  </Form.Control>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write some description for this labor</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={desc_labor}
+						onChange={(e) => setDescription(e.target.value)}
+						placeholder="e.g: Some to-do"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				  
+				  <Button type="submit">Save data</Button>
+				</Form>
 				
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleSave}>
-					Save labor
-				</Button>		  
+				</Button>					  
 			</Modal.Footer>
 			</Modal>
 		</>

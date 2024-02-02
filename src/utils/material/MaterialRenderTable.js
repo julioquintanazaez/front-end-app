@@ -1,14 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import moment from "moment";
 import { Table } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import UpdateMaterialModal from './UpdateMaterialModal.js';
-
 
 export default function MaterialRenderTable ( props ) {
 
@@ -34,8 +34,7 @@ export default function MaterialRenderTable ( props ) {
 				console.log("Load Failed, please try again");	
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});
-			alert({"An error ocur": "Server side"});
+			console.log({"An error ocur": error});			
 			handleLogout();
 		});			  
 	}
@@ -48,7 +47,7 @@ export default function MaterialRenderTable ( props ) {
 	
 	const deleteMaterial = async (id) => {		 
 		
-		if (id !== ""){
+		if (id != ""){
 			await axios({
 				method: 'delete',
 				url: "/delete_material/" + id,			
@@ -59,17 +58,17 @@ export default function MaterialRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Material Successfuly deleted");
-					setControlUpdates(handleControlUpdate());
-					alert("Material delete successfuly");
+					setMessages("Delete material"  + Math.random());
+					toast.success("Material delete successfuly");
 				}else {
-					console.log("Material delete Failed, please try again");
+					toast.danger("Material delete Failed, please try again");
 				}
 			}).catch((error) => {
-				alert("Please select a material...");	
+				toast.danger("Something happend with server conexion");
 				handleLogout();
 			});
 		}else{
-			alert("Please select a material...");	
+			toast.danger("Please select a material");
 		}
 	}	
 

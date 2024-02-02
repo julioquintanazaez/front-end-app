@@ -6,20 +6,23 @@ import axios from 'axios';
 import { format } from "date-fns";
 import { DayPicker, DateFormatter } from "react-day-picker";
 import DatePicker from "react-datepicker";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-export default function UpdateProjectEndDateModal( ) {
+export default function UpdateProjectEndDateModal ( props ) {
 	
+	const [project, setProject] = useState({});
 	const [show, setShow] = useState(false);
 
 	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	const [date, setDate] = useState(new Date());
 	
-	const updateProject = async () => {
+	const updateProject = async (id) => {
 		
 		await axios({
 			method: 'put',
-			url: "/update_project_date/" + selectedproject.id,
+			url: "/update_project_date/" + id,
 			data: {
 				enddate_proj: date.toISOString().split('T')[0],							
 			},
@@ -30,16 +33,16 @@ export default function UpdateProjectEndDateModal( ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project data updated successfuly ");
-				alert("Project data updated successfuly");	
 				setDate("");
 				setMessages("Project date updated successfully" + Math.random());
+				toast.success("Project data updated successfuly");
 			}else {
 				console.log("Update project failed, please try again");	
-				alert("Update project failed, please try again");	
+				toast.success("Update project failed, please try again");
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");
-			alert("An error ocurr ");	
+			toast.success("An error ocurr");
 			handleLogout();
 		});				  
 	}
@@ -51,17 +54,18 @@ export default function UpdateProjectEndDateModal( ) {
 	
 	const handleUpdate = () => {
 		if (date !== ""){
-			updateProject();
+			updateProject(props.project.id);
 		}else{
-			alert("Some missing parameters fro project update");
+			toast.warning("Some missing parameters fro project update");
 		}
 	}
 
 	const handleShow = () => {
-		if (selectedproject.id != null){		
+		if (props.project.id != null){	
+			setProject(props.project);
 			setShow(true);  
 		}else{
-			alert("Not project selected to update");
+			toast.warning("Not project selected to update");
 		}
 	}
 	
@@ -75,6 +79,7 @@ export default function UpdateProjectEndDateModal( ) {
 		<button className="btn btn-sm btn-secondary" onClick={handleShow}>
 			Date
 		</button>
+		<ToastContainer />
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
@@ -92,7 +97,8 @@ export default function UpdateProjectEndDateModal( ) {
 						minDate={new Date(selectedproject.inidate_proj != "" ? selectedproject.inidate_proj : new Date())}	
 						onChange={(date) => setDate(date)} 
 					/>
-				</div>		
+				</div>	
+				<label>Actual date: {project.enddate_proj != null ? project.enddate_proj.split('T')[0] : project.enddate_proj}</label>
 				
 			</Modal.Body>
 

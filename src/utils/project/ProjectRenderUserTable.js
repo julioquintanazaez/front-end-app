@@ -11,23 +11,22 @@ import UpdateProjectModal from './../project/UpdateProjectModal.js';
 import ProjectDelete from './../project/ProjectDelete.js';
 import UpdateProjectEndDateModal from './../project/UpdateProjectEndDateModal.js';
 import ProjectReport from './../report/ProjectReport.js';
-import GraphProject from './../graph/GraphProject.js';
-//< GraphProject />				
 
-export default function ProjectRenderTable ( ) {
 
-	const { token, user } = useContext(Context);
+export default function ProjectRenderUserTable (  ) {
+
+	const { token, user, isLoggedIn } = useContext(Context);
 	const { messages, setMessages } = useContext(Context);
 	const { handleLogout } = useContext(Context);
 	const { projects, setProjects } = useContext(Context);
 	const { selectedproject, setSelectedProject } = useContext(Context);
 	
 	
-	const fetchProjects = async () => {
+	const fetchProjects = async (email) => {
 		    
 		await axios({
 			method: 'get',
-			url: '/read_projects/',
+			url: '/read_projects_by_user_email/' + email,
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -46,14 +45,16 @@ export default function ProjectRenderTable ( ) {
 	}
 
 	useEffect(()=> {
-        fetchProjects();
+		if (isLoggedIn){
+			fetchProjects(user.email);
+		}
     }, [messages]);	
 		
 	
 	const renderTableData = () => {
 		return projects?.map((project, index) => (
 				<tr className="row-md" key={project.id}>
-					<th scope="row">{index + 1}</th>
+					<th scope="row">{index + 1}</th>	
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -69,7 +70,6 @@ export default function ProjectRenderTable ( ) {
 						</div>						
 					</td>
 					<td>{project.project_name}</td>
-					<td>{project.manager}</td>
 					<td>{project.inidate_proj != null ? project.inidate_proj.split('T')[0] : project.inidate_proj}</td>
 					<td>{project.enddate_proj != null ? project.enddate_proj.split('T')[0] : project.enddate_proj}</td>
 					<td>
@@ -92,19 +92,10 @@ export default function ProjectRenderTable ( ) {
 									<UpdateProjectEndDateModal project={project} />
 								</div>
 							</div>	
-						</div>							
-					</td>
-					<td> 
-						<div className="row justify-content-center">							
-							<div className="col">
-								<div className="d-grid gap-2">
-									< GraphProject project={project} />
-								</div>
-							</div>	
 						</div>						
 					</td>
 					<td> 
-						<div className="row justify-content-center">							
+						<div className="row justify-content-center">								
 							<div className="col">
 								<div className="d-grid gap-2">
 									< ProjectReport project={project} />
@@ -124,12 +115,10 @@ export default function ProjectRenderTable ( ) {
 						<th scope="col">#</th>	
 						<th scope="col">Select</th>	
 						<th scope="col">Name</th>	
-						<th scope="col">Manager</th>	
 						<th scope="col">Start Date</th>
 						<th scope="col">End Date</th>
 						<th scope="col">Open/Close</th>
 						<th scope="col">Actions</th>
-						<th scope="col">Stats</th>
 						<th scope="col">Report</th>
 					</tr>
 				</thead>

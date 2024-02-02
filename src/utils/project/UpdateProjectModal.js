@@ -1,25 +1,33 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
 
 
-export default function UpdateProjectModal( ) {
+export default function UpdateProjectModal( props ) {
+	
+	const [project, setProject] = useState({});
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, user, selectedproject, setMessages, handleLogout } = useContext(Context);
 	const [project_name, setName] = useState(""); 
 	const [desc_proj, setDescription] = useState("");
-	const [manager, setManager] = useState("");
-	const [email, setEmail] = useState("");	
 	
-	const updateProject = async () => {
+	const updateProject = async (id) => {
 		
 		await axios({
 			method: 'put',
-			url: "/update_project/" + selectedproject.id,
+			url: "/update_project/" + id,
 			data: {
 				project_name: project_name,
 				desc_proj: desc_proj,
@@ -33,17 +41,17 @@ export default function UpdateProjectModal( ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Project data updated successfuly ");
-				alert({"Project data updated successfuly": project_name});	
 				setName("");
 				setDescription("");
 				setMessages("Project updated successfully" + Math.random());
+				toast.success("Project data updated successfuly");
 			}else {
 				console.log("Update project failed, please try again");	
-				alert({"Update project failed, please try again": project_name});	
+				toast.danger("Update project failed, please try again");
 			}
 		}).catch((error) => {
 			console.log({"An error ocurr ": project_name});
-			alert({"An error ocurr ": project_name});
+			toast.warning("An error ocurr");
 			handleLogout();
 		});				  
 	}
@@ -54,61 +62,87 @@ export default function UpdateProjectModal( ) {
 		setShow(false);
 	}
 	
-	const handleUpdate = () => {
-		if (name !== "" && desc_proj !== "" && user.username != null && user.email != null){
-			updateProject();
-		}else{
-			alert("Some missing parameters fro project update");
-		}
-	}
-
 	const handleShow = () => {
-		if (selectedproject.id != null){		
+		if (props.project.id != null){	
+			setProject(props.project);
 			setShow(true);  
 		}else{
-			alert("Not project selected to update");
+			toast.warning("Not project selected to update");
 		}
 	}
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			updateProject(props.project.id);
+			handleClose();
+			setValidated(false);
+		}
+	};
 	
 	return (
 		<>
 		<button className="btn btn-sm btn-warning" onClick={handleShow}>
-			Update
+			Update 
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Update project data
+					Update {project.project_name}
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
-				
-				<input type="text" value={project_name}
-				  onChange={(e) => setName(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some place"
-				  required
-				/>
-				<label> Old name: {selectedproject.project_name} </label>
-				
-				<input type="text" value={desc_proj}
-				  onChange={(e) => setDescription(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Some to-do"
-				  required
-				/>
-				<label> Old unit: {selectedproject.desc_proj} </label>						
+			
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>				  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Write a name for the project</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={project_name}
+						onChange={(e) => setName(e.target.value)}
+						placeholder="e.g: Some name"
+						defaultValue=""
+					  />
+					  <Form.Label>Old name: {project.project_name} </Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write a description for the project</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={desc_proj}
+						onChange={(e) => setDescription(e.target.value)}
+						placeholder="e.g: Some to-do"
+						defaultValue=""
+					  />
+					  <Form.Label>Old description: {project.desc_proj} </Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  
+				  <Button type="submit">Save project</Button>
+				  
+				</Form>
 			
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleUpdate}>
-					Update project
-				</Button>		  
+				</Button>	  
 			</Modal.Footer>
 			</Modal>
 		</>

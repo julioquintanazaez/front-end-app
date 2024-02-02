@@ -1,15 +1,22 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function InsertMaterialModal( props ) {
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);
 	const [material_name, setMaterial_name] = useState(""); 
 	const [material_type, setMaterial_type] = useState("");
@@ -37,22 +44,22 @@ export default function InsertMaterialModal( props ) {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Material data inserted successfuly ");
-				alert({"Material Successfuly inserted": material_name});
 				setMaterial_name("");
 				setMaterial_type("");
 				setMaterial_quantity("");
 				setMaterial_price("");
 				setMessages("Material added successfully" + Math.random());
+				toast.success("Material Successfuly inserted");
 			} else if (response.status === 500) {
 				console.log("Integrity error");
-				alert({"Material already exist in DB": material_name});	
+				toast.danger("Material already exist in DB");
 			} else {
 				console.log("Insert material Failed, please try again");	
-				alert({"Insert material Failed, please try again": material_name});	
+				toast.danger("Insert material Failed, please try again");
 			}
 		}).catch((error) => {
 			console.log({"An error ocurr ": material_name});
-			alert({"An error ocurr ": material_name});
+			toast.danger("An error ocurr with the server");
 			handleLogout();
 		});
 	}
@@ -65,21 +72,31 @@ export default function InsertMaterialModal( props ) {
 		setShow(false);
 	}
 	
-	const handleSave = () => {
-		if (material_name !== "" && material_type !== "" && material_quantity !== "" && material_price !== ""){
-			registerMaterial();
-		}else{
-			alert("Some missing parameters");
-		}
-	}
-
 	const handleShow = () => {
 		if (selectedlabor.id != null){		
 			setShow(true);  
 		}else{
-			alert("Not labor selected yet");
+			toast.warning("Not labor selected yet");
 		}
 	}
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			registerMaterial();
+			handleClose();
+			setValidated(false);
+		}
+	};
 
 	return (
 		<>
@@ -92,45 +109,78 @@ export default function InsertMaterialModal( props ) {
 					Insert material data
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
-				
-				<input type="text" value={material_name}
-				  onChange={(e) => setMaterial_name(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="A name (e.g: Rectangular ducks)"
-				/>
-				<Form.Label>Select a role</Form.Label>
-				<Form.Control 
-						as="select" 
-						onClick={(e) => setMaterial_type(e.target.value)}
+			
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Write a name for the material</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={material_name}
+						onChange={(e) => setMaterial_name(e.target.value)}
+						placeholder="A name (e.g: Rectangular ducks)"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Select a material type from list</Form.Label>
+					    <Form.Control 
+						  required
+						  as="select" 
+						  onClick={(e) => setMaterial_type(e.target.value)}
 						>
 						{options?.map(opt => (
 							<option key={opt} value={opt} >
 								{opt}
 							</option>
-						))}						
-				</Form.Control>
-				<input type="text" value={material_quantity}
-				  onChange={(e) => setMaterial_quantity(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="# of units (e.g: 20)"
-				/>
-				<input type="email" value={material_price}
-				  onChange={(e) => setMaterial_price(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="A price (e.g: 120)"
-				/>
+						))}	
+					  </Form.Control>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom03">
+					  <Form.Label>Write some quantity for the material</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={material_quantity}
+						onChange={(e) => setMaterial_quantity(e.target.value)}
+						placeholder="# of units (e.g: 20)"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom03">
+					  <Form.Label>Write some price for the material</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={material_price}
+						onChange={(e) => setMaterial_price(e.target.value)}
+						placeholder="A price (e.g: 120)"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  
+				  <Button type="submit">Save data</Button>
+				  
+				</Form>
 			
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleSave}>
-					Save material
-				</Button>		  
+				</Button>	  
 			</Modal.Footer>
 			</Modal>
 		</>

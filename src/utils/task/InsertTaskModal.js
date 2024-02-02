@@ -1,15 +1,23 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function InsertTaskModal( ) {
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, selectedlabor, setMessages, handleLogout } = useContext(Context);	
 	const [description, setDescription] = useState(""); 
 	const [mechanicals, setMechanicals] = useState("");
@@ -27,7 +35,6 @@ export default function InsertTaskModal( ) {
 				description: description,
 				hour: hour,	
 				task_price: task_price,
-				enddate_task: end_date.toISOString().split('T')[0],
 				labor_task_id: selectedlabor.id, 
 			},
 			headers: {
@@ -41,18 +48,18 @@ export default function InsertTaskModal( ) {
 				setMechanicals("");
 				setHour("");
 				setTask_price("");
-				setEnd_Date("");
 				setMessages("Task added succesffully" + Math.random());
+				toast.success("Task added succesffully");
 			}else if (response.status === 500) {
 				console.log("Integrity error");
-				alert({"Task already exist in DB": description});	
+				toast.warning("Task already exist in DB");
 			}else {
 				console.log("Insert task failed, please try again");	
-				alert({"Insert task failed, please try again": description});	
+				toast.danger("Insert task failed, please try again");
 			}
 		}).catch((error) => {
 			console.log({"An error ocurr ": description});
-			alert({"An error ocurr ": description});	
+			toast.danger("Something happend with server conexion");
 			handleLogout();
 		});					  
 	}
@@ -62,26 +69,34 @@ export default function InsertTaskModal( ) {
 		setMechanicals("");
 		setHour("");
 		setTask_price("");
-		setEnd_Date("");
 		setShow(false);
 	}
 	
-	const handleSave = () => {
-		if (description !== "" && mechanicals !== "" && hour !== "" && task_price !== ""){
-			registerTask();
-			handleClose();
-		}else{
-			alert("Some missing parameters");
-		}
-	}
-
 	const handleShow = () => {
 		if (selectedlabor.id != null && selectedlabor.enddate_labor != null){		
 			setShow(true);  
 		}else{
-			alert("Not labor selected or end date stablished for that labor");
+			toast.warning("Not labor selected or end date stablished for that labor");
 		}
 	} 
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			registerTask();
+			handleClose();
+			setValidated(false);
+		}
+	};
 
 	return (
 		<>
@@ -94,50 +109,73 @@ export default function InsertTaskModal( ) {
 					Insert task data
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
-				
-				<input type="text" value={description}
-				  onChange={(e) => setDescription(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="e.g: Trash can"
-				/>
-				<input type="text" value={mechanicals}
-				  onChange={(e) => setMechanicals(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="# of workers (e.g: 6)"
-				/>
-				<input type="text" value={hour}
-				  onChange={(e) => setHour(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="# of hour (e.g: 2 or 4)"
-				/>
-				<input type="email" value={task_price}
-				  onChange={(e) => setTask_price(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="Price fro the work (e.g: 1200)"
-				/>
-				<label> Set-up deadline dir task </label>
-				<div className="day">
-					<DatePicker 
-						showIcon
-						minDate={new Date(selectedlabor.inidate_labor != "" ? selectedlabor.inidate_labor : new Date())}	
-						maxDate={new Date(selectedlabor.enddate_labor != "" ? selectedlabor.enddate_labor : new Date())}
-						selected={end_date} 
-						onChange={(date) => setEnd_Date(date)} 
-						dateFormat="Pp"
-					/>
-				</div>
 			
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>				 
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write some description for this task</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={description}
+						onChange={(e) => setDescription(e.target.value)}
+						placeholder="e.g: Trash can"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write the number of mechanicals to do this task</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={mechanicals}
+						onChange={(e) => setMechanicals(e.target.value)}
+						placeholder="# of mechanicals for the work (e.g: 6)"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write some hour for this task</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={hour}
+						onChange={(e) => setHour(e.target.value)}
+						placeholder="# of hour (e.g: 2 or 4)"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				 
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Write some price for this task</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={task_price}
+						onChange={(e) => setTask_price(e.target.value)}
+						placeholder="Price fro the work (e.g: 1200)"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Button type="submit">Save data</Button>				  
+				</Form>
+				
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleSave}>
-					Save task
-				</Button>		  
+				</Button>	  
 			</Modal.Footer>
 			</Modal>
 		</>

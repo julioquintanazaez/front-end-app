@@ -7,6 +7,9 @@ import moment from "moment";
 import { Table } from 'react-bootstrap';
 import { useNavigate } from "react-router";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import UpdateEquipmentModal from './UpdateEquipmentModal.js';
 
 export default function EquipmentRenderTable ( props ) {
@@ -34,7 +37,7 @@ export default function EquipmentRenderTable ( props ) {
 			}
 		}).catch((error) => {
 			console.log({"An error ocur": error});
-			alert({"An error ocur": "Server side"});
+			toast.danger("An error ocur loading equipment data from server");
 			handleLogout();
 		});			  
 	}
@@ -58,17 +61,18 @@ export default function EquipmentRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Equipment Successfuly deleted");
-					alert("Equipment delete successfuly");
 					setMessages("Equipment deleted successfully:" + Math.random());
+					toast.success("Equipment delete successfuly");
 				}else {
 					console.log("Equipment delete Failed, please try again");
+					toast.danger("Equipment delete Failed, please try again");
 				}
 			}).catch((error) => {
-				alert("Please select a material...");
+				toast.warning("Something happend with the server conexion");
 				handleLogout();
 			});
 		}else{
-			alert("Please select a material...");	
+			toast.danger("Please select a material...");
 		}
 	}	
 

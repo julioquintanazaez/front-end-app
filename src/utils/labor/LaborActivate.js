@@ -4,6 +4,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LaborActivate = ( props ) => {
 	
@@ -25,9 +27,11 @@ const LaborActivate = ( props ) => {
 		}).then(response => {
 			if (response.status === 201) {
 				console.log("Labor status successfuly changed");
-				setMessages("Labor activated successfully" + Math.random());				
+				setMessages("Labor activated successfully" + Math.random());	
+				toast.success("Labor status successfuly changed");
 			}else {
-				console.log("Labor active status  change failed, please try again");			
+				console.log("Labor active status  change failed, please try again");
+				toast.danger("Labor active status  change failed, please try again");
 			}
 		}).catch((error) => {
 			console.log(error);
@@ -40,7 +44,7 @@ const LaborActivate = ( props ) => {
 		if (props.labor.id != null){
 			changeActivityLabor(props.labor);
 		}else{
-			alert("Not labor selected yet");
+			toast.warning("Not labor selected yet");
 		}
 	}
 	
@@ -50,7 +54,7 @@ const LaborActivate = ( props ) => {
 				<button type="btn" 
 						className="btn btn-sm btn-success"
 						onClick={(e) => handleActivityLabor(e)} > 
-						Open 
+						Working 
 				</button>
 			</>
 		);
@@ -60,7 +64,7 @@ const LaborActivate = ( props ) => {
 				<button type="btn" 
 						className="btn btn-sm btn-outline-success"
 						onClick={(e) => handleActivityLabor(e)} > 
-						Close 
+						Done 
 				</button>
 			</>
 		);

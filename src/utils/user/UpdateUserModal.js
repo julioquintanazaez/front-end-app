@@ -1,18 +1,29 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function UpdateUserModal( props ) {
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [full_name, setFullName] = useState("");
 	const [username, setUserName] = useState("");
-	const [useremail, setEmail] = useState("");
+	const [email, setEmail] = useState("");
+	const [role, setRole] = useState("");
+	
+	const options = ["admin", "manager", "user"]
 	
 	const updateUser = async (username) => {
 		
@@ -22,7 +33,8 @@ export default function UpdateUserModal( props ) {
 			data: {
 					full_name: full_name,
 					username: username,
-					email: useremail,
+					email: email,
+					role: role,
 					},
 			headers: {
 				'accept': 'application/json',
@@ -34,12 +46,16 @@ export default function UpdateUserModal( props ) {
 				setFullName("");	
 				setUserName("");	
 				setEmail("");	
+				setRole("");
 				setMessages("User updated successfully" + Math.random());
+				toast.success("User updated successfully");
 			}else {
-				console.log({"Update goes rongs": response.data});			
+				console.log({"Update goes rongs": response.data});		
+				toast.danger("Process to update user data has failed");
 			}
 		}).catch((error) => {
 			console.log({"An error ocur": error});
+			toast.danger("An error ocurr with server conexion");
 			handleLogout();
 		});				  
 	}
@@ -48,22 +64,43 @@ export default function UpdateUserModal( props ) {
 		setFullName("");	
 		setUserName("");	
 		setEmail("");	
+		setRole("");
 		setShow(false);
 	}
 	
-	const handleUpdate = () => {
-		if (username !== "" && full_name !== "" && useremail !== ""){
-			updateUser(props.selecteduser.username);
-		}else{
-			alert("Some missing parameters for user update");
-		}
-	}
-
 	const handleShow = () => {
 		if (props.selecteduser.username != null){		
 			setShow(true);  
 		}else{
-			alert("Not user selected to update");
+			toast.warning("Not user selected to update");
+		}
+	}
+	
+	const handleSelectRole = (role) => {
+		if (role == "admin"){
+			setRole(["admin", "manager", "user"]);
+		}else if (role == "manager"){
+			setRole(["manager", "user"]);
+		}else{
+			setRole(["user"]);
+		}
+	}
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			updateUser(props.selecteduser.username);
+			handleClose();
+			setValidated(false);
 		}
 	}
 	
@@ -78,45 +115,80 @@ export default function UpdateUserModal( props ) {
 					Update user data
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
-				
-				<input
-					type="text"
-					value={full_name}
-					onChange={(e) => setFullName(e.target.value)}
-					className="form-control mt-3"
-					placeholder="Insert full name"
-				/>
-				<label> Old full name: {props.selecteduser.full_name} </label><br/>
-
-				<input
-				  type="text"
-				  value={username}
-				  onChange={(e) => setUserName(e.target.value)}
-				  className="form-control mt-1"
-				  placeholder="Enter nickname (e.g: peter87)"
-				/>	
-				<label> Old username: {props.selecteduser.username} </label><br/>
-				
-				<input
-				  type="email"
-				  value={useremail}
-				  onChange={(e) => setEmail(e.target.value)}
-				  className="form-control mt-1"
-				  placeholder="Enter email (e.g peter@gmail.com)"
-				/>	
-				<label> Old mail: {props.selecteduser.email} </label><br/>	
+			
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Write user full name</Form.Label>
+					  <Form.Control
+						required					  
+						type="text"
+						value={full_name}
+						onChange={(e) => setFullName(e.target.value)}
+						placeholder="Enter name (e.g: Peter Crouch)"
+						defaultValue=""
+					  />	
+					  <Form.Label>Old full name: {props.selecteduser.full_name}</Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom01">
+					  <Form.Label>Write user name</Form.Label>
+					  <Form.Control
+						required					  
+						type="text"
+						value={username}
+						onChange={(e) => setUserName(e.target.value)}
+						placeholder="Enter nickname (e.g: peter87)"
+						defaultValue=""
+					  />	
+					  <Form.Label>Old username: {props.selecteduser.username}</Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>					  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom02">
+					  <Form.Label>Enter email address</Form.Label>
+					  <Form.Control
+						required
+						type="email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						placeholder="Enter email (e.g peter@gmail.com)"
+						defaultValue=""
+					  />
+					  <Form.Label>Old email: {props.selecteduser.email}</Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>				  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom04">
+					  <Form.Label>Select a role for the user</Form.Label>
+					    <Form.Control 
+						  required
+						  as="select" 
+						  onClick={(e) => handleSelectRole(e.target.value)}
+						>
+						{options?.map(opt => (
+							<option key={opt} value={opt} >
+								{opt}
+							</option>
+						))}	
+					  </Form.Control>
+					  <Form.Label>Old mail: {props.selecteduser.role}</Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Button type="submit">Save user</Button>				  
+				</Form>
 			
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleUpdate}>
-					Update
-				</Button>		  
+				</Button>	  
 			</Modal.Footer>
 			</Modal>
 		</>

@@ -16,9 +16,8 @@ import Projects from './pages/Projects.js';
 const App = () => {	
 	
 	
-	//&& user_logged.role.includes('admin')
 	/*
-	<Route element={<ProtectedRoute isAllowed={ isLoggedIn } />}>
+	<Route element={<ProtectedRoute isAllowed={ isLoggedIn && isAdmin } />}>
 		<Route path="/dashboard" element={<MainDashboard />} />
 	</Route>
 	*/
@@ -30,7 +29,6 @@ const App = () => {
 					<Route path="/" element={<Login />} />								
 					<Route path="/manager" element={<Manager />} />
 					<Route path="/projects" element={<Projects />} />	
-					<Route path="/dashboard" element={<MainDashboard />} />	
 					<Route path="/admin" element={<Admin />} />					
 					<Route path="/about" element={<About />} />
 					<Route path="*" element={<p>There's nothing here: 404!</p>} />

@@ -1,14 +1,22 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function UpdateMaterialModal( props ) {
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [material_quantity, setMaterial_quantity] = useState("");
 	const [material_price, setMaterial_price] = useState("");
@@ -34,14 +42,14 @@ export default function UpdateMaterialModal( props ) {
 				setMaterial_quantity("");
 				setMaterial_price("");
 				setMessages("Material updated successfully" + Math.random());
-				alert("Material data updated successfuly");	
+				toast.success("Material data updated successfuly");
 			}else {
 				console.log("Update Material failed, please try again");	
-				alert("Update Material failed, please try again");	
+				toast.danger("Update Material failed, please try again");
 			}
 		}).catch((error) => {
 			console.log("An error ocurr ");
-			alert("An error ocurr ");	
+			toast.success("An error ocurr with server conexion");
 			handleLogout();
 		});				  
 	}
@@ -52,22 +60,32 @@ export default function UpdateMaterialModal( props ) {
 		setShow(false);
 	}
 	
-	const handleUpdate = () => {
-		if (material_quantity !== "" && material_price !== ""){
-			updateMaterial(material.id);
-		}else{
-			alert("Some missing parameters");
-		}
-	}
-
 	const handleShow = () => {
 		if (material.id != null){		
 			setShow(true);  
 		}else{
-			alert("Not material selected yet");
+			toast.warning("Not material selected yet");
 		}
 	}
 	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			updateMaterial(material.id);
+			handleClose();
+			setValidated(false);
+		}
+	}
+
 	return (
 		<>
 		<button className="btn btn-sm btn-outline-warning" onClick={handleShow}>
@@ -79,29 +97,49 @@ export default function UpdateMaterialModal( props ) {
 					Update material {material.material_name}
 				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>				
-				<input type="text" value={material_quantity}
-				  onChange={(e) => setMaterial_quantity(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="# of units (e.g: 3)"
-				/>
-				<label> Old unit: {material.material_quantity} </label>		
-
-				<input type="text" value={material_price}
-				  onChange={(e) => setMaterial_price(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="price per unit (e.g: 2)"
-				/>
-				<label> Old unit: {material.material_price} </label>
+			<Modal.Body>	
+				
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>				  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom03">
+					  <Form.Label>Write some quantity for the material</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={material_quantity}
+						onChange={(e) => setMaterial_quantity(e.target.value)}
+						placeholder="# of units (e.g: 20)"
+						defaultValue=""
+					  />
+					  <Form.Label>Old quantity: {material.material_quantity}</Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom03">
+					  <Form.Label>Write some price for the material</Form.Label>
+					  <Form.Control
+						required
+						type="text"
+						value={material_price}
+						onChange={(e) => setMaterial_price(e.target.value)}
+						placeholder="A price (e.g: 120)"
+						defaultValue=""
+					  />
+					  <Form.Label>Old unit price: {material.material_price}</Form.Label>
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  
+				  <Button type="submit">Save material</Button>
+				  
+				</Form>
 				
 			</Modal.Body>
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleUpdate}>
-					Update material
-				</Button>		  
+				</Button>  
 			</Modal.Footer>
 			</Modal>
 		</>

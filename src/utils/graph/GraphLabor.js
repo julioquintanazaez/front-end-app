@@ -10,8 +10,9 @@ import {Modal, Button} from 'react-bootstrap';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function GraphLabor (  )  {
+export default function GraphLabor ( props )  {
 	
+	const [propslabor, setPropsLabor] = useState({});
 	const [show, setShow] = useState(false);
 	const { token, messages, handleLogout } = useContext(Context);
 	const { projects, selectedlabor } = useContext(Context);
@@ -45,10 +46,10 @@ export default function GraphLabor (  )  {
 	}		
 	
 	useEffect(()=> {
-		if (selectedlabor.type != null){
-			fetchLaborStatistics(selectedlabor.id);
+		if (props.labor.type != null){
+			fetchLaborStatistics(props.labor.id);
 		}
-    }, [selectedlabor, projects, messages]);	
+    }, [props, projects, messages]);	
 	
 	for (var i=0; i<3; i++) {
 		bg_colors.push(randomRGB());
@@ -61,7 +62,7 @@ export default function GraphLabor (  )  {
 	const laborData = {
 		labels: tags_values,
 		datasets: [{
-			label: "Labor",
+			label: "Amount",
 			data: data_values,
 			backgroundColor: bg_colors, 
 			borderWidth: 1,
@@ -77,10 +78,9 @@ export default function GraphLabor (  )  {
 	}
 	
 	const handleShow = () => {
-		if (selectedlabor.id != null){		
+		if (props.labor.id != null){	
+			setPropsLabor(props.labor);
 			setShow(true);  
-		}else{
-			alert("Not labor selected yet");
 		}
 	}
 
@@ -92,7 +92,7 @@ export default function GraphLabor (  )  {
 			<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Statistics for {selectedlabor.type}
+					Statistics for {propslabor.type}
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>					

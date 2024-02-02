@@ -1,14 +1,22 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Modal, Button} from 'react-bootstrap';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ResetUserPasswordModal( props ) {
 	
 	const [show, setShow] = useState(false);
-
+	const [validated, setValidated] = useState(false);
 	const { token, setMessages, handleLogout } = useContext(Context);	
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("")
@@ -29,14 +37,15 @@ export default function ResetUserPasswordModal( props ) {
 			if (response.status === 201) {
 				console.log({"Response ": response.data});
 				setMessages("User password updated successfully" + Math.random());
-				alert("User Successfuly handle");								
+				toast.success("User password successfuly handle");
 			}else {
 				console.log({"Update goes rongs": response.data});	
-				alert("User reset password failed, please try again");
+				toast.danger("User reset password failed, please try again");
 			}
 			
 		}).catch((error) => {
 			console.log({"An error ocur": error});
+			toast.danger("An error ocurr with server conexion");
 			handleLogout();
 		});				  
 	}
@@ -46,19 +55,29 @@ export default function ResetUserPasswordModal( props ) {
 		setShow(false);
 	}
 	
-	const handleUpdate = () => {
-		if (props.selecteduser.username != null && password !== "" && password === password2){
-			updateUserPassword();
-		}else{
-			alert("Some missing parameters for password");
-		}
-	}
-
 	const handleShow = () => {
 		if (props.selecteduser.username != null){		
 			setShow(true);  
 		}else{
-			alert("Not user selected to update");
+			toast.warning("Not user selected to update");
+		}
+	}
+	
+	const handleSubmit = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+		
+		setValidated(true);
+		
+		event.preventDefault();
+		
+		if (validated){
+			updateUserPassword();
+			handleClose();
+			setValidated(false);
 		}
 	}
 	
@@ -73,42 +92,45 @@ export default function ResetUserPasswordModal( props ) {
 					Reset password
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body>
 				
-				<input
-					type="password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					className="form-control mt-2"
-					placeholder="password"
-					required
-				/>
-				<div className="invalid-feedback">
-					Please provide a valid password
-				</div>
-
-				<input
-				  type="password"
-				  value={password2}
-				  onChange={(e) => setPassword2(e.target.value)}
-				  className="form-control mt-2"
-				  placeholder="Retype password"
-				  required
-				/>	
-				<div className="invalid-feedback">
-					Please provide a valid password
-				</div>
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>				 			  
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom05">
+					  <Form.Label>Write user password</Form.Label>
+					  <Form.Control
+						required
+						type="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						placeholder="Re-enter password"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom06">
+					  <Form.Label>Confirm user pasword</Form.Label>
+					  <Form.Control
+						required
+						type="password"
+						value={password2}
+						onChange={(e) => setPassword2(e.target.value)}
+						placeholder="Re-enter password"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
+				  <Button type="submit">Save user</Button>				  
+				</Form>
 			
 			</Modal.Body>
-
 			<Modal.Footer>		
 				<Button className="btn-sm" variant="secondary" onClick={handleClose}>
 					Close
-				</Button>
-				<Button className="btn-sm" variant="primary" onClick={handleUpdate}>
-					Reset
-				</Button>		  
+				</Button>	  
 			</Modal.Footer>
 			</Modal>
 		</>

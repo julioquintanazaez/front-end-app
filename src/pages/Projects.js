@@ -50,11 +50,10 @@ import CardProjectsTotals from './../utils/info/CardProjectsTotals.js';
 import CardLaborsTotals from './../utils/info/CardLaborsTotals.js';
 import CardProject from './../utils/info/CardProject.js';
 //Graph
-import GraphProject from './../utils/graph/GraphProject.js';
+//import GraphProject from './../utils/graph/GraphProject.js';
 import GraphLaborsTotals from './../utils/graph/GraphLaborsTotals.js';
 import GraphProjectsTotals from './../utils/graph/GraphProjectsTotals.js';
 import GraphLabor from './../utils/graph/GraphLabor.js';
-
 
 //Reports
 import LaborReport from './../utils/report/LaborReport.js';
@@ -87,12 +86,52 @@ const Manager = () => {
 				<div className="col-sm">											
 					<Navigation />											
 				</div>
-			</div>	
+			</div><br/>		
 			
 			<div className="row">				
 				<div className="col"><br/>					
 					<div className="col">					
-						<div className="container overflow-hidden"><br/>	
+						<div className="container overflow-hidden"><br/>								
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">																			
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
+											<div className="row justify-content-center">											
+												<div className="col">		
+													<div className="d-grid gap-2">													
+														< CardProjectsTotals  />														
+													</div>
+												</div>												
+												<div className="col">	
+													<div className="d-grid gap-2">													
+														< CardLaborsTotals  />															
+													</div>
+												</div>												
+											</div>											
+										</div>										
+									</div>									
+								</div>
+							</div><br/>
+							<div className="row gx-5">
+								<div className="col">
+									<div className="p-3 border bg-light">
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
+											<div className="row justify-content-center">											
+												<div className="col">		
+													<div className="d-grid gap-2">													
+														< GraphProjectsTotals />															
+													</div>
+												</div>												
+												<div className="col">	
+													<div className="d-grid gap-2">													
+														< GraphLaborsTotals />														
+													</div>
+												</div>
+											</div>											
+										</div>																														
+									</div>
+								</div>
+							</div><br/>		
 							<div className="row gx-5">
 								<div className="col">
 									<div className="p-3 border bg-light">										
@@ -119,58 +158,6 @@ const Manager = () => {
 							</div><br/>
 							<div className="row gx-5">
 								<div className="col">
-									<div className="p-3 border bg-light">																			
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
-											<div className="row justify-content-center">											
-												<div className="col">		
-													<div className="d-grid gap-2">													
-														< CardProjectsTotals  />														
-													</div>
-												</div>												
-												<div className="col">	
-													<div className="d-grid gap-2">													
-														< CardLaborsTotals  />															
-													</div>
-												</div>
-												
-												<div className="col">	
-													<div className="d-grid gap-2">						
-														< CardProject  />									
-													</div>
-												</div>
-											</div>											
-										</div>										
-									</div>									
-								</div>
-							</div><br/>
-							<div className="row gx-5">
-								<div className="col">
-									<div className="p-3 border bg-light">
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
-											<div className="row justify-content-center">											
-												<div className="col">		
-													<div className="d-grid gap-2">													
-														< GraphProjectsTotals />															
-													</div>
-												</div>												
-												<div className="col">	
-													<div className="d-grid gap-2">													
-														< GraphLaborsTotals />														
-													</div>
-												</div>
-												
-												<div className="col">	
-													<div className="d-grid gap-2">						
-														< GraphProject />									
-													</div>
-												</div>
-											</div>											
-										</div>																														
-									</div>
-								</div>
-							</div><br/>								
-							<div className="row gx-5">
-								<div className="col">
 									<div className="p-3 border bg-light">										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
 											<div className="row">
@@ -182,11 +169,6 @@ const Manager = () => {
 															: <span className="badge bg-warning"> no project select </span>
 														}
 														</h6>
-												</div>	
-												<div className="container col text-end">
-													<UpdateProjectModal />
-													<ProjectDelete />													
-													<UpdateProjectEndDateModal />
 												</div>	
 											</div>
 										</div><br/>										
@@ -212,13 +194,7 @@ const Manager = () => {
 														: <span className="badge bg-warning"> No labor select </span>
 													}
 													</h6>
-												</div>	
-												<div className="container col text-end">
-													<UpdateLaborModal />
-													<LaborDelete />
-													<UpdateLaborEndDateModal />
-													< GraphLabor />
-												</div>	
+												</div>													
 											</div>
 										</div><br/>												
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	

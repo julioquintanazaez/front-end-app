@@ -13,7 +13,7 @@ import ProjectSelector from './../utils/project/ProjectSelector.js';
 import ProjectDelete from './../utils/project/ProjectDelete.js';
 import InsertProjectModal from './../utils/project/InsertProjectModal.js';
 import UpdateProjectModal from './../utils/project/UpdateProjectModal.js';
-import ProjectRenderTable from './../utils/project/ProjectRenderTable.js';
+import ProjectRenderUserTable from './../utils/project/ProjectRenderUserTable.js';
 import ProjectActivate from './../utils/project/ProjectActivate.js';
 import UpdateProjectEndDateModal from './../utils/project/UpdateProjectEndDateModal.js';
 import ViewTableProjectModal from './../utils/project/ViewTableProjectModal.js';
@@ -21,6 +21,7 @@ import ViewTableProjectModal from './../utils/project/ViewTableProjectModal.js';
 
 //Handle Labor 
 import InsertLaborModal from './../utils/labor/InsertLaborModal.js';
+import InsertLaborModalForm from './../utils/labor/InsertLaborModalForm.js';
 import ViewLaborModal from './../utils/labor/ViewLaborModal.js';
 import UpdateLaborModal from './../utils/labor/UpdateLaborModal.js';
 import LaborDelete from './../utils/labor/LaborDelete.js';
@@ -91,7 +92,7 @@ const Manager = () => {
 				<div className="col-sm">											
 					<Navigation />											
 				</div>
-			</div>	
+			</div><br/>	
 			
 			<div className="row">				
 				<div className="col"><br/>					
@@ -102,15 +103,14 @@ const Manager = () => {
 									<div className="p-3 border bg-light">										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
 											<div className="row">
-												<div className="col col-sm-6">													
-													< ViewTableProjectModal />													
+												<div className="col col-sm">													
+													< ProjectRenderUserTable />														
 												</div>
 											</div>
 										</div>
 									</div>									
 								</div>
-							</div><br/>
-							
+							</div><br/>							
 							<div className="row gx-5">
 								<div className="col">
 									<div className="p-3 border bg-light">
@@ -125,12 +125,7 @@ const Manager = () => {
 															: <span className="badge bg-warning"> no project select </span>
 														}
 														</h6>
-												</div>	
-												<div className="container col text-end">
-													<UpdateProjectModal />
-													<ProjectDelete />													
-													<UpdateProjectEndDateModal />
-												</div>	
+												</div>													
 											</div>
 										</div><br/>										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
@@ -156,15 +151,10 @@ const Manager = () => {
 													}
 													</h6>
 												</div>	
-												<div className="container col text-end">
-													<UpdateLaborModal />
-													<LaborDelete />
-													<UpdateLaborEndDateModal />
-												</div>	
 											</div>
 										</div><br/>												
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
-											<InsertLaborModal />									
+											<InsertLaborModalForm />									
 										</div>											
 									</div>											
 								</div>

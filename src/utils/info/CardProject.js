@@ -56,7 +56,7 @@ export default function CardProject (  )  {
 		<div>
 			<div className="col">
 				<div className="card">
-					<h5 className="card-header">Labors statistics</h5>
+					<h5 className="card-header">Main project</h5>
 					<div className="card-body">						
 						{selectedproject.project_name != null 
 							? (

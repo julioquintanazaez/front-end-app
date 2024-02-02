@@ -7,7 +7,8 @@ import { format } from "date-fns";
 import { DayPicker, DateFormatter } from "react-day-picker";
 import DatePicker from "react-datepicker";
 import { useNavigate } from "react-router";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function UpdateLaborEndDateModal( ) {
 	
@@ -32,13 +33,14 @@ export default function UpdateLaborEndDateModal( ) {
 				console.log("Labor data updated successfuly ");
 				setDate("");
 				setMessages("Labor end date updated successfully" +  Math.random());
+				toast.success("Labor end-date updated successfuly");
 			}else {
 				console.log("Update labor failed, please try again");	
-				alert("Update labor failed, please try again");	
+				toast.danger("Update labor failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			alert("An error ocurr ");
+			console.log("An error ocurr");
+			toast.danger("An error ocurr");
 			handleLogout();
 		});				  
 	}
@@ -53,7 +55,7 @@ export default function UpdateLaborEndDateModal( ) {
 			updateLabor(selectedlabor.id);
 			setShow(false);
 		}else{
-			alert("Some missing parameters for labor update");
+			toast.warning("Some missing parameters for labor update");
 		}
 	}
 
@@ -61,7 +63,7 @@ export default function UpdateLaborEndDateModal( ) {
 		if (selectedlabor.id != null){		
 			setShow(true);  
 		}else{
-			alert("Not labor selected to update");
+			toast.warning("Not labor selected to update");
 		}
 	}
 	
@@ -73,18 +75,17 @@ export default function UpdateLaborEndDateModal( ) {
 	return (
 		<>
 		<button className="btn btn-sm btn-secondary" onClick={handleShow}>
-			Date
+			Update End-Date
 		</button>
 		<Modal show={show} onHide={handleClose} size="lm" > 
 			<Modal.Header closeButton>
 				<Modal.Title>
-					Date
+					Change End-Date
 				</Modal.Title>
 			</Modal.Header>
 
 			<Modal.Body>				
-				<label>So that a labor can be closed it is necessary that all their tasks have a closing date </label>
-				<label> Set-up deadline for labor </label>
+				<label> Set-up a new deadline for labor </label>
 				<div className="day">
 					<DatePicker 
 						showIcon

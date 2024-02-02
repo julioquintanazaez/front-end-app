@@ -58,7 +58,7 @@ const LaborEquipmentTable = (props) => {
 				console.log(error);
 			});
 		}else{
-			alert("Please select a material...");	
+			alert("Please select a material XXX...");	
 		}
 	}	
 

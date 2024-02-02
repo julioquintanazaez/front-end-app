@@ -9,7 +9,9 @@ import { Table } from 'react-bootstrap';
 
 import LaborReport from './../report/LaborReport.js'; 
 import LaborActivate from './../labor/LaborActivate.js'; 
-
+import LaborDelete from './../labor/LaborDelete.js'; 
+import UpdateLaborModal from './../labor/UpdateLaborModal.js'; 
+import GraphLabor from './../graph/GraphLabor.js';
 
 export default function LaborRenderTable ( ) {
 
@@ -52,11 +54,23 @@ export default function LaborRenderTable ( ) {
 	const renderTableData = () => {
 		return projectlabors?.map((labor, index) => (
 				<tr className="row-md" key={labor.id}>
-					<th scope="row">{index + 1}</th>					
+					<th scope="row">{index + 1}</th>	
+					<td> 
+						<div className="row justify-content-center">	
+							<div className="col">
+								<div className="d-grid gap-2">
+									<button 
+										type="button" 
+										className="btn btn-sm btn-info" 							
+										onClick={(e) => setSelectedLabor(labor)} > 
+											Select
+									</button>
+								</div>
+							</div>							
+						</div>						
+					</td>
 					<td>{labor.type}</td>
 					<td>{labor.desc_labor}</td>
-					<td>{labor.inidate_labor != null ? labor.inidate_labor.split('T')[0] : labor.inidate_labor}</td>
-					<td>{labor.enddate_labor != null ? labor.enddate_labor.split('T')[0] : labor.enddate_labor}</td>
 					{isAdmin &&
 					<td>
 						< LaborActivate labor={labor} />
@@ -66,14 +80,23 @@ export default function LaborRenderTable ( ) {
 						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
-									<button 
-										type="button" 
-										className="btn btn-sm btn-info" 							
-										onClick={(e) => setSelectedLabor(labor)} > 
-											Set
-									</button>
+									< LaborDelete labor={labor}/>
 								</div>
 							</div>
+							<div className="col">
+								<div className="d-grid gap-2">
+									< UpdateLaborModal labor={labor}/>
+								</div>
+							</div>
+						</div>						
+					</td>
+					{isAdmin &&
+					<td>
+						< GraphLabor labor={labor} />
+					</td>	
+					}
+					<td> 
+						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
 									< LaborReport labor={labor}/>
@@ -90,17 +113,22 @@ export default function LaborRenderTable ( ) {
 			<Table className="table table-striped table-bordered" responsive>
 				<thead className="table-dark">
 					<tr>
-						<th scope="col">#</th>							
+						<th scope="col">#</th>	
+						<th scope="col">Select</th>
 						<th scope="col">Type</th>							
 						<th scope="col">Description</th>
-						<th scope="col">Start Date</th>
-						<th scope="col">End Date</th>
 						{isAdmin &&
 						<th scope="col">
 							Open/Close
 						</th>	
 						}
 						<th scope="col">Actions</th>
+						{isAdmin &&
+						<th scope="col">
+							Stats
+						</th>	
+						}
+						<th scope="col">Report</th>
 					</tr>
 				</thead>
 				<tbody className="table-group-divider">						

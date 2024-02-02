@@ -1,12 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import moment from "moment";
 import { format } from "date-fns";
 import { Table } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import UpdateTaskModal from './UpdateTaskModal.js';
 
@@ -37,6 +38,7 @@ export default function TaskRenderTable ( props ) {
 		}).catch((error) => {
 			console.log({"An error ocur": error});
 			alert({"An error ocur": "Server side"});
+			toast.danger("Labor added successfuly");
 			handleLogout();
 		});			  
 	}
@@ -61,16 +63,17 @@ export default function TaskRenderTable ( props ) {
 				if (response.status === 201) {
 					console.log("Task successfuly deleted");
 					setMessages("Task deleted succesffully" + Math.random());
-					alert("Material delete successfuly");
+					toast.success("Task delete successfuly");
 				}else {
 					console.log("Task delete failed, please try again");
+					toast.danger("Task delete failed, please try again");
 				}
 			}).catch((error) => {
-				alert("Please select a task...");	
+				toast.danger("Something happend with server conexion");
 				handleLogout();
 			});
 		}else{
-			alert("Please select a task...");	
+			toast.warning("Please select a task");
 		}
 	}	
 	
@@ -90,16 +93,19 @@ export default function TaskRenderTable ( props ) {
 			}).then(response => {
 				if (response.status === 201) {
 					console.log("Task successfuly changed");
-					setMessages("Task activated succesffully" + Math.random());				
+					setMessages("Task activated succesffully" + Math.random());	
+					toast.success("Task status changed succesffully");					
 				}else {
-					console.log("Task activation failed, please try again");			
+					console.log("Task activation failed, please try again");
+					toast.danger("Task status changed failed, please try again");
 				}
 			}).catch((error) => {
 				console.log(error);
+				toast.danger("Something happend with server conexion");
 				handleLogout();
 			});
 		}else{
-			alert("Please select a task to activate...");	
+			toast.warning("Please select a task to activate");
 		}
 	}	
 
@@ -112,13 +118,12 @@ export default function TaskRenderTable ( props ) {
 					<td>{task.hour}</td>
 					<td>{task.hour_men}</td>							
 					<td>{task.task_price}</td>	
-					<td>{task.enddate_task.split('T')[0]}</td>	
 					<div className="col-sm-3">
 						<button 
 							type="button" 
 							className="btn btn-sm btn-outline-success" 							
 							onClick={(e) => changeActivityTask(task)}> 
-								{task.is_active ? "On" : "Off"}	
+								{task.is_active ? "Working" : "Done"}	
 						</button><br/>
 					</div>
 					<td> 
@@ -155,7 +160,6 @@ export default function TaskRenderTable ( props ) {
 						<th scope="col">Hour</th>
 						<th scope="col">H/men</th>							
 						<th scope="col">Price</th>							
-						<th scope="col">End</th>
 						<th scope="col">Active</th>
 						<th scope="col">Actions</th>
 					</tr>

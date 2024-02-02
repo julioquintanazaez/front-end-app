@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-import AlertMessage from './../../components/AlertMessage.js';
 import { Table } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
+import ResetUserPasswordModal from './../user/ResetUserPasswordModal.js';
+import UpdateUserModal from './../user/UpdateUserModal.js';
 
 const UserTable = (props) => {
 
@@ -56,21 +57,21 @@ const UserTable = (props) => {
 					if (response.status === 201) {
 						console.log("User Successfuly deleted");	
 						setMessages("User deleted successfuly" + Math.random());
-						alert("User Successfuly deleted");			
+						toast.success("User Successfuly deleted");	
 					}else {
 						console.log("User delete Failed, please try again");
-						alert("User delete Failed, please try again");						
+						toast.danger("User delete Failed, please try again");
 					}
 				}).catch((error) => {
 					console.log(error);
-					alert("Something rong with the server conection");
+					toast.danger("Something rong with the server conection");
 					handleLogout();
 				});
 			}else{
-				alert("Please cant not delete your own user");	
+				toast.info("Please cant not delete your own user");
 			}
 		}else{
-			alert("Please select a user...");	
+			toast.warning("Please select a user");
 		}
 	}	
 	
@@ -89,21 +90,20 @@ const UserTable = (props) => {
 				},
 			}).then(response => {
 				if (response.status === 201) {
-					console.log({"Response ": response.data});	
 					console.log("User updated successfuly");
 					setMessages("User activated successfuly" + Math.random());
-					alert("User updated successfuly");
+					toast.success("User status changed successfuly");
 				}else {
 					console.log({"Update goes rongs": response.data});
-					alert("User update Failed, please try again");
+					toast.danger("User status changed Failed, please try again");
 				}
 			}).catch((error) => {
 				console.log({"An error ocur": error});
-				alert("Something rong with the server conection");
+				toast.danger("Something rong with the server conection");
 				handleLogout();
 			});		
 		}else{
-			alert("Please select a user...");
+			toast.warning("Please select a user");
 		}			
 	}
 	
@@ -125,17 +125,7 @@ const UserTable = (props) => {
 					<td>{user_item.disable ? "Not Active" : "Active"}</td>
 					<td> 						
 						<div className="col justify-content-end">						
-							<div className="row">											
-								<div className="col">
-									<div className="d-grid gap-3">
-										<button 
-											type="button" 
-											className="btn btn-sm btn-info ml-2 mr-2" 							
-											onClick={(e) => props.setSelectedUser(user_item)}> 
-												Set
-										</button>
-									</div>
-								</div>
+							<div className="row">		
 								<div className="col">
 									<div className="d-grid gap-3">
 										<button 
@@ -155,7 +145,18 @@ const UserTable = (props) => {
 												Activate
 										</button>
 									</div>
-								</div>									
+								</div>	
+								<div className="col">	
+									<div className="d-grid gap-3">
+										< ResetUserPasswordModal selecteduser={user_item}/>		
+									</div>
+								</div>	
+								<div className="col">	
+									<div className="d-grid gap-3">
+										< UpdateUserModal selecteduser={user_item}/>		
+									</div>
+								</div>	
+								
 							</div>						
 						</div>						
 					</td>
@@ -181,6 +182,7 @@ const UserTable = (props) => {
 					{renderTableData()}
 				</tbody>
 			</Table>   
+			<ToastContainer />
         </div>
 	);  
 }

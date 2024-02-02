@@ -32,7 +32,6 @@ function Login () {
 				console.log({"Respuesta de autenticacion": username});
 				setToken(response.data.access_token);
 				setIsLoggedIn(true);
-				alert('User ' + username + ' status: logged');
 				setUserName("");
 				setPassword("");	
 				const origin = location.state?.from?.pathname || '/manager'; 
