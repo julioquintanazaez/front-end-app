@@ -27,7 +27,7 @@ export default function ProjectRenderTable ( ) {
 		    
 		await axios({
 			method: 'get',
-			url: '/read_projects/',
+			url: '/read_projects_stats/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -72,6 +72,9 @@ export default function ProjectRenderTable ( ) {
 					<td>{project.manager}</td>
 					<td>{project.inidate_proj != null ? project.inidate_proj.split('T')[0] : project.inidate_proj}</td>
 					<td>{project.enddate_proj != null ? project.enddate_proj.split('T')[0] : project.enddate_proj}</td>
+					<td>{project.open_labor_amount}</td>
+					<td>{project.close_labor_amount}</td>
+					<td>{project.project_amount}</td>
 					<td>
 						< ProjectActivate project={project} />
 					</td>
@@ -127,6 +130,9 @@ export default function ProjectRenderTable ( ) {
 						<th scope="col">Manager</th>	
 						<th scope="col">Start Date</th>
 						<th scope="col">End Date</th>
+						<th scope="col">Labor Open Amount</th>
+						<th scope="col">Labor Close Amount</th>
+						<th scope="col">Total amount</th>
 						<th scope="col">Open/Close</th>
 						<th scope="col">Actions</th>
 						<th scope="col">Stats</th>

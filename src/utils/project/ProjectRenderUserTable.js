@@ -26,7 +26,8 @@ export default function ProjectRenderUserTable (  ) {
 		    
 		await axios({
 			method: 'get',
-			url: '/read_projects_by_user_email/' + email,
+			//url: '/read_projects_by_user_email/' + email,
+			url: '/read_projects_stats_by_user/',
 			headers: {
 				'accept': 'application/json',
 				'Authorization': "Bearer " + token,
@@ -72,6 +73,9 @@ export default function ProjectRenderUserTable (  ) {
 					<td>{project.project_name}</td>
 					<td>{project.inidate_proj != null ? project.inidate_proj.split('T')[0] : project.inidate_proj}</td>
 					<td>{project.enddate_proj != null ? project.enddate_proj.split('T')[0] : project.enddate_proj}</td>
+					<td>{project.open_labor_amount}</td>
+					<td>{project.close_labor_amount}</td>
+					<td>{project.project_amount}</td>
 					<td>
 						< ProjectActivate project={project} />
 					</td>
@@ -117,6 +121,9 @@ export default function ProjectRenderUserTable (  ) {
 						<th scope="col">Name</th>	
 						<th scope="col">Start Date</th>
 						<th scope="col">End Date</th>
+						<th scope="col">Labor Open Amount</th>
+						<th scope="col">Labor Close Amount</th>
+						<th scope="col">Total amount</th>
 						<th scope="col">Open/Close</th>
 						<th scope="col">Actions</th>
 						<th scope="col">Report</th>
