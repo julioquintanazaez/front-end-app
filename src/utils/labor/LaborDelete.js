@@ -29,15 +29,10 @@ const LaborDelete = ( props ) => {
 					toast.success("Labor delete successfuly");
 					setSelectedLabor({});
 					setMessages("Labor deleted successfully" + Math.random());
-				}else {
-					console.log("Labor delete failed, please try again");	
-					toast.danger("Labor delete failed, please try again");
 				}
 			}).catch((error) => {
-				console.log("Error conecting with backend server or with submited data");
-				toast.danger("Error conecting with backend server");
-				console.log(error);
-				handleLogout();
+				console.error({"message":error.message, "detail":error.response.data.detail});
+			    handleLogout();
 			});
 		}else{
 			toast.danger("Please select a project...");

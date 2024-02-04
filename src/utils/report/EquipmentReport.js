@@ -5,6 +5,8 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function EquipmentReport ( props ) {
 	
@@ -31,8 +33,7 @@ export default function EquipmentReport ( props ) {
 			//Or save file locally
 			//fs.writeFileSync(outputFileName, responseType.data);
 		}).catch((error) => {
-			console.log("Error conecting with backend server or with submited data: " + id);
-			console.log(error);
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});
 	}
@@ -42,7 +43,7 @@ export default function EquipmentReport ( props ) {
 		if (selectedlabor.id != null){
 			generateReportEquipment(selectedlabor.id);
 		}else{
-			alert("Not Labor selected for Equipment report");
+			toast.danger("Not Labor selected for report");
 		}
 	}
 	

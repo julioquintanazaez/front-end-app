@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import { useNavigate, useLocation } from "react-router";
 import { Context } from './../context/Context';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function Login () {
 	
@@ -24,7 +25,7 @@ function Login () {
 			url: '/token/',                         
 			data: form_data
 		}).then(response => {
-			if (response.status === 200) {
+			if (response.status === 200) {				
 				const dataUser = {
 					access_token: response.data.access_token,
 					token_type: response.data.token_type
@@ -36,19 +37,12 @@ function Login () {
 				setPassword("");	
 				const origin = location.state?.from?.pathname || '/manager'; 
 				navigate(origin);
-			}else {	
-				console.log("Registration Failed, please try again");
-				handleLogout();				
-				alert("Registration Failed, please try again");	
-				navigate("/");				
 			}
 		}).catch((error) => {
-			console.log(error);
-			handleLogout();	
-			alert("Some error ocurring with the server in loggin");
-			navigate("/");
+			//console.error({"message":error.message, "detail":error.response.data.detail});	
+			Swal.fire("Access denied!", error.response.data.detail, "error");
 		});		
-	};		
+	}	
 	
 	const handleSubmit = (event) => {
 		event.preventDefault();	
@@ -56,7 +50,7 @@ function Login () {
 	}	
 
 	const signOut = () => {
-		setIsLoggedIn(false);
+		handleLogout();
 		setUserName("");
 		setPassword("");		
 		navigate("/");

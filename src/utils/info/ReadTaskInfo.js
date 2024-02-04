@@ -30,11 +30,9 @@ export default function ReadTaskInfo ( )  {
 				setTask_number(response.data[0].task_number);
 				setTask_price(response.data[0].task_price);
 				console.log({"Loaded data from task info successfuly ": response.data[0].type});			
-			}else {
-				console.log("Load from server to read task info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading task info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}

@@ -9,25 +9,13 @@ import axios from 'axios';
 import Navigation from './../components/MainNavbar.js'; 
 
 //Handle project
-import ProjectSelector from './../utils/project/ProjectSelector.js';
-import ProjectDelete from './../utils/project/ProjectDelete.js';
 import InsertProjectModal from './../utils/project/InsertProjectModal.js';
-import UpdateProjectModal from './../utils/project/UpdateProjectModal.js';
 import ProjectRenderTable from './../utils/project/ProjectRenderTable.js';
-import ProjectActivate from './../utils/project/ProjectActivate.js';
-import UpdateProjectEndDateModal from './../utils/project/UpdateProjectEndDateModal.js';
-import ViewTableProjectModal from './../utils/project/ViewTableProjectModal.js';
 import AllProjectsReport from './../utils/report/AllProjectsReport.js';
 
-
 //Handle Labor 
-import InsertLaborModal from './../utils/labor/InsertLaborModal.js';
-import ViewLaborModal from './../utils/labor/ViewLaborModal.js';
-import UpdateLaborModal from './../utils/labor/UpdateLaborModal.js';
-import LaborDelete from './../utils/labor/LaborDelete.js';
-import LaborActivate from './../utils/labor/LaborActivate.js';
+import InsertLaborModalForm from './../utils/labor/InsertLaborModalForm.js';
 import LaborRenderTable from './../utils/labor/LaborRenderTable.js';
-import UpdateLaborEndDateModal from './../utils/labor/UpdateLaborEndDateModal.js';
 
 //Handle Task 
 import InsertTaskModal from './../utils/task/InsertTaskModal.js';
@@ -198,7 +186,7 @@ const Manager = () => {
 											</div>
 										</div><br/>												
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
-											<InsertLaborModal />									
+											<InsertLaborModalForm />									
 										</div>											
 									</div>											
 								</div>

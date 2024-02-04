@@ -32,12 +32,9 @@ export default function EquipmentRenderTable ( props ) {
 				console.log({"Response ":response.data});	
 				setEquipments(response.data);
 				console.log("Data was readed successfuly from database");				
-			}else {
-				console.log("Load Failed, please try again");	
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});
-			toast.danger("An error ocur loading equipment data from server");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}
@@ -63,12 +60,10 @@ export default function EquipmentRenderTable ( props ) {
 					console.log("Equipment Successfuly deleted");
 					setMessages("Equipment deleted successfully:" + Math.random());
 					toast.success("Equipment delete successfuly");
-				}else {
-					console.log("Equipment delete Failed, please try again");
-					toast.danger("Equipment delete Failed, please try again");
 				}
 			}).catch((error) => {
-				toast.warning("Something happend with the server conexion");
+				console.error({"message":error.message, "detail":error.response.data.detail});
+				toast.warning(error.response.data.detail);	
 				handleLogout();
 			});
 		}else{

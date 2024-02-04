@@ -12,7 +12,6 @@ import ProjectDelete from './../project/ProjectDelete.js';
 import UpdateProjectEndDateModal from './../project/UpdateProjectEndDateModal.js';
 import ProjectReport from './../report/ProjectReport.js';
 import GraphProject from './../graph/GraphProject.js';
-//< GraphProject />				
 
 export default function ProjectRenderTable ( ) {
 
@@ -20,7 +19,7 @@ export default function ProjectRenderTable ( ) {
 	const { messages, setMessages } = useContext(Context);
 	const { handleLogout } = useContext(Context);
 	const { projects, setProjects } = useContext(Context);
-	const { selectedproject, setSelectedProject } = useContext(Context);
+	const { setSelectedProject } = useContext(Context);
 	
 	
 	const fetchProjects = async () => {
@@ -36,11 +35,9 @@ export default function ProjectRenderTable ( ) {
 			if (response.status === 201) {
 				setProjects(response.data);
 				console.log("Loaded projects to Render Table successfuly ");
-			}else {
-				console.log("Load Failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}
@@ -84,12 +81,20 @@ export default function ProjectRenderTable ( ) {
 								<div className="d-grid gap-2">
 									<UpdateProjectModal project={project} />
 								</div>
-							</div>	
+							</div>								
+						</div>							
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
 									<ProjectDelete project={project} />
 								</div>
 							</div>	
+						</div>							
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
 									<UpdateProjectEndDateModal project={project} />
@@ -134,7 +139,9 @@ export default function ProjectRenderTable ( ) {
 						<th scope="col">Labor Close Amount</th>
 						<th scope="col">Total amount</th>
 						<th scope="col">Open/Close</th>
-						<th scope="col">Actions</th>
+						<th scope="col">Update</th>
+						<th scope="col">Delete</th>
+						<th scope="col">Date</th>
 						<th scope="col">Stats</th>
 						<th scope="col">Report</th>
 					</tr>

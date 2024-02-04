@@ -29,12 +29,9 @@ const LaborActivate = ( props ) => {
 				console.log("Labor status successfuly changed");
 				setMessages("Labor activated successfully" + Math.random());	
 				toast.success("Labor status successfuly changed");
-			}else {
-				console.log("Labor active status  change failed, please try again");
-				toast.danger("Labor active status  change failed, please try again");
 			}
 		}).catch((error) => {
-			console.log(error);
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});
 	}	

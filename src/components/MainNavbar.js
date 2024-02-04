@@ -10,7 +10,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { LinkContainer } from "react-router-bootstrap";
 
 import ReadUserNumberProjectsInfo from './../utils/info/ReadUserNumberProjectsInfo.js';
-import ResetUserPasswordDrop from './../utils/user/ResetUserPasswordDrop.js';
+import ResetUserPasswordUser from './../utils/user/ResetUserPasswordUser.js';
 
 const Navigation = ( props ) => {
 	
@@ -56,7 +56,7 @@ const Navigation = ( props ) => {
 						<Nav className="justify-content-end">
 							<NavDropdown title={user.email} id="basic-nav-dropdown">																				
 								<NavDropdown.Divider />
-									<ResetUserPasswordDrop />
+									<ResetUserPasswordUser />
 								<NavDropdown.Divider />
 									<NavDropdown.Item as="button" onClick={logoutUser}>
 										LogOut

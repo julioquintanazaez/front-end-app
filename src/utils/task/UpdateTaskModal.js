@@ -42,13 +42,9 @@ export default function UpdateTaskModal( props ) {
 				setTask_price("");
 				setMessages("Task updated succesffully" + Math.random());
 				toast.success("Task data updated successfuly");
-			}else {
-				console.log("Update task failed, please try again");	
-				toast.danger("Update task failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			toast.danger("Something happend with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

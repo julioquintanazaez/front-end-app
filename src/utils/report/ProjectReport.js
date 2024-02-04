@@ -5,6 +5,8 @@ import React, {useState, useEffect, useContext} from 'react';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 //import fs from 'fs'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ProjectReport ( props ) {
 	
@@ -31,7 +33,7 @@ export default function ProjectReport ( props ) {
 			//Or save file locally
 			//fs.writeFileSync(outputFileName, responseType.data);
 		}).catch((error) => {
-			console.log("Error conecting with backend server or with submited data: " + id);
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});
 		
@@ -42,7 +44,7 @@ export default function ProjectReport ( props ) {
 		if (props.project.id != null){
 			generateReportProject(props.project.id);
 		}else{
-			alert("Not labor selected yet");
+			toast.danger("Not project selected for report");
 		}
 	}
 	

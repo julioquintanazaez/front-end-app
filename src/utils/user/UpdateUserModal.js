@@ -49,13 +49,9 @@ export default function UpdateUserModal( props ) {
 				setRole("");
 				setMessages("User updated successfully" + Math.random());
 				toast.success("User updated successfully");
-			}else {
-				console.log({"Update goes rongs": response.data});		
-				toast.danger("Process to update user data has failed");
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});
-			toast.danger("An error ocurr with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

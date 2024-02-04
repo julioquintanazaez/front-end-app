@@ -50,18 +50,9 @@ export default function InsertProjectModal( ) {
 				setEndDate("");
 				setMessages("Project created successfully"+ Math.random());
 				toast.success("Project added successfuly");
-			}else if (response.status === 401) {
-				console.log("Not enought permissions");
-				toast.danger("Not enought permissions");
-			}else if (response.status === 500) {
-				console.log("Integrity error");
-				toast.danger("Project already exist in DB");
-			}else {
-				console.log("Insert project Failed, please try again");	
-				toast.danger("Insert project Failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr");			
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}
@@ -82,8 +73,7 @@ export default function InsertProjectModal( ) {
 			event.stopPropagation();
 		}
 		
-		setValidated(true);
-		
+		setValidated(true);		
 		event.preventDefault();
 		
 		if (validated){

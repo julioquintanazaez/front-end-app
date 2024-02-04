@@ -3,22 +3,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Context } from './../../context/Context';
 import axios from 'axios';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function ResetUserPasswordDrop( props ) {
+export default function ResetUserPasswordUser( props ) {
 	
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
 	const { token, user, setMessages, handleLogout } = useContext(Context);
+	const [actualpassword, setActualPassword] = useState("");
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("")
 	
@@ -26,9 +25,10 @@ export default function ResetUserPasswordDrop( props ) {
 		
 		await axios({
 			method: 'put',
-			url: "/reset_password/" + user.username,
+			url: "/reset_password_by_user/" + user.username,
 			data:{
-				hashed_password: password
+				actualpassword: actualpassword,
+				newpassword: password,
 			},
 			headers: {
 				'accept': 'application/json',
@@ -36,23 +36,23 @@ export default function ResetUserPasswordDrop( props ) {
 			},
 		}).then(response => {
 			if (response.status === 201) {
-				console.log({"Response ": response.data});	
+				console.log({"Response fro reset password ": response.data});	
 				setMessages("User password reset successfully" + Math.random());
+				setPassword("");
+				setPassword2("");
+				setActualPassword("");
 				toast.success("User password successfuly handle");
-			}else {
-				console.log({"Update goes rongs": response.data});	
-				toast.danger("User reset password failed, please try again");
 			}
-			
 		}).catch((error) => {
-			console.log({"An error ocurr with server conexion": error});
-			toast.danger("An error ocurr with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}
   
 	const handleClose = () => {
 		setPassword("");
+		setPassword2("");
+		setActualPassword("");
 		setShow(false);
 	}
 	
@@ -65,16 +65,19 @@ export default function ResetUserPasswordDrop( props ) {
 		if (form.checkValidity() === false) {
 			event.preventDefault();
 			event.stopPropagation();
-		}
-		
-		setValidated(true);
-		
+		}		
+		setValidated(true);		
 		event.preventDefault();
 		
 		if (validated){
-			updateUserPassword();
-			handleClose();
-			setValidated(false);
+			if(password === password2){
+				updateUserPassword();				
+				setValidated(false);
+				handleClose();
+			}else{
+				//alert("Password & Password2 doesn't match");
+				toast.danger("User reset password failed, please try again");
+			}			
 		}
 	}
 	
@@ -91,7 +94,21 @@ export default function ResetUserPasswordDrop( props ) {
 			</Modal.Header>
 			<Modal.Body>
 				
-				<Form noValidate validated={validated} onSubmit={handleSubmit}>				 			  
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>	
+				  <Row className="mb-3">
+					<Form.Group as={Col} md="10" controlId="validationCustom04">
+					  <Form.Label>Write actual password</Form.Label>
+					  <Form.Control
+						required
+						type="password"
+						value={actualpassword}
+						onChange={(e) => setActualPassword(e.target.value)}
+						placeholder="Enter actual password"
+						defaultValue=""
+					  />
+					  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+					</Form.Group>					
+				  </Row>
 				  <Row className="mb-3">
 					<Form.Group as={Col} md="10" controlId="validationCustom05">
 					  <Form.Label>Write user password</Form.Label>

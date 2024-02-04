@@ -14,7 +14,7 @@ import Row from 'react-bootstrap/Row';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function InsertTaskModal( ) {
+export default function InsertTaskModal( props ) {
 	
 	const [show, setShow] = useState(false);
 	const [validated, setValidated] = useState(false);
@@ -50,16 +50,9 @@ export default function InsertTaskModal( ) {
 				setTask_price("");
 				setMessages("Task added succesffully" + Math.random());
 				toast.success("Task added succesffully");
-			}else if (response.status === 500) {
-				console.log("Integrity error");
-				toast.warning("Task already exist in DB");
-			}else {
-				console.log("Insert task failed, please try again");	
-				toast.danger("Insert task failed, please try again");
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": description});
-			toast.danger("Something happend with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});					  
 	}
@@ -73,7 +66,7 @@ export default function InsertTaskModal( ) {
 	}
 	
 	const handleShow = () => {
-		if (selectedlabor.id != null && selectedlabor.enddate_labor != null){		
+		if (selectedlabor.id != null){		
 			setShow(true);  
 		}else{
 			toast.warning("Not labor selected or end date stablished for that labor");

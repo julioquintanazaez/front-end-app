@@ -38,14 +38,9 @@ export default function ResetUserPasswordModal( props ) {
 				console.log({"Response ": response.data});
 				setMessages("User password updated successfully" + Math.random());
 				toast.success("User password successfuly handle");
-			}else {
-				console.log({"Update goes rongs": response.data});	
-				toast.danger("User reset password failed, please try again");
 			}
-			
 		}).catch((error) => {
-			console.log({"An error ocur": error});
-			toast.danger("An error ocurr with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}
@@ -75,9 +70,13 @@ export default function ResetUserPasswordModal( props ) {
 		event.preventDefault();
 		
 		if (validated){
-			updateUserPassword();
-			handleClose();
-			setValidated(false);
+			if (password === password2){
+				updateUserPassword();
+				handleClose();
+				setValidated(false);
+			}else{
+				toast.danger("New password and confirmed password doesn't match");
+			}			
 		}
 	}
 	

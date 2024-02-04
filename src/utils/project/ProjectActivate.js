@@ -29,13 +29,9 @@ const ProjectActivate = ( props ) => {
 				console.log("Project successfuly changed");	
 				setMessages("Project activated succesfully" + Math.random());
 				toast.success("Project status changed succesfully");
-			}else {
-				console.log("Project activation failed, please try again");		
-				toast.danger("Project activation failed, please try again");
 			}
 		}).catch((error) => {
-			console.log(error);
-			toast.warning("An error ocurr");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});
 	}	

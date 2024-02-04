@@ -9,25 +9,12 @@ import axios from 'axios';
 import Navigation from './../components/MainNavbar.js'; 
 
 //Handle project
-import ProjectSelector from './../utils/project/ProjectSelector.js';
-import ProjectDelete from './../utils/project/ProjectDelete.js';
 import InsertProjectModal from './../utils/project/InsertProjectModal.js';
-import UpdateProjectModal from './../utils/project/UpdateProjectModal.js';
 import ProjectRenderUserTable from './../utils/project/ProjectRenderUserTable.js';
-import ProjectActivate from './../utils/project/ProjectActivate.js';
-import UpdateProjectEndDateModal from './../utils/project/UpdateProjectEndDateModal.js';
-import ViewTableProjectModal from './../utils/project/ViewTableProjectModal.js';
-
 
 //Handle Labor 
-import InsertLaborModal from './../utils/labor/InsertLaborModal.js';
 import InsertLaborModalForm from './../utils/labor/InsertLaborModalForm.js';
-import ViewLaborModal from './../utils/labor/ViewLaborModal.js';
-import UpdateLaborModal from './../utils/labor/UpdateLaborModal.js';
-import LaborDelete from './../utils/labor/LaborDelete.js';
-import LaborActivate from './../utils/labor/LaborActivate.js';
 import LaborRenderTable from './../utils/labor/LaborRenderTable.js';
-import UpdateLaborEndDateModal from './../utils/labor/UpdateLaborEndDateModal.js';
 
 //Handle Task 
 import InsertTaskModal from './../utils/task/InsertTaskModal.js';
@@ -45,21 +32,6 @@ import MaterialRenderTable from './../utils/material/MaterialRenderTable.js';
 import ReadTaskInfo from './../utils/info/ReadTaskInfo.js';
 import ReadEquipmentInfo from './../utils/info/ReadEquipmentInfo.js';
 import ReadMaterialInfo from './../utils/info/ReadMaterialInfo.js';
-import ReadSummaryProjectTaskInfo from './../utils/info/ReadSummaryProjectTaskInfo.js';
-import ReadSummaryProjectEquipmentInfo from './../utils/info/ReadSummaryProjectEquipmentInfo.js';
-import ReadSummaryProjectMaterialInfo from './../utils/info/ReadSummaryProjectMaterialInfo.js';
-
-import ReadSummaryMaterialsInfo from './../utils/info/ReadSummaryMaterialsInfo.js';
-import ReadSummaryTasksInfo from './../utils/info/ReadSummaryTasksInfo.js';
-import ReadSummaryEquipmentsInfo from './../utils/info/ReadSummaryEquipmentsInfo.js';
-
-import ReadMateiralsProjectsTotals from './../utils/info/ReadMateiralsProjectsTotals.js';
-import ReadTasksProjectsTotals from './../utils/info/ReadTasksProjectsTotals.js';
-import ReadEquipmentsProjectsTotals from './../utils/info/ReadEquipmentsProjectsTotals.js';
-
-import ReadTasksTotals from './../utils/info/ReadTasksTotals.js';
-import ReadMateiralsTotals from './../utils/info/ReadMateiralsTotals.js';
-import ReadEquipmentsTotals from './../utils/info/ReadEquipmentsTotals.js';
 
 //Reports
 import LaborReport from './../utils/report/LaborReport.js';

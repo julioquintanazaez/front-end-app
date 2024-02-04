@@ -35,11 +35,9 @@ export default function LaborRenderTable ( ) {
 					console.log({"Response labors ":response.data});	
 					setProjectLabors(response.data);
 					console.log({"Loaded labors successfuly ": projectlabors});					
-				}else {
-					console.log("Load from server Failed, please try again");			
 				}
 			}).catch((error) => {
-				console.log({"An error ocur": error});
+				console.error({"message":error.message, "detail":error.response.data.detail});
 				handleLogout();
 			});				
 		} 					
@@ -88,6 +86,10 @@ export default function LaborRenderTable ( ) {
 									< LaborDelete labor={labor}/>
 								</div>
 							</div>
+						</div>						
+					</td>
+					<td> 
+						<div className="row justify-content-center">	
 							<div className="col">
 								<div className="d-grid gap-2">
 									< UpdateLaborModal labor={labor}/>
@@ -132,7 +134,8 @@ export default function LaborRenderTable ( ) {
 							Open/Close
 						</th>	
 						}
-						<th scope="col">Actions</th>
+						<th scope="col">Delete</th>
+						<th scope="col">Update</th>
 						{isAdmin &&
 						<th scope="col">
 							Stats

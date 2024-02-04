@@ -50,18 +50,9 @@ export default function InsertLaborModal( ) {
 				setType("");
 				setDescription("");
 				setMessages("Labor inserted successfully" + Math.random());
-			}else if (response.status === 500) {
-				console.log("Integrity error");
-				setMessages("Labor exist in Database");
-				toast.danger("Labor already exist in DB");
-			}else {
-				console.log("Insert labor failed, please try again");	
-				toast.danger("Insert labor failed, please try again");
-				setMessages("Labor exist in Database" + Math.random());
 			}
 		}).catch((error) => {
-			console.log("An error ocurr");
-			toast.danger("An error ocurr");	
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});	  
 	}

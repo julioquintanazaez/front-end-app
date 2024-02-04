@@ -45,13 +45,9 @@ export default function UpdateProjectModal( props ) {
 				setDescription("");
 				setMessages("Project updated successfully" + Math.random());
 				toast.success("Project data updated successfuly");
-			}else {
-				console.log("Update project failed, please try again");	
-				toast.danger("Update project failed, please try again");
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": project_name});
-			toast.warning("An error ocurr");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

@@ -35,11 +35,9 @@ export default function GraphProjectsTotals (  )  {
 			if (response.status === 201) {
 				setTasksTotals(response.data[0]);
 				console.log("Loaded data from task totals info successfuly ");			
-			}else {
-				console.log("Load from server to read task totals info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading tasks info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}	
@@ -57,11 +55,9 @@ export default function GraphProjectsTotals (  )  {
 			if (response.status === 201) {
 				setEquipmentsTotals(response.data[0]);
 				console.log("Loaded data from equipments totals info successfuly ");			
-			}else {
-				console.log("Load from server to read equipments totals info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading equipments info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}	
@@ -79,11 +75,9 @@ export default function GraphProjectsTotals (  )  {
 			if (response.status === 201) {
 				setMaterialsTotals(response.data[0]);
 				console.log("Loaded data from material totals info successfuly ");			
-			}else {
-				console.log("Load from server to read material totals info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading materials info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}	
@@ -92,7 +86,7 @@ export default function GraphProjectsTotals (  )  {
 		fetchTasksTotals();
 		fetchEquipmentsTotals();
 		fetchMaterialsTotals();
-    }, [selectedproject, projects, messages]);	
+    }, [projects, messages]);	
 	
 	for (var i=0; i<3; i++) {
 		bg_colors.push(randomRGB());

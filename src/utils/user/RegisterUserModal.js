@@ -54,16 +54,9 @@ export default function RegisterUserModal( ) {
 				setPassword("");
 				setMessages("User data registered successfuly" + Math.random());
 				toast.success("User data registered successfuly");
-			}else if (response.status === 500) {
-				console.log("Integrity error");
-				toast.warning("User already exist in DB");
-			}else {
-				console.log("Register user failed, please try again");	
-				toast.danger("Register user failed, please try again");
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": username});
-			toast.danger("An error ocurr with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

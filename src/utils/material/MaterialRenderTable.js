@@ -30,11 +30,9 @@ export default function MaterialRenderTable ( props ) {
 				console.log({"Response ":response.data});	
 				setMaterials(response.data);
 				console.log("Data was readed successfuly from database");				
-			}else {
-				console.log("Load Failed, please try again");	
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});			
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}

@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from './../context/Context';
 import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom';
-import { Navigate, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
 
 
-export const ProtectedRoute = ({  
-								isAllowed,
+export const ProtectedRoute = ({ isAllowed,
 								redirectPath = '/',
 								children
 								}) => {

@@ -44,13 +44,9 @@ export default function UpdateLaborModal ( props ) {
 				toast.success("Labor data updated successfuly");				
 				setDescription("");
 				setMessages("Labor update successfully" + Math.random());
-			}else {
-				toast.danger("Update Labor failed, please try again");
-				setMessages("Labor update failed" + Math.random());				
 			}
 		}).catch((error) => {
-			console.log("An error ocurr");
-			toast.warning("An error ocurr");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

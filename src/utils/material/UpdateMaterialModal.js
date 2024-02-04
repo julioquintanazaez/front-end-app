@@ -43,13 +43,9 @@ export default function UpdateMaterialModal( props ) {
 				setMaterial_price("");
 				setMessages("Material updated successfully" + Math.random());
 				toast.success("Material data updated successfuly");
-			}else {
-				console.log("Update Material failed, please try again");	
-				toast.danger("Update Material failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			toast.success("An error ocurr with server conexion");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

@@ -28,14 +28,9 @@ const ProjectDelete = ( props ) => {
 				setSelectedLabor({});
 				setMessages("Project deleted successfully" + Math.random());
 				toast.success("Project delete successfuly");
-			}else {
-				console.log("Project delete failed, please try again");	
-				toast.danger("Project delete failed, please try again");				
 			}
 		}).catch((error) => {
-			console.log("Error conecting with backend server or with submited data, project ID: " + selectedproject.id);
-			console.log(error);
-			toast.warning("An error ocurr");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});
 	}

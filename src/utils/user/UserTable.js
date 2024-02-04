@@ -33,11 +33,9 @@ const UserTable = (props) => {
 				console.log({"Response ":response.data});	
 				setUsers(response.data);
 				console.log({"Loaded users to Table successfuly ":users});						
-			}else {
-				console.log("Load Failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}
@@ -58,13 +56,9 @@ const UserTable = (props) => {
 						console.log("User Successfuly deleted");	
 						setMessages("User deleted successfuly" + Math.random());
 						toast.success("User Successfuly deleted");	
-					}else {
-						console.log("User delete Failed, please try again");
-						toast.danger("User delete Failed, please try again");
 					}
 				}).catch((error) => {
-					console.log(error);
-					toast.danger("Something rong with the server conection");
+					console.error({"message":error.message, "detail":error.response.data.detail});
 					handleLogout();
 				});
 			}else{
@@ -93,13 +87,9 @@ const UserTable = (props) => {
 					console.log("User updated successfuly");
 					setMessages("User activated successfuly" + Math.random());
 					toast.success("User status changed successfuly");
-				}else {
-					console.log({"Update goes rongs": response.data});
-					toast.danger("User status changed Failed, please try again");
 				}
 			}).catch((error) => {
-				console.log({"An error ocur": error});
-				toast.danger("Something rong with the server conection");
+				console.error({"message":error.message, "detail":error.response.data.detail});
 				handleLogout();
 			});		
 		}else{

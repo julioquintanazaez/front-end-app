@@ -26,11 +26,9 @@ export default function CardProjectsTotals (  )  {
 			if (response.status === 201) {
 				setTasksTotals(response.data[0]);
 				console.log("Loaded data from task totals info successfuly ");			
-			}else {
-				console.log("Load from server to read task totals info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading tasks info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}	

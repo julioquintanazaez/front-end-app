@@ -36,11 +36,9 @@ export default function GraphLabor ( props )  {
 			if (response.status === 201) {
 				setLabor(response.data[0]);
 				console.log("Loaded data from labor totals statistics successfuly ");			
-			}else {
-				console.log("Load from server to labor totals statistics failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading labor totals statistics": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}		

@@ -26,11 +26,9 @@ export default function ReadUserNumberProjectsInfo ( props )  {
 				console.log({"Response user projects info ":response.data});
 				setNumber(response.data.project_number);
 				console.log("Loaded data from user projects info successfuly");			
-			}else {
-				console.log("Load from server to read user projects info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading user projects info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}
@@ -38,7 +36,7 @@ export default function ReadUserNumberProjectsInfo ( props )  {
 			
 	useEffect(()=> {			
 		fetchNumberOfProjects(user.email);			
-	}, [, projects, messages]);
+	}, [projects, messages]);
 		
 	return (							
 		<div>

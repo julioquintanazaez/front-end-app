@@ -26,11 +26,9 @@ export default function ReadMaterialInfo ( )  {
 				console.log({"Response material info ":response.data});	
 				setMaterials(response.data);
 				console.log({"Loaded data from material info successfuly ": materials.length});			
-			}else {
-				console.log("Load from server to read material info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading material info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}

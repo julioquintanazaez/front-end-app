@@ -36,13 +36,9 @@ export default function UpdateProjectEndDateModal ( props ) {
 				setDate("");
 				setMessages("Project date updated successfully" + Math.random());
 				toast.success("Project data updated successfuly");
-			}else {
-				console.log("Update project failed, please try again");	
-				toast.success("Update project failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			toast.success("An error ocurr");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});				  
 	}

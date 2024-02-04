@@ -2,14 +2,12 @@ import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -45,16 +43,10 @@ export default function InsertEquipmentModal( props ) {
 				setEquipment_quantity("");
 				setEquipment_unit_price("");
 				setMessages("Equipment updated successfuly" + Math.random())
-			}else if (response.status === 500) {
-				console.log("Integrity error");
-				toast.danger("Equipment already exist in DB");
-			} else {
-				console.log("Insert equipment Failed, please try again");		
-				toast.danger("Insert equipment Failed, please try again");
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": equipment_name});
-			toast.danger("An error ocurr in equipment handle");
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			toast.warning(error.response.data.detail);
 			handleLogout();
 		});	
 			  
@@ -80,12 +72,9 @@ export default function InsertEquipmentModal( props ) {
 		if (form.checkValidity() === false) {
 			event.preventDefault();
 			event.stopPropagation();
-		}
-		
-		setValidated(true);
-		
-		event.preventDefault();
-		
+		}		
+		setValidated(true);		
+		event.preventDefault();		
 		if (validated){
 			registerEquipment();
 			handleClose();

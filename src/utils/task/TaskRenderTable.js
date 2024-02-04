@@ -32,13 +32,9 @@ export default function TaskRenderTable ( props ) {
 				console.log({"Response ":response.data});	
 				setTasks(response.data);
 				console.log("Data was readed successfuly from database");				
-			}else {
-				console.log("Load Failed, please try again");	
 			}
 		}).catch((error) => {
-			console.log({"An error ocur": error});
-			alert({"An error ocur": "Server side"});
-			toast.danger("Labor added successfuly");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}
@@ -64,12 +60,9 @@ export default function TaskRenderTable ( props ) {
 					console.log("Task successfuly deleted");
 					setMessages("Task deleted succesffully" + Math.random());
 					toast.success("Task delete successfuly");
-				}else {
-					console.log("Task delete failed, please try again");
-					toast.danger("Task delete failed, please try again");
 				}
 			}).catch((error) => {
-				toast.danger("Something happend with server conexion");
+				console.error({"message":error.message, "detail":error.response.data.detail});
 				handleLogout();
 			});
 		}else{
@@ -95,13 +88,9 @@ export default function TaskRenderTable ( props ) {
 					console.log("Task successfuly changed");
 					setMessages("Task activated succesffully" + Math.random());	
 					toast.success("Task status changed succesffully");					
-				}else {
-					console.log("Task activation failed, please try again");
-					toast.danger("Task status changed failed, please try again");
 				}
 			}).catch((error) => {
-				console.log(error);
-				toast.danger("Something happend with server conexion");
+				console.error({"message":error.message, "detail":error.response.data.detail});
 				handleLogout();
 			});
 		}else{

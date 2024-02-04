@@ -38,11 +38,9 @@ export default function GraphProject ( props )  {
 				console.log({"Project labors totals:": response.data});
 				console.log("Loaded data from labor totals info successfuly ");	
 				
-			}else {
-				console.log("Load from server to read labor totals info failed, please try again");			
 			}
 		}).catch((error) => {
-			console.log({"An error ocur reading labor info": error});
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			  
 	}		

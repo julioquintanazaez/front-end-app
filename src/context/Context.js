@@ -1,4 +1,3 @@
-// Context.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import axios from 'axios';
@@ -58,36 +57,28 @@ export const ContextProvider = ({ children }) => {
 				'Authorization': "Bearer " + token,  
 			},
 		}).then(response => {
-			if (response.status === 200) {
-				console.log("Authentication successfully");
+			if (response.status === 200) {				
+				console.log(response.data);
 				setUser(response.data);	
 				setIsLoggedIn(true);
 				handleRole(response.data.role);
-				console.log({"Response user from context": response.data.role});
-				setMessages("User logged-in successfully" + Math.random());
+				console.log("Update data from current user");
+				setMessages("User logged-in successfully" + Math.random());				
 			}else {	
 				console.log("Registration Failed from context, please try again");				
 				handleLogout();		
 			}
 		}).catch((error) => {
-			console.log("Registration Failed from context, some error happend with server, please try again");			
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});			
 	}
 	 
-
-	const handleControlUpdate = () => {			
-		return controlUpdates ? false : true;
-	}
-	
+	//!!user && user.roles.includes('admin')
 	const handleRole = (role) => {	
-		let res = false;
-		role.forEach(function(role, index){
-			if (role == "admin"){
-				setIsAdmin(true);				
-			}						
-		});	
-		return res;
+		if (role.includes('admin')){
+			setIsAdmin(true);				
+		}	
 	}
 	
 	const handleCleanCurrentUser = () => {

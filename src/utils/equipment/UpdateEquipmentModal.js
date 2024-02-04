@@ -42,13 +42,10 @@ export default function UpdateEquipmentModal( props ) {
 				setEquipment_unit_price("");
 				toast.success("Equipment data updated successfuly");
 				setMessages("Equipment updated successfuly" + Math.random())
-			}else {
-				console.log("Update Equipment failed, please try again");
-				toast.danger("Update Equipment failed, please try again");
 			}
 		}).catch((error) => {
-			console.log("An error ocurr ");
-			toast.danger("An error ocurr in equipment handle");
+			console.error({"message":error.message, "detail":error.response.data.detail});
+			toast.warning(error.response.data.detail);
 			handleLogout();
 		});				  
 	}

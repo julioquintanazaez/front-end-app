@@ -2,14 +2,12 @@ import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Context } from './../../context/Context';
 import axios from 'axios';
-
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -50,16 +48,9 @@ export default function InsertMaterialModal( props ) {
 				setMaterial_price("");
 				setMessages("Material added successfully" + Math.random());
 				toast.success("Material Successfuly inserted");
-			} else if (response.status === 500) {
-				console.log("Integrity error");
-				toast.danger("Material already exist in DB");
-			} else {
-				console.log("Insert material Failed, please try again");	
-				toast.danger("Insert material Failed, please try again");
 			}
 		}).catch((error) => {
-			console.log({"An error ocurr ": material_name});
-			toast.danger("An error ocurr with the server");
+			console.error({"message":error.message, "detail":error.response.data.detail});
 			handleLogout();
 		});
 	}
@@ -85,12 +76,9 @@ export default function InsertMaterialModal( props ) {
 		if (form.checkValidity() === false) {
 			event.preventDefault();
 			event.stopPropagation();
-		}
-		
-		setValidated(true);
-		
-		event.preventDefault();
-		
+		}		
+		setValidated(true);		
+		event.preventDefault();		
 		if (validated){
 			registerMaterial();
 			handleClose();
