@@ -23,7 +23,6 @@ export default function InsertTaskModal( props ) {
 	const [mechanicals, setMechanicals] = useState("");
 	const [hour, setHour] = useState("");
 	const [task_price, setTask_price] = useState("");
-	const [end_date, setEnd_Date] = useState(new Date());
 		
 	const registerTask = async () => {
 		

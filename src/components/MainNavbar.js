@@ -39,7 +39,7 @@ const Navigation = ( props ) => {
 							<NavDropdown title="Admin panel">
 								<NavDropdown.Item>
 									<LinkContainer to="/projects">
-										<Nav.Link>Projects</Nav.Link>
+										<Nav.Link>Statistics</Nav.Link>
 									</LinkContainer>									
 								</NavDropdown.Item>	
 								<NavDropdown.Item>

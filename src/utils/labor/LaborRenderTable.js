@@ -69,16 +69,9 @@ export default function LaborRenderTable ( ) {
 					</td>
 					<td>{labor.type}</td>
 					<td>{labor.desc_labor}</td>					
-					<td>{labor.task_open_price}</td>
-					<td>{labor.task_close_price}</td>
 					<td>{labor.equipment_amount}</td>
 					<td>{labor.material_amount}</td>
 					<td>{labor.labor_amount}</td>
-					{isAdmin &&
-					<td>
-						< LaborActivate labor={labor} />
-					</td>	
-					}
 					<td> 
 						<div className="row justify-content-center">	
 							<div className="col">
@@ -124,16 +117,9 @@ export default function LaborRenderTable ( ) {
 						<th scope="col">Select</th>
 						<th scope="col">Type</th>							
 						<th scope="col">Description</th>						
-						<th scope="col">Task open</th>
-						<th scope="col">Task close</th>
 						<th scope="col">Equipment amount</th>
 						<th scope="col">Material amount</th>
 						<th scope="col">Total amount</th>						
-						{isAdmin &&
-						<th scope="col">
-							Open/Close
-						</th>	
-						}
 						<th scope="col">Delete</th>
 						<th scope="col">Update</th>
 						{isAdmin &&

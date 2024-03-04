@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function AllProjectsReport ( ) {
 	
-	const { token, handleLogout } = useContext(Context);	
+	const { token, handleLogout, isAdmin } = useContext(Context);	
 	
 	const generateReport = async (id) => {		 
 		
@@ -46,11 +46,14 @@ export default function AllProjectsReport ( ) {
 	
 	return (	
 		<>
+		{isAdmin ?
 			<button type="submit" 
 					className="btn btn-sm btn-outline-success"
 					onClick={(e) => handleSubmit(e)} > 
 					All projects (PDF) 
 			</button>
+			: null
+		}
 		</>
 	);
 }

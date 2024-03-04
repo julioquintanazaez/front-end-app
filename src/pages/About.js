@@ -11,7 +11,13 @@ const Contact = () => {
 	const navigate = useNavigate();
 	
 	return (
-		<div>
+		<div className="Auth-form-container" style={{ 
+			backgroundImage: "url(/images/background4.jpg)",
+			height: "100vh",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",			
+			}}
+		>
 			<div className="container-fluid-md">			
 				<div className="row">				
 					<div className="col-sm">

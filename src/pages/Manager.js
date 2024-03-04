@@ -11,6 +11,8 @@ import Navigation from './../components/MainNavbar.js';
 //Handle project
 import InsertProjectModal from './../utils/project/InsertProjectModal.js';
 import ProjectRenderUserTable from './../utils/project/ProjectRenderUserTable.js';
+import ProjectRenderTable from './../utils/project/ProjectRenderTable.js';
+import AllProjectsReport from './../utils/report/AllProjectsReport.js';
 
 //Handle Labor 
 import InsertLaborModalForm from './../utils/labor/InsertLaborModalForm.js';
@@ -47,7 +49,7 @@ const Manager = () => {
 	const [materials, setMaterials] = useState([]);
 	
 	//From CONTEXT
-	const { token, messages, handlelogout } = useContext(Context);
+	const { token, messages, handleLogout } = useContext(Context);
 	const { user, setUser } = useContext(Context);
 	const { isLoggedIn, setIsLoggedIn } = useContext(Context);
 	const { projects, setProjects } = useContext(Context);	
@@ -72,24 +74,25 @@ const Manager = () => {
 						<div className="container overflow-hidden"><br/>								
 							<div className="row gx-5">
 								<div className="col">
-									<div className="p-3 border bg-light">										
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
-											<div className="row">
-												<div className="col col-sm">													
-													< ProjectRenderUserTable />														
-												</div>
+									<div className="p-3 border bg-light">
+										<div className="row">	
+											<div className="col col-sm text-end">
+												<InsertProjectModal />	
 											</div>
 										</div>
-									</div>									
-								</div>
-							</div><br/>							
-							<div className="row gx-5">
-								<div className="col">
-									<div className="p-3 border bg-light">
-										
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">											
 											<div className="row">
-												<div className="col col-sm-6">
+												<div className="col col-sm">	
+													{!isAdmin 
+														? < ProjectRenderUserTable />	
+														: < ProjectRenderTable />	
+													}
+												</div>
+											</div>											
+										</div>
+										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">
+											<div className="row">
+												<div className="col col-sm-6 text-start">
 													<h3> {selectedproject.project_name} </h3>														
 														<h6>
 														{selectedproject.project_name != null 
@@ -98,19 +101,27 @@ const Manager = () => {
 														}
 														</h6>
 												</div>													
+												<div className="col col-sm text-end">
+													<AllProjectsReport />
+												</div>												
 											</div>
-										</div><br/>										
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
-											<InsertProjectModal />									
-										</div>											
+										</div>
 									</div>									
 								</div>
 							</div><br/>							
-							<div className="row gx-5">
-								<div className="col">
+											
+							<div className="row gx-5">								
+								<div className="col">									
 									<div className="p-3 border bg-light">	
 									
-										< LaborRenderTable />		
+										<div className="row">	
+											<div className="col col-sm text-end">
+												<InsertLaborModalForm />		
+											</div>
+										</div>
+										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
+											< LaborRenderTable />	
+										</div>
 										
 										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">
 											<div className="row">
@@ -124,17 +135,22 @@ const Manager = () => {
 													</h6>
 												</div>	
 											</div>
-										</div><br/>												
-										<div className="form-control form-control-sm mt-2" id="ButtonsLabor">	
-											<InsertLaborModalForm />									
-										</div>											
+										</div>									
 									</div>											
 								</div>
 							</div><br/>							
 							<div className="row gx-5">
 								<div className="col">
 									<div className="p-3 border bg-light">
-										Tasks from labor: {selectedlabor.type}
+										
+										<div className="row">	
+											<div className="col col-sm text-start">
+												Tasks from labor: {selectedlabor.type}
+											</div>
+											<div className="col col-sm text-end">
+												<InsertTaskModal />	 		
+											</div>
+										</div>
 										<div className="form-control form-control-sm mt-2" id="FormControlSelectProject">											 	
 											<TaskRenderTable tasks={tasks} />			
 										</div>		
@@ -146,10 +162,7 @@ const Manager = () => {
 											</div>
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonTaskLabor">
-											<div className="row">
-												<div className="col col-sm-3">
-													<InsertTaskModal />	 	
-												</div>												
+											<div className="row">																							
 												<div className="container col text-end">
 													<ReadTaskInfo />
 												</div>
@@ -161,7 +174,15 @@ const Manager = () => {
 							<div className="row gx-5">
 								<div className="col">
 									<div className="p-3 border bg-light">
-										Equipments from labor: {selectedlabor.type}
+										
+										<div className="row">	
+											<div className="col col-sm text-start">
+												Equipments from labor: {selectedlabor.type}
+											</div>
+											<div className="col col-sm text-end">
+												<InsertEquipmentModal />	  		
+											</div>
+										</div>
 										<div className="form-control form-control-sm mt-2" id="FormControlSelectProject">											 	
 											<EquipmentRenderTable equipments={equipments} />			
 										</div>		
@@ -174,9 +195,6 @@ const Manager = () => {
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonEquipmentLabor">		
 											<div className="row">
-												<div className="col col-sm-3">
-													<InsertEquipmentModal />	  	
-												</div>												
 												<div className="container col text-end">
 													<ReadEquipmentInfo />
 												</div>
@@ -187,8 +205,17 @@ const Manager = () => {
 							</div><br/>							
 							<div className="row gx-5">
 								<div className="col">
-									<div className="p-3 border">
-										Materials from labor: {selectedlabor.type}
+									<div className="p-3 border bg-light">
+										
+										<div className="row">	
+											<div className="col col-sm text-start">
+												Materials from labor: {selectedlabor.type}
+											</div>
+											<div className="col col-sm text-end">
+												<InsertMaterialModal />  		
+											</div>
+										</div>
+										
 										<div className="form-control form-control-sm mt-2" id="FormControlSelectProject">											 	
 											<MaterialRenderTable materials={materials} />	
 										</div>	
@@ -201,9 +228,6 @@ const Manager = () => {
 										</div>	
 										<div className="form-control form-control-sm mt-2" id="ButtonMaterialLabor">	
 											<div className="row">
-												<div className="col col-sm-3">
-													<InsertMaterialModal />
-												</div>												
 												<div className="container col text-end">
 													<ReadMaterialInfo />	
 												</div>

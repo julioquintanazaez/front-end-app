@@ -17,7 +17,7 @@ const App = () => {
 	const { isLoggedIn, isAdmin } = useContext(Context);
 	
 	return (
-		<>								
+		<div>							
 			<Routes>
 				<Route index element={<Login />} />
 				<Route path="/" element={<Login />} />	
@@ -33,7 +33,7 @@ const App = () => {
 				</Route>
 				<Route path="*" element={<p>There's nothing here: 404!</p>} />
 			</Routes>						
-		</>
+		</div>
 	);
 }
 

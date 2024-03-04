@@ -107,14 +107,6 @@ export default function TaskRenderTable ( props ) {
 					<td>{task.hour}</td>
 					<td>{task.hour_men}</td>							
 					<td>{task.task_price}</td>	
-					<div className="col-sm-3">
-						<button 
-							type="button" 
-							className="btn btn-sm btn-outline-success" 							
-							onClick={(e) => changeActivityTask(task)}> 
-								{task.is_active ? "Working" : "Done"}	
-						</button><br/>
-					</div>
 					<td> 
 						<div className="row justify-content-center">
 							<div className="col">
@@ -149,7 +141,6 @@ export default function TaskRenderTable ( props ) {
 						<th scope="col">Hour</th>
 						<th scope="col">H/men</th>							
 						<th scope="col">Price</th>							
-						<th scope="col">Active</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>

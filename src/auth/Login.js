@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router";
 import { Context } from './../context/Context';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
 function Login () {
 	
@@ -17,8 +19,8 @@ function Login () {
 	const authenticate_user = async () => {
 		 
 		const form_data = new FormData();
-		form_data.append("username",  username);
-		form_data.append("password", password);		
+		form_data.append("username",  formik.values.username);
+		form_data.append("password", formik.values.password);		
 		
 		await axios({
 			method: 'post',
@@ -39,7 +41,7 @@ function Login () {
 				navigate(origin);
 			}
 		}).catch((error) => {
-			//console.error({"message":error.message, "detail":error.response.data.detail});	
+			console.error({"message":error.message, "detail":error.response.data.detail});	
 			Swal.fire("Access denied!", error.response.data.detail, "error");
 		});		
 	}	
@@ -54,11 +56,42 @@ function Login () {
 		setUserName("");
 		setPassword("");		
 		navigate("/");
+	}
+	
+	const validationRules = Yup.object().shape({
+		username: Yup.string().trim()	
+			.min(3, "Password must be 3 characters at minimum")
+			.max(15, "Password must be 15 characters at maximum")
+			.required("Username is required"),
+		password: Yup.string()
+			.min(3, "Password must be 3 characters at minimum")
+			.required("Password is required"),
+	});
+	
+	const registerInitialValues = {
+		username: '',
+		password: ''
 	};
 	
+	const formik = useFormik({
+		initialValues: registerInitialValues,		
+		onSubmit: (data) => {
+			console.log(data.username);
+			authenticate_user();
+			formik.resetForm();
+		},
+		validationSchema: validationRules,
+	});
+
 	return (  		
-		<div className="Auth-form-container">
-			<form className="Auth-form" onSubmit={handleSubmit}>
+		<div className="Auth-form-container" style={{ 
+			backgroundImage: "url(/images/background4.jpg)",
+			height: "100vh",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",			
+			}}
+		>
+			<form className="Auth-form" onSubmit={formik.handleSubmit}>
 				<div className="Auth-form-content">
 					{isLoggedIn ? ( 
 					
@@ -71,31 +104,43 @@ function Login () {
 					
 					<div>
 						<h3 className="Auth-form-title">
-							Sign In
+							Sing In
 						</h3>
 						<div className="form-group mt-3">
-							<label>User name</label>
 							<input
 							  type="text"
-							  value={username}
-							  onChange={(e) => setUserName(e.target.value)}
-							  className="form-control mt-1"
+							  name="username"
+							  value={formik.values.username}
+							  onChange={formik.handleChange}
+							  onBlur={formik.handleBlur}
+							  className={"form-control mt-1" + 
+											(formik.errors.username && formik.touched.username
+											? "is-invalid"
+											: ""
+										)}
 							  placeholder="User name"
 							/>
+							<div>{(formik.errors.username) ? <p style={{color: 'red'}}>{formik.errors.username}</p> : null}</div>
 						</div>
 						<div className="form-group mt-3">
-							<label>Password</label>
 							<input
 							  type="password"
-							  value={password}
-							  onChange={(e) => setPassword(e.target.value)}
-							  className="form-control mt-1"
+							  name="password"
+							  value={formik.values.password}
+							  onChange={formik.handleChange}
+							  onBlur={formik.handleBlur}
+							  className={"form-control mt-1" + 
+											(formik.errors.password && formik.touched.password
+											? "is-invalid"
+											: ""
+										)}
 							  placeholder="Enter password"
 							/>
+							<div>{(formik.errors.password) ? <p style={{color: 'red'}}>{formik.errors.password}</p> : null}</div>
 						</div>
 						<div className="d-grid gap-2 mt-3">
-							<button type="submit" className="btn btn-primary">
-									Submit
+							<button type="submit" className="btn btn-success">
+									Sing In
 							</button>					
 						</div>						
 					</div>

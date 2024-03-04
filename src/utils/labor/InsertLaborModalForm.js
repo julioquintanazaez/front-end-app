@@ -25,7 +25,7 @@ export default function InsertLaborModal( ) {
 	const { token, selectedproject, setMessages, handleLogout } = useContext(Context);	
 	const [type, setType] = useState(""); 
 	const [desc_labor, setDescription] = useState("");
-	const [enddate, setEndDate] = useState(new Date());
+	
 	
 	const options = ["Demolition", "Documental", "Reconstruction", "Roof"]
 	
